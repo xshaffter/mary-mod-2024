@@ -1,7 +1,7 @@
 package com.paramada.marycum2024.mixins;
 
 import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.items.custom.Estus;
+import com.paramada.marycum2024.items.custom.ReusablePotion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -22,7 +22,7 @@ public abstract class ItemStackMixin {
 
     @Inject(method = "getNbt", at = @At("HEAD"))
     private void defaultNBT(CallbackInfoReturnable<NbtCompound> cir) {
-        if (this.getItem() instanceof Estus || this.isOf(ItemManager.ESTUS_SHARD) || this.isOf(ItemManager.HEALING_FRUIT)) {
+        if (this.getItem() instanceof ReusablePotion || this.isOf(ItemManager.ESTUS_SHARD) || this.isOf(ItemManager.HEALING_FRUIT)) {
             if (this.nbt != null) {
                 this.nbt.putBoolean("NoDrop", true);
                 if (!this.nbt.contains("durability")) {

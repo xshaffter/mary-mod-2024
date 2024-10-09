@@ -13,19 +13,19 @@ import java.util.List;
 
 public class RibbonItem extends MaryItem {
     private final List<StatusEffectInstance> effects;
-    private final StatusEffect potionEffect;
+    private final List<StatusEffectInstance> instantEffects;
 
-    public RibbonItem(List<StatusEffectInstance> effects, StatusEffect potionEffect) {
+    public RibbonItem(List<StatusEffectInstance> effects, List<StatusEffectInstance> potionEffect) {
         super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
         this.effects = effects;
 
-        this.potionEffect = potionEffect;
+        this.instantEffects = potionEffect;
     }
 
     public RibbonItem() {
         super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
         this.effects = List.of();
-        this.potionEffect = null;
+        this.instantEffects = List.of();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class RibbonItem extends MaryItem {
         return effects;
     }
 
-    public StatusEffect getPotionUpgrade() {
-        return potionEffect;
+    public List<StatusEffectInstance> getInstantEffects() {
+        return instantEffects;
     }
 }

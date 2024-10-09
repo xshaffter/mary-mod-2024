@@ -3,23 +3,16 @@ package com.paramada.marycum2024.items.custom;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
-import dev.kosmx.playerAnim.mixin.firstPerson.CameraAccessor;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.option.GameOptions;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.CamelEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -29,15 +22,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Estus extends PotionItem {
-    public Estus(int durability) {
+public class ReusablePotion extends PotionItem {
+    public ReusablePotion(int durability) {
         super(
                 new Settings()
                         .fireproof()
                         .rarity(Rarity.EPIC)
                         .maxDamage(durability)
         );
-
     }
 
     @Override
@@ -95,9 +87,40 @@ public class Estus extends PotionItem {
                 stack.setDamage(stack.getDamage() + 1);
             }
             user.heal(healing);
+
+            applyRibbonEffects(user);
         }
 
         return stack;
+    }
+
+    private void applyRibbonEffects(LivingEntity player) {
+        if (player.hasStatusEffect(ModEffects.BLACK_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.BLACK_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        } else if (player.hasStatusEffect(ModEffects.BLUE_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.BLUE_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        } else if (player.hasStatusEffect(ModEffects.CYAN_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.CYAN_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        } else if (player.hasStatusEffect(ModEffects.PINK_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.PINK_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        } else if (player.hasStatusEffect(ModEffects.GREEN_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.GREEN_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        } else if (player.hasStatusEffect(ModEffects.RED_RIBBON_EFFECT)) {
+            for (StatusEffectInstance effect : ModEffects.RED_RIBBON_EFFECT.getEffects()) {
+                player.addStatusEffect(effect);
+            }
+        }
+
     }
 
     @Override

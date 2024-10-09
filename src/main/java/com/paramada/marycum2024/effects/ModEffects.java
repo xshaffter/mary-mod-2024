@@ -2,17 +2,52 @@ package com.paramada.marycum2024.effects;
 
 import com.paramada.marycum2024.MaryMod2024;
 import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
+
 public class ModEffects {
-    public static final StatusEffect PINK_RIBBON_EFFECT = new RibbonEffect();
-    public static final StatusEffect BLUE_RIBBON_EFFECT = new RibbonEffect();
-    public static final StatusEffect RED_RIBBON_EFFECT = new RibbonEffect();
-    public static final StatusEffect GREEN_RIBBON_EFFECT = new RibbonEffect();
-    public static final StatusEffect CYAN_RIBBON_EFFECT = new RibbonEffect();
-    public static final StatusEffect BLACK_RIBBON_EFFECT = new RibbonEffect();
+    public static final StatusEffect ZOMBIEFICATION = new ZombieficationEffect();
+    public static final StatusEffect VAMPIRISM = new VampirismEffect();
+    public static final RibbonEffect PINK_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
+    public static final RibbonEffect BLUE_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
+    public static final RibbonEffect RED_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
+    public static final RibbonEffect GREEN_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
+    public static final RibbonEffect CYAN_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
+    public static final RibbonEffect BLACK_RIBBON_EFFECT = new RibbonEffect(List.of(
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance(),
+//            new StatusEffectInstance()
+
+    ));
 
     private static void registerEffect(String name, StatusEffect effect) {
         Registry.register(Registries.STATUS_EFFECT, new Identifier(MaryMod2024.MOD_ID, name), effect);
@@ -25,5 +60,7 @@ public class ModEffects {
         registerEffect("green_ribbon_effect", GREEN_RIBBON_EFFECT);
         registerEffect("cyan_ribbon_effect", CYAN_RIBBON_EFFECT);
         registerEffect("black_ribbon_effect", BLACK_RIBBON_EFFECT);
+        registerEffect("zombiefication", ZOMBIEFICATION);
+        registerEffect("vampirism", VAMPIRISM);
     }
 }
