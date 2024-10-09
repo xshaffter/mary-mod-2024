@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "mary-mod-2024:block/efigy"
+    "half=top,facing=north": {
+      "model": "mary-mod-2024:block/efigy_top"
     },
-    "facing=east": {
-      "model": "mary-mod-2024:block/efigy",
+    "half=top,facing=east": {
+      "model": "mary-mod-2024:block/efigy_top",
       "y": 90
     },
-    "facing=south": {
-      "model": "mary-mod-2024:block/efigy",
+    "half=top,facing=south": {
+      "model": "mary-mod-2024:block/efigy_top",
       "y": 180
     },
-    "facing=west": {
-      "model": "mary-mod-2024:block/efigy",
+    "half=top,facing=west": {
+      "model": "mary-mod-2024:block/efigy_top",
+      "y": 270
+    },
+    "half=bottom,facing=north": {
+      "model": "mary-mod-2024:block/efigy_bottom"
+    },
+    "half=bottom,facing=east": {
+      "model": "mary-mod-2024:block/efigy_bottom",
+      "y": 90
+    },
+    "half=bottom,facing=south": {
+      "model": "mary-mod-2024:block/efigy_bottom",
+      "y": 180
+    },
+    "half=bottom,facing=west": {
+      "model": "mary-mod-2024:block/efigy_bottom",
       "y": 270
     }
   }

@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.blocks.entities;
+package com.paramada.marycum2024.blocks.custom.entities;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;

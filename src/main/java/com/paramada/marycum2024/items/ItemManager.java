@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.items;
 
 import com.paramada.marycum2024.MaryMod2024;
+import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.items.custom.*;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -22,23 +23,23 @@ public class ItemManager {
             new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 1, true, true),
             new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 60, 1, true, true),
             new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 60, 2, true, true)
-    ));
+    ), ModEffects.PINK_RIBBON_EFFECT);
     public static final Item BLUE_RIBBON = new RibbonItem(List.of(
 
-    ));
+    ), ModEffects.BLUE_RIBBON_EFFECT);
     public static final Item RED_RIBBON = new RibbonItem(List.of(
             new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 0, true, true)
 
-    ));
+    ), ModEffects.RED_RIBBON_EFFECT);
     public static final Item GREEN_RIBBON = new RibbonItem(List.of(
 
-    ));
+    ), ModEffects.GREEN_RIBBON_EFFECT);
     public static final Item CYAN_RIBBON = new RibbonItem(List.of(
 
-    ));
+    ), ModEffects.CYAN_RIBBON_EFFECT);
     public static final Item BLACK_RIBBON = new RibbonItem(List.of(
             new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 4 + 1, 2, true, true)
-    ));
+    ), ModEffects.BLACK_RIBBON_EFFECT);
     public static final Item BANDAGE = new Bandage();
     public static final Item ESTUS_1 = new Estus(1);
     public static final Item ESTUS_2 = new Estus(2);
