@@ -1,9 +1,7 @@
 package com.paramada.marycum2024.client;
 
-import com.paramada.marycum2024.blocks.BlockManager;
-import com.paramada.marycum2024.blocks.entities.BlockEntityManager;
-import com.paramada.marycum2024.blocks.entities.EfigyBlockEntity;
-import com.paramada.marycum2024.blocks.entities.renderers.EfigyBlockEntityRenderer;
+import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
+import com.paramada.marycum2024.blocks.custom.entities.renderers.EfigyBlockEntityRenderer;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.entities.client.BeagleModel;
 import com.paramada.marycum2024.entities.client.BeagleRenderer;
@@ -13,7 +11,6 @@ import com.paramada.marycum2024.networking.NetworkManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;

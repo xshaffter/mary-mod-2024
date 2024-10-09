@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.blocks.entities;
+package com.paramada.marycum2024.blocks.custom.entities;
 
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.blocks.BlockManager;
