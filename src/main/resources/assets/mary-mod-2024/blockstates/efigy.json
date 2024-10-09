@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "mary-mod-2024:block/efigy"
+    },
+    "facing=east": {
+      "model": "mary-mod-2024:block/efigy",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "mary-mod-2024:block/efigy",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "mary-mod-2024:block/efigy",
+      "y": 270
+    }
+  }
+}

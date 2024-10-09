@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "mary-mod-2024",
+  "version": "${version}",
+  "name": "MaryCum2024",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/xshaf/MaryCum2024"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/mary-mod-2024/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.paramada.marycum2024.client.MaryMod2024Client"
+    ],
+    "main": [
+      "com.paramada.marycum2024.MaryMod2024"
+    ]
+  },
+  "mixins": [
+    "marycum2024.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "bendy-lib": "${bendylib_version}",
+    "player-animator": "${player_anim}",
+    "anvilapi": "${anvil_api_version}"
+  }
+}

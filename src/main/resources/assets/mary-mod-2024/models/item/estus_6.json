@@ -1,0 +1,83 @@
+{
+  "credit": "Made by Mariood.",
+  "parent": "block/block",
+  "texture_size": [24, 16],
+  "textures": {
+    "glass": "item/potion",
+    "juice": "item/potion_overlay"
+  },
+  "elements": [
+    {
+      "name": "container",
+      "from": [4, 3, 4],
+      "to": [12, 9, 12],
+      "faces": {
+        "north": {"uv": [0, 2, 5.33333, 8], "texture": "#glass"},
+        "east": {"uv": [0, 2, 5.33333, 8], "texture": "#glass"},
+        "south": {"uv": [0, 2, 5.33333, 8], "texture": "#glass"},
+        "west": {"uv": [0, 2, 5.33333, 8], "texture": "#glass"},
+        "up": {"uv": [0, 8, 5.33333, 16], "texture": "#glass"},
+        "down": {"uv": [5.33333, 8, 10.66667, 16], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "tube",
+      "from": [6, 9, 6],
+      "to": [10, 11, 10],
+      "faces": {
+        "north": {"uv": [0, 0, 2.66667, 2], "texture": "#glass"},
+        "east": {"uv": [0, 0, 2.66667, 2], "texture": "#glass"},
+        "south": {"uv": [0, 0, 2.66667, 2], "texture": "#glass"},
+        "west": {"uv": [0, 0, 2.66667, 2], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "cork",
+      "from": [5, 11, 5],
+      "to": [11, 14, 11],
+      "faces": {
+        "north": {"uv": [10.66667, 13, 14.66667, 16], "texture": "#glass"},
+        "east": {"uv": [10.66667, 13, 14.66667, 16], "texture": "#glass"},
+        "south": {"uv": [10.66667, 13, 14.66667, 16], "texture": "#glass"},
+        "west": {"uv": [10.66667, 13, 14.66667, 16], "texture": "#glass"},
+        "up": {"uv": [5.33333, 0, 9.33333, 6], "texture": "#glass"},
+        "down": {"uv": [9.33333, 0, 13.33333, 6], "texture": "#glass"}
+      }
+    },
+    {
+      "name": "juice",
+      "from": [5, 4, 5],
+      "to": [11, 7, 11],
+      "faces": {
+        "north": {"uv": [4, 0, 8, 3], "texture": "#juice", "tintindex": 0},
+        "east": {"uv": [4, 0, 8, 3], "texture": "#juice", "tintindex": 0},
+        "south": {"uv": [4, 0, 8, 3], "texture": "#juice", "tintindex": 0},
+        "west": {"uv": [4, 0, 8, 3], "texture": "#juice", "tintindex": 0},
+        "up": {"uv": [0, 0, 4, 6], "texture": "#juice", "tintindex": 0},
+        "down": {"uv": [0, 6, 4, 12], "texture": "#juice", "tintindex": 0}
+      }
+    }
+  ],
+  "gui_light": "front",
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [0, -2.75, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "firstperson_righthand": {
+      "translation": [0, 1.75, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "firstperson_lefthand": {
+      "translation": [0, 1.75, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "ground": {
+      "translation": [0, 1, 0],
+      "scale": [0.75, 0.75, 0.75]
+    },
+    "gui": {
+      "rotation": [22.5, 45, 0]
+    }
+  }
+}

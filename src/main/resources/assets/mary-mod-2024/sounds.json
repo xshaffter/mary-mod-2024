@@ -1,0 +1,8 @@
+{
+  "bandage_heal":{
+    "subtitle": "sounds.mary-mod-2024.bandage_heal",
+    "sounds": [
+      "mary-mod-2024:bandage_heal"
+    ]
+  }
+}
