@@ -70,13 +70,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "setHealth")
-    private void asda(float health, CallbackInfo ci) {
-        if (this.isPlayer()) {
-            System.out.println(this.getWorld().isClient() + ": " + this.getMaxHealth());
-        }
-    }
-
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         var source = damageSource.getSource();
