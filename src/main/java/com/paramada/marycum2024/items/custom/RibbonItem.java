@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.items.custom;
 
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -12,15 +13,19 @@ import java.util.List;
 
 public class RibbonItem extends MaryItem {
     private final List<StatusEffectInstance> effects;
+    private final StatusEffect potionEffect;
 
-    public RibbonItem(List<StatusEffectInstance> effects) {
+    public RibbonItem(List<StatusEffectInstance> effects, StatusEffect potionEffect) {
         super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
         this.effects = effects;
+
+        this.potionEffect = potionEffect;
     }
 
     public RibbonItem() {
         super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
         this.effects = List.of();
+        this.potionEffect = null;
     }
 
     @Override
@@ -30,5 +35,9 @@ public class RibbonItem extends MaryItem {
 
     public List<StatusEffectInstance> getEffects() {
         return effects;
+    }
+
+    public StatusEffect getPotionUpgrade() {
+        return potionEffect;
     }
 }
