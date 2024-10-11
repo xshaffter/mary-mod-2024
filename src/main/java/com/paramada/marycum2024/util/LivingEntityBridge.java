@@ -17,6 +17,13 @@ public class LivingEntityBridge {
         }
         return null;
     }
+
+    public static Inventory getEnderInventory(Entity entity) {
+        if (entity instanceof PlayerEntity living) {
+            return living.getEnderChestInventory();
+        }
+        return null;
+    }
     public static boolean hasFlag(final Entity entity, final String flag) {
         return getPersistentData(entity).getBoolean(flag);
     }

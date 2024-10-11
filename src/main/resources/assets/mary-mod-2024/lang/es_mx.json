@@ -44,9 +44,17 @@
   "tooltip.mary-mod-2024.healing_fruit_2": "con 2 corazones y medio",
   "chat.mary-mod-2024.ribbon_needed": "Esta efigie necesita de un lazo para funcionar",
   "effect.mary-mod-2024.pink_ribbon_effect": "Pink Ribbon Effect",
+  "tooltip.mary-mod-2024.pink_ribbon_effect": "vaporeon.....",
   "effect.mary-mod-2024.blue_ribbon_effect": "Blue Ribbon Effect",
+  "tooltip.mary-mod-2024.blue_ribbon_effect": "vaporeon.....",
   "effect.mary-mod-2024.red_ribbon_effect": "Red Ribbon Effect",
+  "tooltip.mary-mod-2024.red_ribbon_effect": "vaporeon.....",
   "effect.mary-mod-2024.green_ribbon_effect": "Green Ribbon Effect",
+  "tooltip.mary-mod-2024.green_ribbon_effect": "vaporeon.....",
   "effect.mary-mod-2024.cyan_ribbon_effect": "Cyan Ribbon Effect",
-  "effect.mary-mod-2024.black_ribbon_effect": "Black Ribbon Effect"
+  "tooltip.mary-mod-2024.cyan_ribbon_effect": "vaporeon.....",
+  "effect.mary-mod-2024.black_ribbon_effect": "Black Ribbon Effect",
+  "tooltip.mary-mod-2024.black_ribbon_effect": "vaporeon.....t",
+  "effect.mary-mod-2024.zombiefication": "Zombiefication",
+  "effect.mary-mod-2024.vampirism": "Vampirism"
 }

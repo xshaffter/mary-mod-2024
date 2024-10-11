@@ -19,40 +19,70 @@ import java.util.List;
 
 public class ItemManager {
     public static final Item MARY_COIN = new MaryCoinItem();
+
+    //tank
     public static final Item PINK_RIBBON = new RibbonItem(List.of(
-            new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 1, true, true),
-            new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 60, 1, true, true),
-            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 60, 2, true, true)
-    ), ModEffects.PINK_RIBBON_EFFECT);
+            new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 1, true, false),
+            new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 60, 1, true, false),
+            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 60, 2, true, false)
+    ), List.of(
+            new StatusEffectInstance(ModEffects.PINK_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
+    ));
+
+    //damage
     public static final Item BLUE_RIBBON = new RibbonItem(List.of(
 
-    ), ModEffects.BLUE_RIBBON_EFFECT);
+    ), List.of(
+            new StatusEffectInstance(ModEffects.BLUE_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
+    ));
+
+    //Healing
     public static final Item RED_RIBBON = new RibbonItem(List.of(
-            new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 0, true, true)
+            new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 0, true, false)
 
-    ), ModEffects.RED_RIBBON_EFFECT);
-    public static final Item GREEN_RIBBON = new RibbonItem(List.of(
+    ), List.of(
+            new StatusEffectInstance(ModEffects.RED_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
+    ));
 
-    ), ModEffects.GREEN_RIBBON_EFFECT);
+    //Speed
     public static final Item CYAN_RIBBON = new RibbonItem(List.of(
+            new StatusEffectInstance(StatusEffects.SPEED, MaryMod2024.TICKS_PER_SECOND * 120, 1, true, false)
+    ), List.of(
+            new StatusEffectInstance(ModEffects.CYAN_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
+    ));
 
-    ), ModEffects.CYAN_RIBBON_EFFECT);
+    //Zombie
+    public static final Item GREEN_RIBBON = new RibbonItem(List.of(
+    ), List.of(
+            new StatusEffectInstance(ModEffects.GREEN_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false),
+            new StatusEffectInstance(ModEffects.ZOMBIEFICATION, StatusEffectInstance.INFINITE, 0, true, true)
+
+    ));
+
+    //Vampire
     public static final Item BLACK_RIBBON = new RibbonItem(List.of(
-            new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 4 + 1, 2, true, true)
-    ), ModEffects.BLACK_RIBBON_EFFECT);
+            new StatusEffectInstance(StatusEffects.SPEED, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false),
+            new StatusEffectInstance(StatusEffects.STRENGTH, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false)
+    ), List.of(
+            new StatusEffectInstance(ModEffects.BLACK_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false),
+            new StatusEffectInstance(ModEffects.VAMPIRISM, StatusEffectInstance.INFINITE, 0, true, true),
+            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 3, true, false)
+
+    ));
     public static final Item BANDAGE = new Bandage();
-    public static final Item ESTUS_1 = new Estus(1);
-    public static final Item ESTUS_2 = new Estus(2);
-    public static final Item ESTUS_3 = new Estus(3);
-    public static final Item ESTUS_4 = new Estus(4);
-    public static final Item ESTUS_5 = new Estus(5);
-    public static final Item ESTUS_6 = new Estus(6);
-    public static final Item ESTUS_7 = new Estus(7);
-    public static final Item ESTUS_8 = new Estus(8);
-    public static final Item ESTUS_9 = new Estus(9);
+    public static final Item ESTUS_1 = new ReusablePotion(1);
+    public static final Item ESTUS_2 = new ReusablePotion(2);
+    public static final Item ESTUS_3 = new ReusablePotion(3);
+    public static final Item ESTUS_4 = new ReusablePotion(4);
+    public static final Item ESTUS_5 = new ReusablePotion(5);
+    public static final Item ESTUS_6 = new ReusablePotion(6);
+    public static final Item ESTUS_7 = new ReusablePotion(7);
+    public static final Item ESTUS_8 = new ReusablePotion(8);
+    public static final Item ESTUS_9 = new ReusablePotion(9);
     public static final Item ESTUS_SHARD = new Item(new FabricItemSettings().rarity(Rarity.RARE).maxCount(8).fireproof());
     public static final Item HEALING_FRUIT = new HealingFruit();
     public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new FabricItemSettings()));
+    public static final Item MEDIKA_POTION = new MedikaPotion();
 
     @SuppressWarnings("SameParameterValue")
     private static Item registerItem(final String name, final Item item) {
@@ -79,6 +109,7 @@ public class ItemManager {
         registerItem("cyan_ribbon", CYAN_RIBBON);
         registerItem("red_ribbon", RED_RIBBON);
         registerItem("green_ribbon", GREEN_RIBBON);
+        registerItem("medika_potion", MEDIKA_POTION);
         ItemGroups.registerItemGroups();
     }
 }

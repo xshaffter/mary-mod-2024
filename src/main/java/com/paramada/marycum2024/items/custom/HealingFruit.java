@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HealingFruit extends Item {
+public class HealingFruit extends Item implements IMaryItem {
     public HealingFruit() {
         super(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(4).food(new FoodComponent.Builder().snack().alwaysEdible().hunger(0).saturationModifier(0).build()));
     }

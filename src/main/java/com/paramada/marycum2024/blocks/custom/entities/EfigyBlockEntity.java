@@ -11,6 +11,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -54,20 +55,20 @@ public class EfigyBlockEntity extends BlockEntity implements ImplementedInventor
     }
 
     public static void tick(World world, BlockPos blockPos, BlockState state, EfigyBlockEntity entity) {
-        if (world.isClient()) {
-            return;
-        }
-
         if (hasRibbon(entity)) {
             if (world.getTime() % 80L == 0L) {
                 double d = 10 + 10;
                 var ribbon = (RibbonItem) entity.inventory.get(0).getItem();
 
                 Box box = new Box(blockPos).expand(d).stretch(0.0, world.getHeight(), 0.0);
-                List<PlayerEntity> list = world.getNonSpectatingEntities(PlayerEntity.class, box);
+                List<ServerPlayerEntity> list = world.getNonSpectatingEntities(ServerPlayerEntity.class, box);
                 for (PlayerEntity playerEntity : list) {
                     for (StatusEffectInstance effect : ribbon.getEffects()) {
-                        playerEntity.addStatusEffect(new StatusEffectInstance(effect));
+                        if (playerEntity.hasStatusEffect(effect.getEffectType())) {
+                            playerEntity.getStatusEffect(effect.getEffectType()).upgrade(new StatusEffectInstance(effect));
+                        } else {
+                            playerEntity.addStatusEffect(new StatusEffectInstance(effect));
+                        }
                     }
 
                 }

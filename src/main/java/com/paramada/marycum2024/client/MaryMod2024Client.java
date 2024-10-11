@@ -8,12 +8,16 @@ import com.paramada.marycum2024.entities.client.BeagleRenderer;
 import com.paramada.marycum2024.entities.client.ModModelLayers;
 import com.paramada.marycum2024.events.KeyboardHandler;
 import com.paramada.marycum2024.networking.NetworkManager;
+import io.netty.util.internal.ObjectUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import org.apache.commons.lang3.ObjectUtils;
 
 @Environment(EnvType.CLIENT)
 public class MaryMod2024Client implements ClientModInitializer {
@@ -24,21 +28,16 @@ public class MaryMod2024Client implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-//        BlockRenderLayerMap.INSTANCE.putBlock(BlockManager.COMPUTER, RenderLayer.getCutout());
-//        BlockRenderLayerMap.INSTANCE.putBlock(BlockManager.CANDY_MACHINE, RenderLayer.getCutout());
-//        BlockRenderLayerMap.INSTANCE.putBlock(BlockManager.TOMB, RenderLayer.getCutout());
-//
-        //ScreenEvents.BEFORE_INIT.register(new ReplaceScreens());
-//        HandledScreens.register(ModScreenHandlers.CANDY_MACHINE_SCREEN_HANDLER, CandyMachineScreen::new);
-//        HandledScreens.register(ModScreenHandlers.ACTIONS_SCREEN_HANDLER, ActionsScreen::new);
         NetworkManager.registerS2CPackets();
         KeyboardHandler.register();
+
 
         EntityRendererRegistry.register(ModEntities.BEAGLE, BeagleRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.BEAGLE, BeagleModel::getTexturedModelData);
 
         BlockEntityRendererFactories.register(BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntityRenderer::new);
     }
+
     public static String getModVersion() {
         return "0.1.0";
     }

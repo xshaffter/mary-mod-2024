@@ -3,6 +3,9 @@ package com.paramada.marycum2024.blocks.custom;
 import com.paramada.marycum2024.blocks.bases.RotableBlockWithEntity;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
+import com.paramada.marycum2024.items.ItemManager;
+import com.paramada.marycum2024.items.custom.MedikaPotion;
+import com.paramada.marycum2024.items.custom.ReusablePotion;
 import com.paramada.marycum2024.items.custom.RibbonItem;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,13 +21,11 @@ import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Colors;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
@@ -51,6 +52,7 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
         var blockEntity = this.getBlockEntity(world, pos);
         assert blockEntity != null;
         var ribbonItem = blockEntity.getItems().get(0);
+
         if (stackInHand.getItem() instanceof RibbonItem) {
             if (!ribbonItem.isOf(Items.AIR)) {
                 return ActionResult.FAIL;
@@ -62,17 +64,34 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
             stackInHand.decrement(1);
 
             return ActionResult.CONSUME;
-        } else if (!world.isClient) {
+        } else {
+            if (world.isClient()) {
+                return ActionResult.PASS;
+            }
+
             if (ribbonItem.isOf(Items.AIR)) {
                 world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
                 player.sendMessage(Text.translatable("chat.mary-mod-2024.ribbon_needed").setStyle(Style.EMPTY.withColor(0xFFC7C700)));
                 return ActionResult.PASS;
             }
+
             if (ribbonItem.getItem() instanceof RibbonItem ribbon) {
                 player.clearStatusEffects();
                 player.setHealth(player.getMaxHealth());
                 player.setAbsorptionAmount(0);
-                player.addStatusEffect(new StatusEffectInstance(ribbon.getPotionUpgrade(), StatusEffectInstance.INFINITE, 0, false, false));
+
+                var reusablePotions = player.getInventory().main.stream().filter(
+                        itemStack -> itemStack.isOf(ItemManager.MEDIKA_POTION)
+                                || itemStack.getItem() instanceof ReusablePotion
+                );
+
+                for (var potion : reusablePotions.toList()) {
+                    potion.setDamage(0);
+                }
+
+                for (StatusEffectInstance effect : ribbon.getInteractEffects()) {
+                    player.addStatusEffect(new StatusEffectInstance(effect));
+                }
             }
 
         }

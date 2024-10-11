@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class Bandage extends PotionItem {
+public class Bandage extends PotionItem implements IMaryItem {
     public Bandage() {
         super(
                 new Settings()
