@@ -4,9 +4,12 @@
   "package": "com.paramada.marycum2024.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ItemStackMixin",
+    "inventory.EnderInventoryMixin",
+    "inventory.InventoryMixin",
+    "inventory.ItemStackMixin",
     "LivingEntityMixin",
-    "PlayerEntityMixin"
+    "inventory.PlayerInventoryMixin",
+    "inventory.SimpleInventoryMixin"
   ],
   "client": [
     "ClientPlayerEntityMixin",

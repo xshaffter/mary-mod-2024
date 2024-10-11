@@ -16,12 +16,14 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.Block;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MaryMod2024 implements ModInitializer {
 
     public static final String MOD_ID = "mary-mod-2024";
+    public static final Block GRACE_BLOCK = BlockManager.EFIGY;
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final boolean DEBUG = FabricLoader.getInstance().isDevelopmentEnvironment();
     public static final int TICKS_PER_SECOND = 20;
@@ -41,6 +43,7 @@ public class MaryMod2024 implements ModInitializer {
 
         ClientPlayConnectionEvents.JOIN.register((a, b, client) -> {
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
+            ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
         });
     }
 }

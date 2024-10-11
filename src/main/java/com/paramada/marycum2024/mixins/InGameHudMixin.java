@@ -62,7 +62,8 @@ public abstract class InGameHudMixin {
     @Unique
     private void renderEconomy(DrawContext context) {
         TextRenderer textRenderer = getTextRenderer();
-        int balance = PlayerEntityBridge.getMoney(client.player);
+        assert client.player != null;
+        int balance = LivingEntityBridge.getPersistentData(client.player).getInt("coins");
         String balanceString = new DecimalFormat("000").format(balance);
 
         int fontHeight = textRenderer.fontHeight;
@@ -83,9 +84,9 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderHotbar", at = @At("HEAD"))
     private void renderCustomHotbar(float tickDelta, DrawContext context, CallbackInfo ci) {
-        renderPotionHUD(context);
-        renderMainHand(context);
-        renderOffHand(context);
+//        renderPotionHUD(context);
+//        renderMainHand(context);
+//        renderOffHand(context);
 
     }
 

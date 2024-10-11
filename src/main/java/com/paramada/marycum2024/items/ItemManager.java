@@ -62,11 +62,11 @@ public class ItemManager {
     //Vampire
     public static final Item BLACK_RIBBON = new RibbonItem(List.of(
             new StatusEffectInstance(StatusEffects.SPEED, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false),
-            new StatusEffectInstance(StatusEffects.STRENGTH, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false),
-            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false)
+            new StatusEffectInstance(StatusEffects.STRENGTH, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false)
     ), List.of(
             new StatusEffectInstance(ModEffects.BLACK_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false),
-            new StatusEffectInstance(ModEffects.VAMPIRISM, StatusEffectInstance.INFINITE, 0, true, true)
+            new StatusEffectInstance(ModEffects.VAMPIRISM, StatusEffectInstance.INFINITE, 0, true, true),
+            new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 3, true, false)
 
     ));
     public static final Item BANDAGE = new Bandage();
@@ -82,6 +82,7 @@ public class ItemManager {
     public static final Item ESTUS_SHARD = new Item(new FabricItemSettings().rarity(Rarity.RARE).maxCount(8).fireproof());
     public static final Item HEALING_FRUIT = new HealingFruit();
     public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new FabricItemSettings()));
+    public static final Item MEDIKA_POTION = new MedikaPotion();
 
     @SuppressWarnings("SameParameterValue")
     private static Item registerItem(final String name, final Item item) {
@@ -108,6 +109,7 @@ public class ItemManager {
         registerItem("cyan_ribbon", CYAN_RIBBON);
         registerItem("red_ribbon", RED_RIBBON);
         registerItem("green_ribbon", GREEN_RIBBON);
+        registerItem("medika_potion", MEDIKA_POTION);
         ItemGroups.registerItemGroups();
     }
 }

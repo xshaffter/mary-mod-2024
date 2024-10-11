@@ -19,7 +19,8 @@ public class PlayerEntityBridge {
     }
 
     public static int getMoney(PlayerEntity player) {
-        return LivingEntityBridge.getInventory(player).count(ItemManager.MARY_COIN);
+        var enderchest = player.getEnderChestInventory();
+        return enderchest.count(ItemManager.MARY_COIN);
     }
 
     public static void starBandagetHealing(PlayerEntity player) {

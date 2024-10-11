@@ -36,6 +36,7 @@ public class ItemGroups {
 
                             //estus
                             entries.add(ItemManager.ESTUS_SHARD);
+                            entries.add(ItemManager.MEDIKA_POTION);
                             entries.add(ItemManager.ESTUS_1);
                             entries.add(ItemManager.ESTUS_2);
                             entries.add(ItemManager.ESTUS_3);

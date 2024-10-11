@@ -3,6 +3,9 @@ package com.paramada.marycum2024.blocks.custom;
 import com.paramada.marycum2024.blocks.bases.RotableBlockWithEntity;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
+import com.paramada.marycum2024.items.ItemManager;
+import com.paramada.marycum2024.items.custom.MedikaPotion;
+import com.paramada.marycum2024.items.custom.ReusablePotion;
 import com.paramada.marycum2024.items.custom.RibbonItem;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -10,7 +13,6 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
@@ -78,7 +80,16 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
                 player.setHealth(player.getMaxHealth());
                 player.setAbsorptionAmount(0);
 
-                for (StatusEffectInstance effect : ribbon.getInstantEffects()) {
+                var reusablePotions = player.getInventory().main.stream().filter(
+                        itemStack -> itemStack.isOf(ItemManager.MEDIKA_POTION)
+                                || itemStack.getItem() instanceof ReusablePotion
+                );
+
+                for (var potion : reusablePotions.toList()) {
+                    potion.setDamage(0);
+                }
+
+                for (StatusEffectInstance effect : ribbon.getInteractEffects()) {
                     player.addStatusEffect(new StatusEffectInstance(effect));
                 }
             }

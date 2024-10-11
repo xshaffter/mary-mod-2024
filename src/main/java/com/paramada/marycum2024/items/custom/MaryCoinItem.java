@@ -14,7 +14,7 @@ import static com.paramada.marycum2024.items.ItemGroups.MARY_MOD_GROUP;
 
 public class MaryCoinItem extends MaryItem {
     public MaryCoinItem() {
-        super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(64));
+        super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(999));
     }
 
     @Override

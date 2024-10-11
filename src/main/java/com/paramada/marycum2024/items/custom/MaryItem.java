@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 
-public class MaryItem extends Item {
+public class MaryItem extends Item implements IMaryItem {
     public MaryItem(Settings settings) {
         super(settings);
     }
