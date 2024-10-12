@@ -1,14 +1,12 @@
 package com.paramada.marycum2024.items.custom;
 
 import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.networking.packets.payloads.PotionUpgradeDataPayload;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
+import net.minecraft.component.type.FoodComponent;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.FoodComponents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -20,7 +18,7 @@ import java.util.List;
 
 public class HealingFruit extends Item {
     public HealingFruit() {
-        super(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(4).food(new FoodComponent.Builder().snack().alwaysEdible().hunger(0).saturationModifier(0).build()));
+        super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(4).food(new FoodComponent.Builder().snack().alwaysEdible().nutrition(0).saturationModifier(0).build()));
     }
 
     @Override
@@ -29,12 +27,12 @@ public class HealingFruit extends Item {
         var currentUpgrade = data.getInt("upgrade");
         data.putInt("upgrade", currentUpgrade + 1);
 
-        ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
+        ClientPlayNetworking.send(new PotionUpgradeDataPayload(NetworkManager.REQUEST_UPGRADE_ID));
         return super.finishUsing(stack, world, user);
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.translatable("tooltip.mary-mod-2024.healing_fruit"));
         tooltip.add(Text.translatable("tooltip.mary-mod-2024.healing_fruit_2"));
     }

@@ -4,7 +4,6 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.items.custom.*;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
@@ -41,6 +40,7 @@ public class ItemManager {
             new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 4 + 1, 2, true, true)
     ), ModEffects.BLACK_RIBBON_EFFECT);
     public static final Item BANDAGE = new Bandage();
+<<<<<<< Updated upstream
     public static final Item ESTUS_1 = new Estus(1);
     public static final Item ESTUS_2 = new Estus(2);
     public static final Item ESTUS_3 = new Estus(3);
@@ -53,6 +53,21 @@ public class ItemManager {
     public static final Item ESTUS_SHARD = new Item(new FabricItemSettings().rarity(Rarity.RARE).maxCount(8).fireproof());
     public static final Item HEALING_FRUIT = new HealingFruit();
     public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new FabricItemSettings()));
+=======
+    public static final Item ESTUS_1 = new ReusablePotion(1);
+    public static final Item ESTUS_2 = new ReusablePotion(2);
+    public static final Item ESTUS_3 = new ReusablePotion(3);
+    public static final Item ESTUS_4 = new ReusablePotion(4);
+    public static final Item ESTUS_5 = new ReusablePotion(5);
+    public static final Item ESTUS_6 = new ReusablePotion(6);
+    public static final Item ESTUS_7 = new ReusablePotion(7);
+    public static final Item ESTUS_8 = new ReusablePotion(8);
+    public static final Item ESTUS_9 = new ReusablePotion(9);
+    public static final Item ESTUS_SHARD = new Item(new Item.Settings().rarity(Rarity.RARE).maxCount(8).fireproof());
+    public static final Item HEALING_FRUIT = new HealingFruit();
+    public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new Item.Settings()));
+    public static final Item MEDIKA_POTION = new MedikaPotion();
+>>>>>>> Stashed changes
 
     @SuppressWarnings("SameParameterValue")
     private static Item registerItem(final String name, final Item item) {

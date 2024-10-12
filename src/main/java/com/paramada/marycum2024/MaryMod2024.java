@@ -9,13 +9,22 @@ import com.paramada.marycum2024.events.AdvancementManager;
 import com.paramada.marycum2024.events.SoundManager;
 import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.networking.packets.payloads.MoneyDataPayLoad;
+import com.paramada.marycum2024.networking.packets.payloads.PotionUpgradeDataPayload;
 import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
+import com.paramada.marycum2024.util.MoneyManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+<<<<<<< Updated upstream
+=======
+import net.minecraft.block.Block;
+import net.minecraft.network.packet.CustomPayload;
+>>>>>>> Stashed changes
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,7 +49,12 @@ public class MaryMod2024 implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntities.BEAGLE, BeagleEntity.createBeagleAttributes());
 
         ClientPlayConnectionEvents.JOIN.register((a, b, client) -> {
+<<<<<<< Updated upstream
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
+=======
+            ClientPlayNetworking.send(new PotionUpgradeDataPayload(NetworkManager.REQUEST_UPGRADE_ID));
+            MoneyManager.requestMoneySync();
+>>>>>>> Stashed changes
         });
     }
 }

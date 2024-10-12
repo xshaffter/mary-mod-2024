@@ -1,13 +1,15 @@
 package com.paramada.marycum2024.items.custom;
 
+<<<<<<< Updated upstream
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.effect.StatusEffect;
+=======
+import net.minecraft.client.item.TooltipType;
+>>>>>>> Stashed changes
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Rarity;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class RibbonItem extends MaryItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         tooltip.add(Text.translatable("tooltip.mary-mod-2024.ribbon"));
     }
 

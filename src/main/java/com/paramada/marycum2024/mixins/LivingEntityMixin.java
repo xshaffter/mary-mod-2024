@@ -44,6 +44,53 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    @Inject(at = @At("HEAD"), method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", cancellable = true)
+    private void dontTargetZombified(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
+        if (this.isUndead() && target.hasStatusEffect(ModEffects.ZOMBIEFICATION_OBJECT)) {
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "onDamaged")
+    private void onGetDamage(DamageSource damageSource, CallbackInfo ci) {
+        System.out.println(":D");
+    }
+
+    @Inject(at = @At("HEAD"), method = "damage")
+    private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+        var source = damageSource.getSource();
+        if (source != null && !this.isUndead() && this.isAttackable() && source instanceof PlayerEntity player) {
+            if (player.hasStatusEffect(ModEffects.VAMPIRISM_OBJECT)) {
+                StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM_OBJECT);
+                if (effect != null) {
+                    int amplifier = effect.getAmplifier();
+                    player.heal(amount / (4f / (amplifier + 1)));
+                }
+            }
+        }
+    }
+
+
+    @Inject(at = @At("HEAD"), method = "onKilledBy")
+    private void onGetKilled(LivingEntity source, CallbackInfo ci) {
+        if (source instanceof PlayerEntity player) {
+            if (player.hasStatusEffect(ModEffects.ZOMBIEFICATION_OBJECT)) {
+                StatusEffectInstance effect = player.getStatusEffect(ModEffects.ZOMBIEFICATION_OBJECT);
+                if (effect != null) {
+                    int amplifier = effect.getAmplifier();
+                    player.heal(this.getMaxHealth() / (4f / (amplifier + 1)));
+                }
+            }
+        }
+        if (((Entity) this) instanceof PlayerEntity player) {
+            player.getEnderChestInventory().clear();
+        }
+    }
+
+
+>>>>>>> Stashed changes
 
     @Override
     public NbtCompound maryCum2024$getPersistentData() {

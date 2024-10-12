@@ -1,17 +1,12 @@
 package com.paramada.marycum2024.networking.packets;
 
+import com.paramada.marycum2024.networking.packets.payloads.MoneyDataPayLoad;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.network.packet.CustomPayload;
 
 public class SpendMoneyC2SPacket {
-    public static <T extends FabricPacket> void receive(MinecraftServer server, ServerPlayerEntity player,
-                                                        ServerPlayNetworkHandler handler,
-                                                        PacketByteBuf buf, PacketSender responseSender) {
-        PlayerEntityBridge.spendMoney(player, buf.readInt());
+    public static void receive(MoneyDataPayLoad customPayload, ServerPlayNetworking.Context context) {
+        PlayerEntityBridge.spendMoney(context.player(), customPayload.getMoneyAmount());
     }
 }

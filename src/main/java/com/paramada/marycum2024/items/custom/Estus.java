@@ -1,8 +1,8 @@
 package com.paramada.marycum2024.items.custom;
 
-import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
+<<<<<<< Updated upstream:src/main/java/com/paramada/marycum2024/items/custom/Estus.java
 import dev.kosmx.playerAnim.mixin.firstPerson.CameraAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -20,17 +20,30 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvents;
+=======
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.item.PotionItem;
+>>>>>>> Stashed changes:src/main/java/com/paramada/marycum2024/items/custom/ReusablePotion.java
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Rarity;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
-import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+<<<<<<< Updated upstream:src/main/java/com/paramada/marycum2024/items/custom/Estus.java
 public class Estus extends PotionItem {
     public Estus(int durability) {
+=======
+public class ReusablePotion extends PotionItem implements IMaryItem {
+    public ReusablePotion(int durability) {
+>>>>>>> Stashed changes:src/main/java/com/paramada/marycum2024/items/custom/ReusablePotion.java
         super(
                 new Settings()
                         .fireproof()
@@ -81,7 +94,7 @@ public class Estus extends PotionItem {
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         if (!world.isClient) {
-            assert stack.getNbt() != null;
+            assert stack.getComponents() != null;
             int modifier = LivingEntityBridge.getPersistentData(user).getInt("upgrade");
             float healing = (10 + (5 * modifier));
             if (user instanceof PlayerEntity player) {
@@ -101,27 +114,10 @@ public class Estus extends PotionItem {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (world != null && world.isClient) {
-            int modifier = LivingEntityBridge.getPersistentData(MinecraftClient.getInstance().player).getInt("upgrade");
-            double healing = 5 + (5 * modifier) / 2.0;
-            var translatable_text = Text.translatable("tooltip.mary-mod-2024.estus_healing").getString();
-            tooltip.add(Text.literal(translatable_text.formatted(healing)));
-
-            assert MinecraftClient.getInstance().player != null;
-            if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.BLACK_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.black_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.BLUE_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.blue_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.CYAN_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.cyan_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.PINK_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.pink_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.GREEN_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.green_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.RED_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.red_ribbon_effect"));
-            }
-        }
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+        int modifier = LivingEntityBridge.getPersistentData(MinecraftClient.getInstance().player).getInt("upgrade");
+        double healing = 5 + (5 * modifier) / 2.0;
+        var translatable_text = Text.translatable("tooltip.mary-mod-2024.estus_healing").getString();
+        tooltip.add(Text.literal(translatable_text.formatted(healing)));
     }
 }

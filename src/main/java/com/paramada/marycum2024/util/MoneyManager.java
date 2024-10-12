@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.util;
 
 import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.networking.packets.payloads.MoneyDataPayLoad;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -9,22 +10,20 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class MoneyManager {
     public static void spendMoney(ServerPlayerEntity player, int price) {
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeInt(price);
-        ClientPlayNetworking.send(NetworkManager.SPEND_MONEY_ID, buffer);
+        var newMoneyPayload = new MoneyDataPayLoad(price, NetworkManager.SPEND_MONEY_ID);
+        ClientPlayNetworking.send(newMoneyPayload);
     }
     public static void earnMoney(ServerPlayerEntity player, int amount) {
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeInt(amount);
-        ClientPlayNetworking.send(NetworkManager.EARN_MONEY_ID, buffer);
+        var newMoneyPayload = new MoneyDataPayLoad(amount, NetworkManager.SPEND_MONEY_ID);
+        ClientPlayNetworking.send(newMoneyPayload);
     }
     public static void syncMoney(ServerPlayerEntity player) {
-        PacketByteBuf buffer = PacketByteBufs.create();
-        buffer.writeInt(PlayerEntityBridge.getMoney(player));
-        ServerPlayNetworking.send(player, NetworkManager.SYNC_MONEY_ID, buffer);
+        var amount = PlayerEntityBridge.getMoney(player);
+        var newMoneyPayload = new MoneyDataPayLoad(amount, NetworkManager.SPEND_MONEY_ID);
+        ServerPlayNetworking.send(player, newMoneyPayload);
     }
     public static void requestMoneySync() {
-        var buf = PacketByteBufs.create();
-        ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, buf);
+        var newMoneyPayload = new MoneyDataPayLoad(NetworkManager.SPEND_MONEY_ID);
+        ClientPlayNetworking.send(newMoneyPayload);
     }
 }
