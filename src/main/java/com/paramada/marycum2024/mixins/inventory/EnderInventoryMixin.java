@@ -24,7 +24,6 @@ public abstract class EnderInventoryMixin implements Inventory {
             int slot = nbtCompound.getByte("Slot") & 255;
             if (slot >= 0 && slot < this.size()) {
                 var stack = ItemStack.fromNbt(nbtCompound);
-                System.out.println(nbtCompound);
                 stack.setCount(nbtCompound.getInt("Count"));
                 this.setStack(slot, stack);
             }

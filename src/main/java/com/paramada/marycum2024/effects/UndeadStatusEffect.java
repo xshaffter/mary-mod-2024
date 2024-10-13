@@ -1,11 +1,9 @@
 package com.paramada.marycum2024.effects;
 
-import com.paramada.marycum2024.MaryMod2024;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.util.Colors;
-import net.minecraft.world.LightType;
 
 public abstract class UndeadStatusEffect extends StatusEffect {
     protected UndeadStatusEffect() {
@@ -20,13 +18,12 @@ public abstract class UndeadStatusEffect extends StatusEffect {
     @Override
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         var world = entity.getWorld();
+        if (world.isClient()) {
+            return;
+        }
         var blockPos = entity.getBlockPos();
-        var skyLight = world.getLightLevel(LightType.SKY, blockPos);
-        if (skyLight > 0) {
-            var tickLenght = (int) ((MaryMod2024.TICKS_PER_SECOND * 4.0) / skyLight);
-            if (world.getTime() % tickLenght == 0) {
-                entity.damage(entity.getDamageSources().magic(), amplifier);
-            }
+        if (world.isSkyVisible(blockPos) && world.isDay() && entity.getFireTicks() < 5) {
+            entity.setOnFireFor(5);
         }
     }
 }

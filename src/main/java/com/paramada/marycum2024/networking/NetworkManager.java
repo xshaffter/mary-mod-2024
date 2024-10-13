@@ -13,12 +13,14 @@ public class NetworkManager {
     public static final Identifier REQUEST_MONEY_ID = new Identifier(MaryMod2024.MOD_ID, "request_money");
     public static final Identifier SYNC_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "sync_upgrade");
     public static final Identifier REQUEST_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "sync_upgrade");
+    public static final Identifier REST_AT_EFIGY_ID = new Identifier(MaryMod2024.MOD_ID, "rest_at_efigy");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SPEND_MONEY_ID, SpendMoneyC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REQUEST_MONEY_ID, RequestMoneyC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REQUEST_UPGRADE_ID, RequestUpgradeC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(REST_AT_EFIGY_ID, RestAtEfigyC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {

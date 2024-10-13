@@ -22,11 +22,11 @@ public class RibbonEffect extends StatusEffect {
     }
 
     @Override
-    public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+    public void onApplied(LivingEntity entity, int amplifier) {
         if (entity.getStatusEffects().stream().anyMatch((statusEffectInstance -> statusEffectInstance.getEffectType() instanceof RibbonEffect))) {
             entity.removeStatusEffect(this);
         }
-        super.onApplied(entity, attributes, amplifier);
+        super.onApplied(entity, amplifier);
     }
 
     public List<StatusEffectInstance> getEffects() {

@@ -14,6 +14,6 @@ public class BlockEntityManager {
 
     public static void registerEntities() {
         EFIGY_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MaryMod2024.MOD_ID, "efigy_entity"),
-                FabricBlockEntityTypeBuilder.create(EfigyBlockEntity::new, BlockManager.EFIGY).build(null));
+                BlockEntityType.Builder.create(EfigyBlockEntity::new, BlockManager.EFIGY).build(null));
     }
 }

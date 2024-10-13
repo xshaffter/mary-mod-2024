@@ -8,16 +8,15 @@ import com.paramada.marycum2024.entities.client.BeagleRenderer;
 import com.paramada.marycum2024.entities.client.ModModelLayers;
 import com.paramada.marycum2024.events.KeyboardHandler;
 import com.paramada.marycum2024.networking.NetworkManager;
-import io.netty.util.internal.ObjectUtil;
+import com.paramada.marycum2024.screens.EfigyScreen;
+import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import org.apache.commons.lang3.ObjectUtils;
 
 @Environment(EnvType.CLIENT)
 public class MaryMod2024Client implements ClientModInitializer {
@@ -35,6 +34,8 @@ public class MaryMod2024Client implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.BEAGLE, BeagleRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.BEAGLE, BeagleModel::getTexturedModelData);
 
+        HandledScreens.register(ModScreenHandlers.EFIGY_BLOCK_SCREEN_HANDLER, EfigyScreen::new);
+
         BlockEntityRendererFactories.register(BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntityRenderer::new);
     }
 
@@ -48,11 +49,8 @@ nada de chistes fisicos
 nada de odio a novela
 se permite el shansi
 se permite cherry
-jojoshua ya no modela, considerar a lethal
 esperancita peruana prohibida
 streams de cocina permitidos
 danger tentativo ** TERRY
 contador de muertes
-reganiar a galahad es meme bueno
-
 */

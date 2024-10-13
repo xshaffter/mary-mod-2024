@@ -1,23 +1,24 @@
 package com.paramada.marycum2024.blocks.custom;
 
+import com.mojang.serialization.MapCodec;
+import com.paramada.marycum2024.blocks.BlockManager;
 import com.paramada.marycum2024.blocks.bases.RotableBlockWithEntity;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
-import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.items.custom.MedikaPotion;
-import com.paramada.marycum2024.items.custom.ReusablePotion;
 import com.paramada.marycum2024.items.custom.RibbonItem;
+import com.paramada.marycum2024.util.BlockPosUtil;
+import com.paramada.marycum2024.util.LivingEntityBridge;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -27,7 +28,6 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShapes;
@@ -37,6 +37,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityProvider {
+    public static final MapCodec<EfigyBlock> CODEC = createCodec(EfigyBlock::new);
     public static final EnumProperty<BlockHalf> HALF = Properties.BLOCK_HALF;
 
     public EfigyBlock() {
@@ -45,55 +46,51 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
                 VoxelShapes.fullCube());
     }
 
+    public EfigyBlock(Settings settings) {
+        this();
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         var stackInHand = player.getStackInHand(hand);
-        var blockEntity = this.getBlockEntity(world, pos);
-        assert blockEntity != null;
-        var ribbonItem = blockEntity.getItems().get(0);
+        var blockEntity = getEfigyBlockEntity(world, pos);
+        if (blockEntity == null) {
+            return ActionResult.FAIL;
+        }
+
+        var ribbonItem = blockEntity.getItem();
+
 
         if (stackInHand.getItem() instanceof RibbonItem) {
             if (!ribbonItem.isOf(Items.AIR)) {
                 return ActionResult.FAIL;
             }
 
-            world.playSound(null, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 1);
+            world.playSound(player, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 1);
 
-            blockEntity.setStack(0, new ItemStack(stackInHand.getItem()));
-            stackInHand.decrement(1);
+            blockEntity.setItem(stackInHand.copyWithCount(1));
 
-            return ActionResult.CONSUME;
-        } else {
-            if (world.isClient()) {
-                return ActionResult.PASS;
+            if (!player.isCreative()) {
+                stackInHand.decrement(1);
             }
 
+            return ActionResult.CONSUME;
+        } else if (world.isClient) {
+            LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
+            return ActionResult.PASS;
+
+        } else {
             if (ribbonItem.isOf(Items.AIR)) {
-                world.playSound(null, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
+                world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
                 player.sendMessage(Text.translatable("chat.mary-mod-2024.ribbon_needed").setStyle(Style.EMPTY.withColor(0xFFC7C700)));
                 return ActionResult.PASS;
             }
 
-            if (ribbonItem.getItem() instanceof RibbonItem ribbon) {
-                player.clearStatusEffects();
-                player.setHealth(player.getMaxHealth());
-                player.setAbsorptionAmount(0);
+            LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
 
-                var reusablePotions = player.getInventory().main.stream().filter(
-                        itemStack -> itemStack.isOf(ItemManager.MEDIKA_POTION)
-                                || itemStack.getItem() instanceof ReusablePotion
-                );
-
-                for (var potion : reusablePotions.toList()) {
-                    potion.setDamage(0);
-                }
-
-                for (StatusEffectInstance effect : ribbon.getInteractEffects()) {
-                    player.addStatusEffect(new StatusEffectInstance(effect));
-                }
-            }
-
+            NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) getBlockEntity(world, pos);
+            player.openHandledScreen(screenHandlerFactory);
         }
 
         return ActionResult.CONSUME;
@@ -107,16 +104,17 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
     }
 
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         this.tryBreakBlock(world, pos.up(), player);
         this.tryBreakBlock(world, pos.down(), player);
-        super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
     }
 
     private void tryBreakBlock(World world, BlockPos pos, PlayerEntity player) {
         var newState = world.getBlockState(pos);
         if (newState != null && newState.isOf(this)) {
             world.breakBlock(pos, false);
+            world.removeBlockEntity(pos);
         }
     }
 
@@ -125,19 +123,29 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
         return Objects.requireNonNull(super.getPlacementState(ctx)).with(HALF, BlockHalf.BOTTOM);
     }
 
-    private EfigyBlockEntity getBlockEntity(World world, BlockPos pos) {
+    public static EfigyBlockEntity getEfigyBlockEntity(World world, BlockPos pos) {
+        return (EfigyBlockEntity) getBlockEntity(world, pos);
+    }
+
+    public static BlockEntity getBlockEntity(World world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
-        if (!state.isOf(this)) {
+        if (!state.isOf(BlockManager.EFIGY)) {
             return null;
         }
+
         if (state.get(HALF) == BlockHalf.BOTTOM) {
-            return (EfigyBlockEntity) world.getBlockEntity(pos);
+            return world.getBlockEntity(pos);
         }
-        return (EfigyBlockEntity) world.getBlockEntity(pos.down(1));
+
+        return world.getBlockEntity(pos.down(1));
     }
 
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        if (state.get(HALF) == BlockHalf.TOP) {
+            return null;
+        }
+
         return new EfigyBlockEntity(pos, state);
     }
 
@@ -145,11 +153,6 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
-            EfigyBlockEntity blockEntity = getBlockEntity(world, pos);
-            if (blockEntity != null) {
-                ItemScatterer.spawn(world, pos, blockEntity);
-            }
-            world.updateComparators(pos, this);
             super.onStateReplaced(state, world, pos, newState, moved);
         }
     }
@@ -163,7 +166,12 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntity::tick);
+        return world.isClient ? null : validateTicker(type, BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntity::tick);
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     @Override
