@@ -7,7 +7,9 @@ import com.paramada.marycum2024.screens.components.CustomButtonWidget;
 import com.paramada.marycum2024.screens.components.SpriteData;
 import com.paramada.marycum2024.screens.components.TextureComponent;
 import com.paramada.marycum2024.screens.handlers.EfigyBlockScreenHandler;
+import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.UpgradeManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -49,6 +51,8 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
         MENU_WIDTH = width / 3;
         PADDING_WIDTH = Math.max(PADDING_WIDTH, MENU_WIDTH / 4);
 
+        this.clearChildren();
+
         this.addDrawableChild(new CustomButtonWidget(
                 PADDING_WIDTH + 1,
                 FIRST_CHILD_MARGIN + PADDING_HEIGHT,
@@ -62,7 +66,16 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
 
         this.addDrawableChild(new CustomButtonWidget(
                 PADDING_WIDTH + 1,
-                FIRST_CHILD_MARGIN + PADDING_HEIGHT * 2,
+                FIRST_CHILD_MARGIN + PADDING_HEIGHT * 3,
+                MENU_WIDTH - PADDING_WIDTH * 2,
+                32,
+                button -> handler.increaseUpgrade(),
+                Text.literal("Mejorar poción (%d)".formatted(UpgradeManager.getNextUpgradeCost(client.player)))
+        ));
+
+        this.addDrawableChild(new CustomButtonWidget(
+                PADDING_WIDTH + 1,
+                FIRST_CHILD_MARGIN + PADDING_HEIGHT * 4,
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> {
@@ -74,7 +87,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
 
         this.addDrawableChild(new CustomButtonWidget(
                 PADDING_WIDTH + 1,
-                FIRST_CHILD_MARGIN + PADDING_HEIGHT * 3,
+                FIRST_CHILD_MARGIN + PADDING_HEIGHT * 5,
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> this.close(),
@@ -96,6 +109,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        this.init();
         renderBackground(context, mouseX, mouseY, delta);
         //super.render(context, mouseX, mouseY, delta);
 

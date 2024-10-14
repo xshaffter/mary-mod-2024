@@ -43,7 +43,7 @@ public class RestAtEfigyC2SPacket {
         }
 
         ItemStack ribbonItem = ((EfigyBlockEntity) blockEntity).getItem();
-        if (ribbonItem.getItem() instanceof RibbonItem ribbon) {
+        if (!ribbonItem.isEmpty()) {
             player.clearStatusEffects();
             player.setHealth(player.getMaxHealth());
             player.setAbsorptionAmount(0);
@@ -55,10 +55,6 @@ public class RestAtEfigyC2SPacket {
 
             for (var potion : reusablePotions.toList()) {
                 potion.setDamage(0);
-            }
-
-            for (StatusEffectInstance effect : ribbon.getInteractEffects()) {
-                player.addStatusEffect(new StatusEffectInstance(effect));
             }
         }
     }

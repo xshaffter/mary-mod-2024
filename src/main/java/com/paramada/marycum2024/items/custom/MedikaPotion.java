@@ -2,13 +2,16 @@ package com.paramada.marycum2024.items.custom;
 
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.effects.RibbonEffect;
+import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.PotionItem;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -26,6 +34,7 @@ import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class MedikaPotion extends PotionItem implements IMaryItem {
@@ -36,6 +45,25 @@ public class MedikaPotion extends PotionItem implements IMaryItem {
                         .rarity(Rarity.EPIC)
                         .maxDamage(1)
         );
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        var trinketComponent = TrinketsApi.getTrinketComponent((LivingEntity) entity);
+        if (trinketComponent.isPresent()) {
+            var ribbons = trinketComponent.get().getEquipped(itemStack -> itemStack.getItem() instanceof RibbonTrinket);
+            if (ribbons.size() == 0) {
+                NbtCompound nbtCompound = stack.getOrCreateNbt();
+                NbtList nbtList = nbtCompound.getList("custom_potion_effects", 9);
+                nbtCompound.put("custom_potion_effects", nbtList);
+                return;
+            }
+
+            var ribbon = ribbons.stream().findFirst();
+            var cleanRibbon = ((RibbonTrinket) ribbon.get().getRight().getItem());
+            PotionUtil.setCustomPotionEffects(stack, cleanRibbon.getEffects());
+        }
+        super.inventoryTick(stack, world, entity, slot, selected);
     }
 
     @Override
@@ -65,57 +93,19 @@ public class MedikaPotion extends PotionItem implements IMaryItem {
             } else {
                 stack.setDamage(stack.getDamage() + 1);
             }
-            applyRibbonEffects(user);
+            PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
+            List<StatusEffectInstance> list = PotionUtil.getPotionEffects(stack);
+
+            for (var effect : list) {
+                if (effect.getEffectType().isInstant()) {
+                    effect.getEffectType().applyInstantEffect(playerEntity, playerEntity, user, effect.getAmplifier(), 1.0);
+                } else {
+                    user.addStatusEffect(new StatusEffectInstance(effect));
+                }
+            }
+
         }
 
         return stack;
-    }
-
-    private void applyRibbonEffects(LivingEntity player) {
-        if (player.hasStatusEffect(ModEffects.BLACK_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.BLACK_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        } else if (player.hasStatusEffect(ModEffects.BLUE_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.BLUE_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        } else if (player.hasStatusEffect(ModEffects.CYAN_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.CYAN_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        } else if (player.hasStatusEffect(ModEffects.PINK_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.PINK_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        } else if (player.hasStatusEffect(ModEffects.GREEN_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.GREEN_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        } else if (player.hasStatusEffect(ModEffects.RED_RIBBON_EFFECT)) {
-            for (StatusEffectInstance effect : ModEffects.RED_RIBBON_EFFECT.getEffects()) {
-                player.addStatusEffect(effect);
-            }
-        }
-
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (world != null && world.isClient) {
-            int modifier = LivingEntityBridge.getPersistentData(MinecraftClient.getInstance().player).getInt("upgrade");
-            double healing = 5 + (5 * modifier) / 2.0;
-            var translatable_text = Text.translatable("tooltip.mary-mod-2024.medika_potion").getString();
-            tooltip.add(Text.literal(translatable_text.formatted(healing)));
-
-            assert MinecraftClient.getInstance().player != null;
-            var player = MinecraftClient.getInstance().player;
-            var ribbons = player.getActiveStatusEffects().values().stream().filter(statusEffectInstance -> statusEffectInstance.getEffectType() instanceof RibbonEffect);
-            var ribbon = ribbons.map(statusEffectInstance -> (RibbonEffect) statusEffectInstance.getEffectType()).findFirst();
-            if (ribbon.isPresent()) {
-                var activeRibbon = ribbon.get();
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.%s".formatted(activeRibbon.getId())));
-            }
-        }
     }
 }

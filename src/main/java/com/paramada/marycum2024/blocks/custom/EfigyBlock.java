@@ -5,6 +5,7 @@ import com.paramada.marycum2024.blocks.BlockManager;
 import com.paramada.marycum2024.blocks.bases.RotableBlockWithEntity;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
+import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.items.custom.RibbonItem;
 import com.paramada.marycum2024.util.BlockPosUtil;
 import com.paramada.marycum2024.util.LivingEntityBridge;
@@ -64,35 +65,17 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
         var ribbonItem = blockEntity.getItem();
 
 
-        if (stackInHand.getItem() instanceof RibbonItem) {
-            if (!ribbonItem.isOf(Items.AIR)) {
-                return ActionResult.FAIL;
-            }
-
+        if (ribbonItem.isEmpty()) {
             world.playSound(player, pos, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1, 1);
-
-            blockEntity.setItem(stackInHand.copyWithCount(1));
-
-            if (!player.isCreative()) {
-                stackInHand.decrement(1);
-            }
+            blockEntity.setItem(new ItemStack(ItemManager.PINK_RIBBON));
 
             return ActionResult.CONSUME;
-        }
-
-        if (ribbonItem.isOf(Items.AIR)) {
-            if (world.isClient) {
-                return ActionResult.PASS;
-            }
-            System.out.println(state);
-            world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
-            player.sendMessage(Text.translatable("chat.mary-mod-2024.ribbon_needed").setStyle(Style.EMPTY.withColor(0xFFC7C700)));
-            return ActionResult.PASS;
         }
 
         if (world.isClient) {
             LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
             PlayerEntityBridge.startRestAnim(player);
+
             return ActionResult.PASS;
         }
 

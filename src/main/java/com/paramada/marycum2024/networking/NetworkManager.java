@@ -18,6 +18,7 @@ public class NetworkManager {
     public static final Identifier REQUEST_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "sync_upgrade");
     public static final Identifier REST_AT_EFIGY_ID = new Identifier(MaryMod2024.MOD_ID, "rest_at_efigy");
     public static final Identifier CONTINUE_GAME = new Identifier(MaryMod2024.MOD_ID, "continue_game");
+    public static final Identifier INCREASE_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "increase_upgrade");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
@@ -26,6 +27,7 @@ public class NetworkManager {
         ServerPlayNetworking.registerGlobalReceiver(REQUEST_UPGRADE_ID, RequestUpgradeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REST_AT_EFIGY_ID, RestAtEfigyC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(CONTINUE_GAME, ContinueGameC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(INCREASE_UPGRADE_ID, IncreaseUpgradeC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {

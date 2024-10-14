@@ -54,27 +54,6 @@ public class EfigyBlockEntity extends SingleSpaceBlockEntity implements NamedScr
     }
 
     public static void tick(World world, BlockPos blockPos, BlockState state, EfigyBlockEntity entity) {
-        if (hasRibbon(entity)) {
-            if (world.getTime() % 80L == 0L) {
-                double d = 10 + 10;
-                var ribbon = (RibbonItem) entity.inventory.getStack(0).getItem();
-
-                Box box = new Box(blockPos).expand(d).stretch(0.0, world.getHeight(), 0.0);
-                List<ServerPlayerEntity> list = world.getNonSpectatingEntities(ServerPlayerEntity.class, box);
-                for (PlayerEntity playerEntity : list) {
-                    for (StatusEffectInstance effect : ribbon.getEffects()) {
-                        if (playerEntity.hasStatusEffect(effect.getEffectType())) {
-                            playerEntity.getStatusEffect(effect.getEffectType()).upgrade(new StatusEffectInstance(effect));
-                        } else {
-                            playerEntity.addStatusEffect(new StatusEffectInstance(effect));
-                        }
-                    }
-
-                }
-
-            }
-
-        }
 
     }
 

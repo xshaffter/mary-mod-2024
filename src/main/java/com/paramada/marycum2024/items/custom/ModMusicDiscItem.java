@@ -5,8 +5,6 @@ import net.minecraft.item.MusicDiscItem;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Rarity;
 
-import static com.paramada.marycum2024.items.ItemGroups.MARY_MOD_GROUP;
-
 public class ModMusicDiscItem extends MusicDiscItem implements IMaryItem {
     /**
      * Access widened by fabric-transitive-access-wideners-v1 to accessible

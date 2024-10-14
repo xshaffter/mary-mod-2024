@@ -16,6 +16,14 @@ repositories {
         name "KosmX's maven"
         url 'https://maven.kosmx.dev/'
     }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://maven.ladysnake.org/releases'
+    }
 }
 
 dependencies {
@@ -28,6 +36,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
     modRuntimeOnly("io.github.kosmx.bendy-lib:bendy-lib-fabric:${project.bendylib_version}")
+    modImplementation("dev.emi:trinkets:${project.trinkets_version}")
     //include "io.github.kosmx:bendy-lib:${project.bendylib_version}"
 }
 

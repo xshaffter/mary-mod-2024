@@ -3,6 +3,8 @@ package com.paramada.marycum2024.screens.handlers;
 import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.util.BlockPosUtil;
 import com.paramada.marycum2024.util.LivingEntityBridge;
+import com.paramada.marycum2024.util.MoneyManager;
+import com.paramada.marycum2024.util.UpgradeManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.entity.BlockEntity;
@@ -45,5 +47,13 @@ public class EfigyBlockScreenHandler extends ScreenHandler {
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
+    }
+
+    public void increaseUpgrade() {
+        var price = UpgradeManager.getNextUpgradeCost(inventory.player);
+        if (price > 0 && MoneyManager.getMoney(this.inventory.player) >= price) {
+            MoneyManager.spendMoney(price);
+            ClientPlayNetworking.send(NetworkManager.INCREASE_UPGRADE_ID, PacketByteBufs.create());
+        }
     }
 }
