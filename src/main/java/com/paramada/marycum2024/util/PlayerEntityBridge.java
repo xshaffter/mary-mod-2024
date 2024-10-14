@@ -2,9 +2,12 @@ package com.paramada.marycum2024.util;
 
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.items.ItemManager;
+import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +30,7 @@ public class PlayerEntityBridge {
         if (!player.getWorld().isClient) {
             return;
         }
-        var animationContainer = ((IExampleAnimatedPlayer)player).maryCum2024$getModAnimation();
+        var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
 
         KeyframeAnimation animation = PlayerAnimationRegistry.getAnimation(new Identifier(MaryMod2024.MOD_ID, "bandage_heal"));
         assert animation != null;
@@ -60,7 +63,7 @@ public class PlayerEntityBridge {
         if (!player.getWorld().isClient) {
             return;
         }
-        var animationContainer = ((IExampleAnimatedPlayer)player).maryCum2024$getModAnimation();
+        var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
 
         KeyframeAnimation animation = PlayerAnimationRegistry.getAnimation(new Identifier(MaryMod2024.MOD_ID, "estus_heal"));
 
@@ -68,14 +71,36 @@ public class PlayerEntityBridge {
         var builder = animation.mutableCopy();
 
         animation = builder.build();
-        animationContainer.setAnimation(new KeyframeAnimationPlayer(animation));
+        var keyAnimation = new KeyframeAnimationPlayer(animation);
+        animationContainer.setAnimation(keyAnimation);
+    }
+
+    public static void startRestAnim(PlayerEntity player) {
+        if (!player.getWorld().isClient) {
+            return;
+        }
+
+        var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
+
+        KeyframeAnimation animation = PlayerAnimationRegistry.getAnimation(new Identifier(MaryMod2024.MOD_ID, "cool_sit"));
+        assert animation != null;
+        var builder = animation.mutableCopy();
+        animation = builder.build();
+
+        MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
+
+        var keyAnimation = new KeyframeAnimationPlayer(animation)
+                .setFirstPersonConfiguration(new FirstPersonConfiguration(false, false, false, false));
+        animationContainer.setAnimation(keyAnimation);
     }
 
     public static void stopAnimation(PlayerEntity player) {
         if (!player.getWorld().isClient) {
             return;
         }
-        var animationContainer = ((IExampleAnimatedPlayer)player).maryCum2024$getModAnimation();
+        MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
+
+        var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
         animationContainer.setAnimation(null);
     }
 }

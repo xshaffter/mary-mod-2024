@@ -47,7 +47,7 @@ public class BeagleAttackGoal extends MeleeAttackGoal {
     }
 
     @Override
-    protected void attack(LivingEntity target, double squaredDistance) {
+    protected void attack(LivingEntity target) {
         if (isEnemyWithinAttackDistance(target)) {
             shouldCountTillNextAttack = true;
 

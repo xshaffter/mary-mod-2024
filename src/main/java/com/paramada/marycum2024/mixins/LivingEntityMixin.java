@@ -66,11 +66,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "onDamaged")
-    private void onGetDamage(DamageSource damageSource, CallbackInfo ci) {
-        System.out.println(":D");
-    }
-
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         var source = damageSource.getSource();

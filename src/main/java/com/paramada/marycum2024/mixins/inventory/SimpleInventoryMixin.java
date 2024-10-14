@@ -13,6 +13,7 @@ import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -21,9 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SimpleInventory.class)
 public abstract class SimpleInventoryMixin implements Inventory {
 
-    @Shadow
-    @Final
-    public DefaultedList<ItemStack> stacks;
+    @Shadow @Final public DefaultedList<ItemStack> heldStacks;
 
     @Inject(at = @At("HEAD"), method = "transfer", cancellable = true)
     private void onTransfer(ItemStack source, ItemStack target, CallbackInfo ci) {
@@ -41,7 +40,7 @@ public abstract class SimpleInventoryMixin implements Inventory {
 
     @Inject(at = @At("HEAD"), method = "setStack", cancellable = true)
     public void setStack(int slot, ItemStack stack, CallbackInfo ci) {
-        this.stacks.set(slot, stack);
+        this.heldStacks.set(slot, stack);
         if (!stack.isEmpty() && stack.getCount() > stack.getMaxCount()) {
             stack.setCount(stack.getMaxCount());
         }

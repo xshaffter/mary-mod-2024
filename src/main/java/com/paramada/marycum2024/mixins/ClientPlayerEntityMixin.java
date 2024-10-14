@@ -23,7 +23,9 @@ public abstract class ClientPlayerEntityMixin implements IExampleAnimatedPlayer 
     private final ModifierLayer<IAnimation> modAnimationContainer = new ModifierLayer<>();
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(ClientWorld world, GameProfile profile, CallbackInfo ci) {
-        PlayerAnimationAccess.getPlayerAnimLayer((AbstractClientPlayerEntity) (Object)this).addAnimLayer(1000, modAnimationContainer); //Register the layer with a priority
+        var player = (AbstractClientPlayerEntity) (Object)this;
+        var animation = PlayerAnimationAccess.getPlayerAnimLayer(player); //Register the layer with a priority
+        animation.addAnimLayer(1000, modAnimationContainer);
     }
     @Override
     public ModifierLayer<IAnimation> maryCum2024$getModAnimation() {

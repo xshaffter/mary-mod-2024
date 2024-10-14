@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.items.custom;
 
 import com.paramada.marycum2024.effects.ModEffects;
+import com.paramada.marycum2024.effects.RibbonEffect;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.minecraft.block.Block;
@@ -104,22 +105,16 @@ public class MedikaPotion extends PotionItem implements IMaryItem {
         if (world != null && world.isClient) {
             int modifier = LivingEntityBridge.getPersistentData(MinecraftClient.getInstance().player).getInt("upgrade");
             double healing = 5 + (5 * modifier) / 2.0;
-            var translatable_text = Text.translatable("tooltip.mary-mod-2024.estus_healing").getString();
+            var translatable_text = Text.translatable("tooltip.mary-mod-2024.medika_potion").getString();
             tooltip.add(Text.literal(translatable_text.formatted(healing)));
 
             assert MinecraftClient.getInstance().player != null;
-            if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.BLACK_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.black_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.BLUE_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.blue_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.CYAN_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.cyan_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.PINK_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.pink_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.GREEN_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.green_ribbon_effect"));
-            } else if (MinecraftClient.getInstance().player.hasStatusEffect(ModEffects.RED_RIBBON_EFFECT)) {
-                tooltip.add(Text.translatable("tooltip.mary-mod-2024.red_ribbon_effect"));
+            var player = MinecraftClient.getInstance().player;
+            var ribbons = player.getActiveStatusEffects().values().stream().filter(statusEffectInstance -> statusEffectInstance.getEffectType() instanceof RibbonEffect);
+            var ribbon = ribbons.map(statusEffectInstance -> (RibbonEffect) statusEffectInstance.getEffectType()).findFirst();
+            if (ribbon.isPresent()) {
+                var activeRibbon = ribbon.get();
+                tooltip.add(Text.translatable("tooltip.mary-mod-2024.%s".formatted(activeRibbon.getId())));
             }
         }
     }

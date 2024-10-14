@@ -67,7 +67,6 @@ public abstract class PlayerInventoryMixin implements Inventory {
             NbtCompound nbtCompound = nbtList.getCompound(i);
             int j = nbtCompound.getByte("Slot") & 255;
             ItemStack itemStack = ItemStack.fromNbt(nbtCompound);
-            System.out.println(nbtCompound);
             itemStack.setCount(nbtCompound.getInt("Count"));
             if (!itemStack.isEmpty()) {
                 if (j >= 0 && j < this.main.size()) {
