@@ -3,8 +3,11 @@ package com.paramada.marycum2024.networking;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.networking.packets.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
+
+import java.util.Objects;
 
 public class NetworkManager {
     public static final Identifier SYNC_MONEY_ID = new Identifier(MaryMod2024.MOD_ID, "sync_money");
@@ -14,6 +17,7 @@ public class NetworkManager {
     public static final Identifier SYNC_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "sync_upgrade");
     public static final Identifier REQUEST_UPGRADE_ID = new Identifier(MaryMod2024.MOD_ID, "sync_upgrade");
     public static final Identifier REST_AT_EFIGY_ID = new Identifier(MaryMod2024.MOD_ID, "rest_at_efigy");
+    public static final Identifier CONTINUE_GAME = new Identifier(MaryMod2024.MOD_ID, "continue_game");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
@@ -21,6 +25,7 @@ public class NetworkManager {
         ServerPlayNetworking.registerGlobalReceiver(REQUEST_MONEY_ID, RequestMoneyC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REQUEST_UPGRADE_ID, RequestUpgradeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(REST_AT_EFIGY_ID, RestAtEfigyC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(CONTINUE_GAME, ContinueGameC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {

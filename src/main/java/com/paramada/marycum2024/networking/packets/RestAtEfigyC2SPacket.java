@@ -8,12 +8,17 @@ import com.paramada.marycum2024.items.custom.RibbonItem;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkSectionPos;
+
+import java.util.Objects;
 
 public class RestAtEfigyC2SPacket {
     public static <T extends FabricPacket> void receive(MinecraftServer server, ServerPlayerEntity player,
@@ -37,8 +42,7 @@ public class RestAtEfigyC2SPacket {
             return;
         }
 
-
-        ItemStack ribbonItem = ((EfigyBlockEntity)blockEntity).getItem();
+        ItemStack ribbonItem = ((EfigyBlockEntity) blockEntity).getItem();
         if (ribbonItem.getItem() instanceof RibbonItem ribbon) {
             player.clearStatusEffects();
             player.setHealth(player.getMaxHealth());

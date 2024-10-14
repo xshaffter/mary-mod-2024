@@ -8,6 +8,7 @@ import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
 import com.paramada.marycum2024.items.custom.RibbonItem;
 import com.paramada.marycum2024.util.BlockPosUtil;
 import com.paramada.marycum2024.util.LivingEntityBridge;
+import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -35,6 +36,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
 
 public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityProvider {
     public static final MapCodec<EfigyBlock> CODEC = createCodec(EfigyBlock::new);
@@ -76,22 +78,30 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
             }
 
             return ActionResult.CONSUME;
-        } else if (world.isClient) {
-            LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
-            return ActionResult.PASS;
+        }
 
-        } else {
-            if (ribbonItem.isOf(Items.AIR)) {
-                world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
-                player.sendMessage(Text.translatable("chat.mary-mod-2024.ribbon_needed").setStyle(Style.EMPTY.withColor(0xFFC7C700)));
+        if (ribbonItem.isOf(Items.AIR)) {
+            if (world.isClient) {
                 return ActionResult.PASS;
             }
-
-            LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
-
-            NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) getBlockEntity(world, pos);
-            player.openHandledScreen(screenHandlerFactory);
+            System.out.println(state);
+            world.playSound(player, pos, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1, 1);
+            player.sendMessage(Text.translatable("chat.mary-mod-2024.ribbon_needed").setStyle(Style.EMPTY.withColor(0xFFC7C700)));
+            return ActionResult.PASS;
         }
+
+        if (world.isClient) {
+            LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
+            PlayerEntityBridge.startRestAnim(player);
+            return ActionResult.PASS;
+        }
+
+        LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
+
+        Objects.requireNonNull(player.getServer()).getTickManager().setFrozen(true);
+
+        NamedScreenHandlerFactory screenHandlerFactory = (NamedScreenHandlerFactory) getBlockEntity(world, pos);
+        player.openHandledScreen(screenHandlerFactory);
 
         return ActionResult.CONSUME;
     }

@@ -21,23 +21,21 @@ public class ItemManager {
     public static final Item MARY_COIN = new MaryCoinItem();
 
     //tank
-    public static final Item PINK_RIBBON = new RibbonItem(List.of(
-            new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 1, true, false),
-            new StatusEffectInstance(StatusEffects.REGENERATION, MaryMod2024.TICKS_PER_SECOND * 60, 1, true, false),
-            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 60, 2, true, false)
+    public static final Item PINK_RIBBON = new RibbonItem(Rarity.COMMON, List.of(
+
     ), List.of(
             new StatusEffectInstance(ModEffects.PINK_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
     ));
 
     //damage
-    public static final Item BLUE_RIBBON = new RibbonItem(List.of(
+    public static final Item BLUE_RIBBON = new RibbonItem(Rarity.RARE, List.of(
 
     ), List.of(
             new StatusEffectInstance(ModEffects.BLUE_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
     ));
 
     //Healing
-    public static final Item RED_RIBBON = new RibbonItem(List.of(
+    public static final Item RED_RIBBON = new RibbonItem(Rarity.RARE, List.of(
             new StatusEffectInstance(StatusEffects.ABSORPTION, MaryMod2024.TICKS_PER_SECOND * 180, 0, true, false)
 
     ), List.of(
@@ -45,14 +43,14 @@ public class ItemManager {
     ));
 
     //Speed
-    public static final Item CYAN_RIBBON = new RibbonItem(List.of(
+    public static final Item CYAN_RIBBON = new RibbonItem(Rarity.EPIC, List.of(
             new StatusEffectInstance(StatusEffects.SPEED, MaryMod2024.TICKS_PER_SECOND * 120, 1, true, false)
     ), List.of(
             new StatusEffectInstance(ModEffects.CYAN_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false)
     ));
 
     //Zombie
-    public static final Item GREEN_RIBBON = new RibbonItem(List.of(
+    public static final Item GREEN_RIBBON = new RibbonItem(Rarity.EPIC, List.of(
     ), List.of(
             new StatusEffectInstance(ModEffects.GREEN_RIBBON_EFFECT, StatusEffectInstance.INFINITE, 0, true, false),
             new StatusEffectInstance(ModEffects.ZOMBIEFICATION, StatusEffectInstance.INFINITE, 0, true, true)
@@ -60,7 +58,7 @@ public class ItemManager {
     ));
 
     //Vampire
-    public static final Item BLACK_RIBBON = new RibbonItem(List.of(
+    public static final Item BLACK_RIBBON = new RibbonItem(Rarity.EPIC, List.of(
             new StatusEffectInstance(StatusEffects.SPEED, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false),
             new StatusEffectInstance(StatusEffects.STRENGTH, MaryMod2024.TICKS_PER_SECOND * 120 + 1, 2, true, false)
     ), List.of(

@@ -57,5 +57,7 @@
   "tooltip.mary-mod-2024.black_ribbon_effect": "vaporeon.....t",
   "effect.mary-mod-2024.zombiefication": "Zombiefication",
   "effect.mary-mod-2024.vampirism": "Vampirism",
-  "title.mary-mod-2024.efigy": "Efigy"
+  "title.mary-mod-2024.efigy": "Efigy",
+  "item.mary-mod-2024.medika_potion.effect.empty": "Medika Milagrosa",
+  "tooltip.mary-mod-2024.medika_potion": "Una poción especial"
 }

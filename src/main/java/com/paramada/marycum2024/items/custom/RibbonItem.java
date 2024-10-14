@@ -14,15 +14,15 @@ public class RibbonItem extends MaryItem {
     private final List<StatusEffectInstance> effects;
     private final List<StatusEffectInstance> interactEffects;
 
-    public RibbonItem(List<StatusEffectInstance> areaEffects, List<StatusEffectInstance> interactEffects) {
-        super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
+    public RibbonItem(Rarity rarity, List<StatusEffectInstance> areaEffects, List<StatusEffectInstance> interactEffects) {
+        super(new Settings().fireproof().rarity(rarity).maxCount(1));
         this.effects = areaEffects;
 
         this.interactEffects = interactEffects;
     }
 
-    public RibbonItem() {
-        super(new Settings().fireproof().rarity(Rarity.EPIC).maxCount(1));
+    public RibbonItem(Rarity rarity) {
+        super(new Settings().fireproof().rarity(rarity).maxCount(1));
         this.effects = List.of();
         this.interactEffects = List.of();
     }
