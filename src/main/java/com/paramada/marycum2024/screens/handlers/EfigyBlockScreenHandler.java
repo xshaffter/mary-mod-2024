@@ -7,12 +7,13 @@ import com.paramada.marycum2024.util.MoneyManager;
 import com.paramada.marycum2024.util.UpgradeManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 
 public class EfigyBlockScreenHandler extends ScreenHandler {
@@ -49,11 +50,25 @@ public class EfigyBlockScreenHandler extends ScreenHandler {
         return this.inventory.canPlayerUse(player);
     }
 
-    public void increaseUpgrade() {
-        var price = UpgradeManager.getNextUpgradeCost(inventory.player);
-        if (price > 0 && MoneyManager.getMoney(this.inventory.player) >= price) {
+    public void upgradePotion() {
+        var player = inventory.player;
+        var world = player.getWorld();
+        var price = UpgradeManager.getNextUpgradeCost(player);
+        if (price > 0 && MoneyManager.getMoney(player) >= price) {
             MoneyManager.spendMoney(price);
             ClientPlayNetworking.send(NetworkManager.INCREASE_UPGRADE_ID, PacketByteBufs.create());
+            world.playSound(player, pos, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1, 1);
+        }
+    }
+
+    public void increasePotion() {
+        var player = inventory.player;
+        var world = player.getWorld();
+        var price = UpgradeManager.getNextDurabilityCost(player);
+        if (price > 0 && MoneyManager.getMoney(player) >= price) {
+            MoneyManager.spendMoney(price);
+            ClientPlayNetworking.send(NetworkManager.INCREASE_POTION_AMOUNT_ID, PacketByteBufs.create());
+            world.playSound(player, pos, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1, 1);
         }
     }
 }

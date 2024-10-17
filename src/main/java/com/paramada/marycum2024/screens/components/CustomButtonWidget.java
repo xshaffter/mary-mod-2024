@@ -16,13 +16,23 @@ import java.awt.geom.Rectangle2D;
 
 public class CustomButtonWidget extends ButtonWidget {
     private static final Identifier MENU_RIBBON = new Identifier(MaryMod2024.MOD_ID, "textures/item/pink_ribbon.png");
+    private final boolean disabled;
 
     public CustomButtonWidget(int x, int y, int width, int height, PressAction onPress) {
         this(x, y, width, height, onPress, Text.literal(""));
     }
 
+    public CustomButtonWidget(int x, int y, int width, int height, PressAction onPress, MutableText text, boolean disabled) {
+        super(x, y, width, height, text, button -> {
+            if (!disabled) {
+                onPress.onPress(button);
+            }
+        }, textSupplier -> text);
+        this.disabled = disabled;
+    }
+
     public CustomButtonWidget(int x, int y, int width, int height, PressAction onPress, MutableText text) {
-        super(x, y, width, height, text, onPress, textSupplier -> text);
+        this(x, y, width, height, onPress, text, false);
     }
 
     @Override
@@ -34,6 +44,10 @@ public class CustomButtonWidget extends ButtonWidget {
             context.drawTexture(MENU_RIBBON, getX() - EfigyScreen.TITLE_HEIGHT, getY() + (height / 2) - (EfigyScreen.TITLE_HEIGHT / 2), EfigyScreen.TITLE_HEIGHT, EfigyScreen.TITLE_HEIGHT, 0, 0, 16, 16, 16, 16);
         }
 
-        drawMessage(context, textRenderer, 0xFFFFFFFF);
+        var color = 0xFFFFFFFF;
+        if (disabled) {
+            color = 0xFF9A9A9A;
+        }
+        drawMessage(context, textRenderer, color);
     }
 }

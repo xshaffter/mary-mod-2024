@@ -33,18 +33,19 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReusablePotion extends PotionItem implements IMaryItem {
-    public ReusablePotion(int durability) {
+    public ReusablePotion() {
         super(
                 new Settings()
                         .fireproof()
                         .rarity(Rarity.EPIC)
-                        .maxDamage(durability)
+                        .maxDamage(1)
         );
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        var upgrade = LivingEntityBridge.getPersistentData(MinecraftClient.getInstance().player).getInt("upgrade");
+        var nbt = stack.getOrCreateNbt();
+        var upgrade = nbt.getInt("upgrade");
         var upgradeText = upgrade > 0 ? " (+%d)".formatted(upgrade) : "";
         MutableText text = (MutableText) super.getName(stack);
         return text.append(upgradeText);
@@ -63,12 +64,11 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-
-        int modifier = LivingEntityBridge.getPersistentData(entity).getInt("upgrade");
-        int healingAmplifier = modifier + 1;
+        var nbt = stack.getOrCreateNbt();
+        var upgrade = nbt.getInt("upgrade");
 
         PotionUtil.setCustomPotionEffects(stack, List.of(
-                new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 0, healingAmplifier)
+                new StatusEffectInstance(ModEffects.INSTANT_HEAL, 1, upgrade)
         ));
 
         super.inventoryTick(stack, world, entity, slot, selected);
@@ -81,26 +81,28 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
 
     @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (!world.isClient) {
-            if (user instanceof PlayerEntity player) {
-                if (!player.isCreative()) {
-                    if (stack.getDamage() != stack.getMaxDamage() - 1) {
-                        player.getItemCooldownManager().set(this, 12 * 20 + 10);
-                    }
-                    stack.setDamage(stack.getDamage() + 1);
+        if (world.isClient) {
+            return stack;
+        }
+
+        if (user instanceof PlayerEntity player) {
+            if (!player.isCreative()) {
+                if (stack.getDamage() != stack.getMaxDamage() - 1) {
+                    player.getItemCooldownManager().set(this, 12 * 20 + 10);
                 }
-            } else {
                 stack.setDamage(stack.getDamage() + 1);
             }
+        } else {
+            stack.setDamage(stack.getDamage() + 1);
+        }
 
-            PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
-            List<StatusEffectInstance> list = PotionUtil.getPotionEffects(stack);
-            for (var effect : list) {
-                if (effect.getEffectType().isInstant()) {
-                    effect.getEffectType().applyInstantEffect(playerEntity, playerEntity, user, effect.getAmplifier(), 1.0);
-                } else {
-                    user.addStatusEffect(new StatusEffectInstance(effect));
-                }
+        PlayerEntity playerEntity = user instanceof PlayerEntity ? (PlayerEntity) user : null;
+        List<StatusEffectInstance> list = PotionUtil.getPotionEffects(stack);
+        for (var effect : list) {
+            if (effect.getEffectType().isInstant()) {
+                effect.getEffectType().applyInstantEffect(playerEntity, playerEntity, user, effect.getAmplifier(), 1.0);
+            } else {
+                user.addStatusEffect(new StatusEffectInstance(effect));
             }
         }
 

@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.networking.packets;
 
+import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
@@ -16,10 +17,17 @@ public class IncreaseUpgradeC2SPacket {
     public static <T extends FabricPacket> void receive(MinecraftServer server, ServerPlayerEntity player,
                                                         ServerPlayNetworkHandler handler,
                                                         PacketByteBuf buf, PacketSender responseSender) {
-        var upgrade = LivingEntityBridge.getPersistentData(player).getInt("upgrade");
-        LivingEntityBridge.getPersistentData(player).putInt("upgrade", upgrade + 1);
-        var newBuf = PacketByteBufs.create();
-        newBuf.writeInt(upgrade + 1);
-        ServerPlayNetworking.send(player, NetworkManager.SYNC_UPGRADE_ID, newBuf);
+        var stack = player.getInventory().main.stream().filter(itemStack -> itemStack.isOf(ItemManager.ESTUS)).findFirst();
+
+        if (stack.isPresent()) {
+            var itemstack = stack.get();
+            var nbt = itemstack.getOrCreateNbt();
+            var lastUpgrade = nbt.getInt("upgrade");
+            nbt.putInt("upgrade", lastUpgrade + 1);
+
+            var newBuf = PacketByteBufs.create();
+            newBuf.writeInt(lastUpgrade + 1);
+            ServerPlayNetworking.send(player, NetworkManager.SYNC_UPGRADE_ID, newBuf);
+        }
     }
 }

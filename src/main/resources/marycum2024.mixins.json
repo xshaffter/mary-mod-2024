@@ -7,6 +7,7 @@
     "LivingEntityMixin",
     "inventory.EnderInventoryMixin",
     "inventory.InventoryMixin",
+    "inventory.ItemMixin",
     "inventory.ItemStackMixin",
     "inventory.PlayerInventoryMixin",
     "inventory.SimpleInventoryMixin"

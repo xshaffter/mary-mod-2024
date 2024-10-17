@@ -75,15 +75,7 @@ public class ItemGroups {
 
                             entries.add(ItemManager.ESTUS_SHARD);
                             entries.add(ItemManager.MEDIKA_POTION);
-                            entries.add(ItemManager.ESTUS_1);
-                            entries.add(ItemManager.ESTUS_2);
-                            entries.add(ItemManager.ESTUS_3);
-                            entries.add(ItemManager.ESTUS_4);
-                            entries.add(ItemManager.ESTUS_5);
-                            entries.add(ItemManager.ESTUS_6);
-                            entries.add(ItemManager.ESTUS_7);
-                            entries.add(ItemManager.ESTUS_8);
-                            entries.add(ItemManager.ESTUS_9);
+                            entries.add(ItemManager.ESTUS);
                         })).build()
         );
     }
