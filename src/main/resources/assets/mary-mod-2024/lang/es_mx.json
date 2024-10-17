@@ -37,7 +37,7 @@
   "tooltip.mary-mod-2024.healing_fruit": "Al comerlo, mejora tu poción",
   "tooltip.mary-mod-2024.healing_fruit_2": "con 2 corazones y medio",
   "chat.mary-mod-2024.ribbon_needed": "Esta efigie necesita de un lazo para funcionar",
-  "effect.mary-mod-2024.instant_heal": "Curación",
+  "effect.mary-mod-2024.instant_heal": "Cura %s corazones",
   "effect.mary-mod-2024.zombiefication": "Zombificación",
   "effect.mary-mod-2024.vampirism": "Vampirismo",
   "title.mary-mod-2024.efigy": "Efigie",

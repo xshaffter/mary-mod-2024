@@ -1,36 +1,25 @@
 package com.paramada.marycum2024.items.custom;
 
 import com.paramada.marycum2024.effects.ModEffects;
-import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
-import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
-import dev.emi.trinkets.api.TrinketsApi;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.CampfireBlock;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
+import com.paramada.marycum2024.util.UpgradeManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsage;
+import net.minecraft.item.PotionItem;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.*;
+import net.minecraft.util.Hand;
+import net.minecraft.util.Rarity;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 public class ReusablePotion extends PotionItem implements IMaryItem {
     public ReusablePotion() {
@@ -67,8 +56,10 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
         var nbt = stack.getOrCreateNbt();
         var upgrade = nbt.getInt("upgrade");
 
+        var amountToHeal = UpgradeManager.getAmountToHealForUpgrade(upgrade);
+
         PotionUtil.setCustomPotionEffects(stack, List.of(
-                new StatusEffectInstance(ModEffects.INSTANT_HEAL, 1, upgrade)
+                new StatusEffectInstance(ModEffects.INSTANT_HEAL, 1, amountToHeal)
         ));
 
         super.inventoryTick(stack, world, entity, slot, selected);
@@ -105,7 +96,8 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
                 user.addStatusEffect(new StatusEffectInstance(effect));
             }
         }
-
+        user.emitGameEvent(GameEvent.DRINK);
         return stack;
     }
+
 }

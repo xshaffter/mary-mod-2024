@@ -57,7 +57,7 @@ public abstract class ItemStackMixin implements FabricItemStack {
             if (this.nbt != null) {
                 this.nbt.putBoolean("NoDrop", true);
                 if (this.isOf(ItemManager.ESTUS) && this.nbt.getInt("upgrade") == 0) {
-                    this.nbt.putInt("upgrade", 1);
+                    this.nbt.putInt("upgrade", 0);
                 }
             }
         }
@@ -83,4 +83,6 @@ public abstract class ItemStackMixin implements FabricItemStack {
 
         cir.setReturnValue(nbt);
     }
+
+
 }

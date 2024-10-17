@@ -6,7 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.Map;
 
 public class UpgradeManager {
-    private static final Map<Integer, Integer> upgradeCostMapping = Map.ofEntries(
+    private static final Map<Integer, Integer> UPGRADE_COST_MAPPING = Map.ofEntries(
             Map.entry(1, 10),
             Map.entry(2, 50),
             Map.entry(3, 100),
@@ -14,13 +14,22 @@ public class UpgradeManager {
             Map.entry(5, 200),
             Map.entry(6, 250)
     );
-    private static final Map<Integer, Integer> durabilityCostMapping = Map.ofEntries(
-            Map.entry(1, 150),
+    private static final Map<Integer, Integer> DURABILITY_COST_MAPPING = Map.ofEntries(
+            Map.entry(1, 100),
             Map.entry(2, 100),
-            Map.entry(3, 100),
+            Map.entry(3, 150),
             Map.entry(4, 150),
             Map.entry(5, 200),
             Map.entry(6, 250)
+    );
+    private static final Map<Integer, Integer> HEALING_MAPPING = Map.ofEntries(
+            Map.entry(0, 6),
+            Map.entry(1, 9),
+            Map.entry(2, 12),
+            Map.entry(3, 15),
+            Map.entry(4, 18),
+            Map.entry(5, 21),
+            Map.entry(6, 24)
     );
 
     public static int getNextUpgradeCost(PlayerEntity player) {
@@ -30,7 +39,7 @@ public class UpgradeManager {
             var itemstack = stack.get();
             var nbt = itemstack.getOrCreateNbt();
             var upgrade = nbt.getInt("upgrade");
-            return upgradeCostMapping.getOrDefault(upgrade + 1, -1);
+            return UPGRADE_COST_MAPPING.getOrDefault(upgrade + 1, -1);
         }
         return -1;
     }
@@ -42,8 +51,12 @@ public class UpgradeManager {
             var itemstack = stack.get();
             var nbt = itemstack.getOrCreateNbt();
             var durability = nbt.getInt("enhance");
-            return durabilityCostMapping.getOrDefault(durability + 1, -1);
+            return DURABILITY_COST_MAPPING.getOrDefault(durability + 1, -1);
         }
-        return 1;
+        return -1;
+    }
+
+    public static int getAmountToHealForUpgrade(int upgrade) {
+        return HEALING_MAPPING.getOrDefault(upgrade, 0);
     }
 }

@@ -6,6 +6,8 @@ import com.paramada.marycum2024.items.custom.*;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
@@ -28,7 +30,7 @@ public class ItemManager {
     // Trinkets
     public static final Item GARLIC_NECKLACE = new GarlicNecklace();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
-
+            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 1, false, true)
     ));
     public static final Item BLUE_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
 
