@@ -1,7 +1,9 @@
 package com.paramada.marycum2024.networking.packets;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.paramada.marycum2024.networking.NetworkManager;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.LivingEntityBridge;
 import com.paramada.marycum2024.util.UpgradeManager;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -12,13 +14,23 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class RequestMoneyC2SPacket {
+public class RequestLevelC2SPacket {
     public static <T extends FabricPacket> void receive(MinecraftServer server, ServerPlayerEntity player,
                                                         ServerPlayNetworkHandler handler,
                                                         PacketByteBuf buf, PacketSender responseSender) {
         var newBuf = PacketByteBufs.create();
-        newBuf.writeInt(PlayerEntityBridge.getMoney(player));
+        var level = LivingEntityBridge.getPersistentData(player).getInt("level");
+        newBuf.writeInt(level);
 
-        ServerPlayNetworking.send(player, NetworkManager.SYNC_MONEY_ID, newBuf);
+        var attributes = UpgradeManager.getLevelModifiers(level);
+
+        var playerAttrs = player.getAttributes();
+        for (var attr : attributes.modifiers().entries()) {
+            if (!playerAttrs.hasAttribute(attr.getKey())) {
+                playerAttrs.addTemporaryModifiers(ImmutableMultimap.of(attr.getKey(), attr.getValue()));
+            }
+        }
+
+        ServerPlayNetworking.send(player, NetworkManager.SYNC_LEVEL_ID, newBuf);
     }
 }

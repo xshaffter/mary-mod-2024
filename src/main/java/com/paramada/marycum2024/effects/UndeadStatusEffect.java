@@ -1,8 +1,11 @@
 package com.paramada.marycum2024.effects;
 
+import com.paramada.marycum2024.MaryMod2024;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.util.Colors;
 
 public abstract class UndeadStatusEffect extends StatusEffect {
@@ -22,8 +25,8 @@ public abstract class UndeadStatusEffect extends StatusEffect {
             return;
         }
         var blockPos = entity.getBlockPos();
-        if (world.isSkyVisible(blockPos) && world.isDay() && entity.getFireTicks() < 5) {
-            entity.setOnFireFor(5);
+        if (this.equals(ModEffects.VAMPIRISM) && world.isSkyVisible(blockPos) && world.isDay() && world.getTime() % (MaryMod2024.TICKS_PER_SECOND * 4) == 0) {
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, MaryMod2024.TICKS_PER_SECOND * 5));
         }
     }
 }

@@ -44,6 +44,7 @@ public class MaryMod2024Client implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register((a, b, client) -> {
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
+            ClientPlayNetworking.send(NetworkManager.REQUEST_LEVEL_ID, PacketByteBufs.create());
         });
     }
 

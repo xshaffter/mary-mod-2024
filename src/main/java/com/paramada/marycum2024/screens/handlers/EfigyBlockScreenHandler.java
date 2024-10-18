@@ -71,4 +71,15 @@ public class EfigyBlockScreenHandler extends ScreenHandler {
             world.playSound(player, pos, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1, 1);
         }
     }
+
+    public void levelUp() {
+        var player = inventory.player;
+        var world = player.getWorld();
+        var price = UpgradeManager.getNextLevelCost(player);
+        if (price > 0 && MoneyManager.getMoney(player) >= price) {
+            MoneyManager.spendMoney(price);
+            ClientPlayNetworking.send(NetworkManager.LEVEL_UP_ID, PacketByteBufs.create());
+            world.playSound(player, pos, SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1, 1);
+        }
+    }
 }

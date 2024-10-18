@@ -98,7 +98,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     }
 
 
-
     @Override
     public NbtCompound maryCum2024$getPersistentData() {
         if (persistentData == null) {
@@ -106,6 +105,9 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
         if (!persistentData.contains("upgrade")) {
             persistentData.putInt("upgrade", 0);
+        }
+        if (!persistentData.contains("level")) {
+            persistentData.putInt("level", 1);
         }
         return persistentData;
     }

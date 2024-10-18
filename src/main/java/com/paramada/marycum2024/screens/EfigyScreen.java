@@ -49,9 +49,11 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
         PADDING_WIDTH = Math.max(PADDING_WIDTH, MENU_WIDTH / 4);
         var nextDurabilityCost = UpgradeManager.getNextDurabilityCost(client.player);
         var nextUpgradeCost = UpgradeManager.getNextUpgradeCost(client.player);
+        var nextLevelCost = UpgradeManager.getNextLevelCost(client.player);
 
         var durabilityText = "Aumentar pociones";
         var upgradeText = "Mejorar poción";
+        var levelText = "Subir de nivel";
 
         if (nextDurabilityCost > -1) {
             durabilityText += " (%d)".formatted(nextDurabilityCost);
@@ -61,6 +63,10 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
             upgradeText += " (%d)".formatted(nextUpgradeCost);
         }
 
+        if (nextLevelCost > -1) {
+            levelText += " (%d)".formatted(nextLevelCost);
+        }
+
         this.clearChildren();
 
         this.addDrawableChild(new CustomButtonWidget(
@@ -68,10 +74,9 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                 FIRST_CHILD_MARGIN + PADDING_HEIGHT,
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
-                button -> {
-                    System.out.println("wawawa");
-                },
-                Text.literal("Subir de nivel")
+                button -> handler.levelUp(),
+                Text.literal(levelText),
+                nextLevelCost == -1
         ));
 
         this.addDrawableChild(new CustomButtonWidget(

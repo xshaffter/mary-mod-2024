@@ -4,6 +4,7 @@ import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
 import com.paramada.marycum2024.util.UpgradeManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;

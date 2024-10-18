@@ -1,11 +1,15 @@
 package com.paramada.marycum2024.items;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.paramada.marycum2024.MaryMod2024;
+import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.items.custom.*;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
@@ -16,6 +20,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public class ItemManager {
@@ -30,21 +35,33 @@ public class ItemManager {
     // Trinkets
     public static final Item GARLIC_NECKLACE = new GarlicNecklace();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
-            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 1, false, true)
+            new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 0, false, true)
+    ), ImmutableMultimap.of(
+
     ));
     public static final Item BLUE_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
 
-    ));
-    public static final Item BLACK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+    ), ImmutableMultimap.of(
 
     ));
+    public static final Item BLACK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+            new StatusEffectInstance(ModEffects.VAMPIRISM, MaryMod2024.TICKS_PER_SECOND * 120)
+    ), ImmutableMultimap.of(
+            EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(UUID.randomUUID(), "ribbon_atk_sp", 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+    ));
     public static final Item CYAN_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+
+    ), ImmutableMultimap.of(
 
     ));
     public static final Item RED_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
 
+    ), ImmutableMultimap.of(
+
     ));
     public static final Item GREEN_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+
+    ), ImmutableMultimap.of(
 
     ));
 
