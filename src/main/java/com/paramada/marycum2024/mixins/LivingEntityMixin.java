@@ -2,13 +2,16 @@ package com.paramada.marycum2024.mixins;
 
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.effects.ModEffects;
+import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.util.IEntityDataSaver;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -55,7 +58,19 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     protected void onTick(CallbackInfo ci) {
         //noinspection ConstantValue
         if (!(((Entity) this) instanceof ServerPlayerEntity player)) {
+
             return;
+        }
+
+        var trinketComponent = TrinketsApi.getTrinketComponent(player);
+
+        if (trinketComponent.isPresent()) {
+            var comp = trinketComponent.get();
+            if (comp.isEquipped(ItemManager.GLASSES)) {
+                if (player.getWorld().getTime() % 80 == 0) {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, MaryMod2024.TICKS_PER_SECOND * 20, 0));
+                }
+            }
         }
     }
 
@@ -95,7 +110,7 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
                 StatusEffectInstance effect = player.getStatusEffect(ModEffects.ZOMBIEFICATION);
                 if (effect != null) {
                     int amplifier = effect.getAmplifier();
-                    player.heal(this.getMaxHealth() / (4f / (amplifier + 1)));
+                    player.heal(this.getMaxHealth() / (2f / (amplifier + 1)));
                 }
             }
         }

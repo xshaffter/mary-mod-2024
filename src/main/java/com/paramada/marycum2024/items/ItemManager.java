@@ -11,6 +11,7 @@ import com.paramada.marycum2024.items.custom.potions.Bandage;
 import com.paramada.marycum2024.items.custom.potions.MedikaPotion;
 import com.paramada.marycum2024.items.custom.potions.ReusablePotion;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
+import com.paramada.marycum2024.items.trinkets.Glasses;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -42,6 +43,7 @@ public class ItemManager {
 
     // Trinkets
     public static final Item GARLIC_NECKLACE = new GarlicNecklace();
+    public static final Item GLASSES = new Glasses();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
             new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 0, false, true)
     ), ImmutableMultimap.of(
@@ -92,6 +94,7 @@ public class ItemManager {
         registerItem("garlic_necklace", GARLIC_NECKLACE);
         registerItem("potion_case", POTION_CASE);
         registerItem("potion_case_2", POTION_CASE_2);
+        registerItem("glasses", GLASSES);
 
         ItemGroups.registerItemGroups();
     }

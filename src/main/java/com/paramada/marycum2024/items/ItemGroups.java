@@ -67,6 +67,7 @@ public class ItemGroups {
                         .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_accesories"))
                         .entries(((displayContext, entries) -> {
                             entries.add(ItemManager.GARLIC_NECKLACE);
+                            entries.add(ItemManager.GLASSES);
                             entries.add(ItemManager.BLACK_RIBBON_TRINKET);
                             entries.add(ItemManager.BLUE_RIBBON_TRINKET);
                             entries.add(ItemManager.CYAN_RIBBON_TRINKET);
