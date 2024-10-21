@@ -113,8 +113,8 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
 
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
-        var source = damageSource.getSource();
-        if (source != null && !this.isUndead() && this.isAttackable() && source instanceof PlayerEntity player) {
+        var attacker = damageSource.getAttacker();
+        if (attacker != null && !this.isUndead() && this.isAttackable() && attacker instanceof PlayerEntity player) {
             if (player.hasStatusEffect(ModEffects.VAMPIRISM)) {
                 StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM);
                 if (effect != null) {
