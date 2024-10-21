@@ -24,6 +24,12 @@ repositories {
         name = "Ladysnake Libs"
         url = 'https://maven.ladysnake.org/releases'
     }
+    maven {
+        url = "https://www.cursemaven.com/"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -37,6 +43,7 @@ dependencies {
     modImplementation("dev.kosmx.player-anim:player-animation-lib-fabric:${project.player_anim}")
     modRuntimeOnly("io.github.kosmx.bendy-lib:bendy-lib-fabric:${project.bendylib_version}")
     modImplementation("dev.emi:trinkets:${project.trinkets_version}")
+    modImplementation("curse.maven:shoulder-surfing-reloaded-243190:${project.shouldersurfing_api_version}")
     //include "io.github.kosmx:bendy-lib:${project.bendylib_version}"
 }
 

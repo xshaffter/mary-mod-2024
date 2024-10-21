@@ -48,8 +48,8 @@ public class HiddenBlockEntityRenderer implements BlockEntityRenderer<HiddenBloc
                 return;
             } else if (player.isCreative()) {
                 var blockStack = new ItemStack(world.getBlockState(downPos).getBlock().asItem());
-                matrices.translate(0.5, 0.5, 0.5);
-                matrices.scale(0.5f, 0.5f, 0.5f);
+                matrices.translate(0.5, 0.25, 0.5);
+                matrices.scale(0.25f, 0.25f, 0.25f);
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(45));
                 matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(30));
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(0));
