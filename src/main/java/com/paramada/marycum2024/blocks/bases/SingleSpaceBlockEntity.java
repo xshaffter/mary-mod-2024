@@ -20,6 +20,9 @@ public abstract class SingleSpaceBlockEntity extends BlockEntity {
     public boolean hasItem() {
         return !this.item.isEmpty();
     }
+    public boolean isEmpty() {
+        return this.item.isEmpty();
+    }
 
     public ItemStack getItem() {
         return this.item;

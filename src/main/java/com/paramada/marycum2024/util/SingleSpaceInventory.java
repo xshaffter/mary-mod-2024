@@ -19,7 +19,7 @@ public class SingleSpaceInventory<T extends SingleSpaceBlockEntity> implements I
     }
 
     public boolean isEmpty() {
-        return !blockEntity.hasItem();
+        return blockEntity.isEmpty();
     }
 
     public ItemStack getStack(int slot) {
