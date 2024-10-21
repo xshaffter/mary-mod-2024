@@ -2,6 +2,7 @@ package com.paramada.marycum2024.client;
 
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.EfigyBlockEntityRenderer;
+import com.paramada.marycum2024.blocks.custom.entities.renderers.HiddenBlockEntityRenderer;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.entities.client.BeagleModel;
 import com.paramada.marycum2024.entities.client.BeagleRenderer;
@@ -43,6 +44,8 @@ public class MaryMod2024Client implements ClientModInitializer {
         HandledScreens.register(ModScreenHandlers.PARTICULAR_SCREEN_HANDLER, ParticularContainerScreen::new);
 
         BlockEntityRendererFactories.register(BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntityRenderer::new);
+
+        BlockEntityRendererFactories.register(BlockEntityManager.HIDDEN_ENTITY, HiddenBlockEntityRenderer::new);
 
         ClientPlayConnectionEvents.JOIN.register((a, b, client) -> {
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());

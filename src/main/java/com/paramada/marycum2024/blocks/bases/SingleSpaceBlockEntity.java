@@ -11,14 +11,17 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class SingleSpaceBlockEntity extends BlockEntity {
-    public ItemStack item = ItemStack.EMPTY;
+    protected ItemStack item = ItemStack.EMPTY;
 
     public SingleSpaceBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     public boolean hasItem() {
-        return this.item != ItemStack.EMPTY;
+        return !this.item.isEmpty();
+    }
+    public boolean isEmpty() {
+        return this.item.isEmpty();
     }
 
     public ItemStack getItem() {

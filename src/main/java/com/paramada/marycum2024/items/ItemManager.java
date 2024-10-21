@@ -11,6 +11,7 @@ import com.paramada.marycum2024.items.custom.potions.Bandage;
 import com.paramada.marycum2024.items.custom.potions.MedikaPotion;
 import com.paramada.marycum2024.items.custom.potions.ReusablePotion;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
+import com.paramada.marycum2024.items.trinkets.Glasses;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -18,7 +19,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.PotionItem;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -42,6 +42,7 @@ public class ItemManager {
 
     // Trinkets
     public static final Item GARLIC_NECKLACE = new GarlicNecklace();
+    public static final Item GLASSES = new Glasses();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
             new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 0, false, true)
     ), ImmutableMultimap.of(
@@ -71,6 +72,8 @@ public class ItemManager {
 
     ));
 
+    public static final Item TDAH_PILL = new TDAHPillItem();
+
 
     private static Item registerItem(final String name, final Item item) {
         return Registry.register(Registries.ITEM, new Identifier(MaryMod2024.MOD_ID, name), item);
@@ -92,6 +95,8 @@ public class ItemManager {
         registerItem("garlic_necklace", GARLIC_NECKLACE);
         registerItem("potion_case", POTION_CASE);
         registerItem("potion_case_2", POTION_CASE_2);
+        registerItem("glasses", GLASSES);
+        registerItem("tdah_pill", TDAH_PILL);
 
         ItemGroups.registerItemGroups();
     }

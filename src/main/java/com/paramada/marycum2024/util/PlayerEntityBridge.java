@@ -1,7 +1,9 @@
 package com.paramada.marycum2024.util;
 
 import com.paramada.marycum2024.MaryMod2024;
+import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.items.ItemManager;
+import dev.emi.trinkets.api.TrinketsApi;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
@@ -24,6 +26,21 @@ public class PlayerEntityBridge {
     public static int getMoney(PlayerEntity player) {
         var enderchest = player.getEnderChestInventory();
         return enderchest.count(ItemManager.MARY_COIN);
+    }
+
+    public static boolean hasTDAH(PlayerEntity player) {
+        if (player.isCreative() || player.isSpectator()) {
+            return false;
+        }
+
+        var trinketComponent = TrinketsApi.getTrinketComponent(player);
+        if (trinketComponent.isPresent()) {
+            var comp = trinketComponent.get();
+            if (comp.isEquipped(ItemManager.GLASSES)) {
+                return !player.hasStatusEffect(ModEffects.NEUROTYPICAL);
+            }
+        }
+        return true;
     }
 
     public static void starBandagetHealing(PlayerEntity player) {
