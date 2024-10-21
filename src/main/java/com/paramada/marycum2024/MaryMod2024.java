@@ -1,5 +1,6 @@
 package com.paramada.marycum2024;
 
+import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.blocks.BlockManager;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.effects.ModEffects;
@@ -37,6 +38,7 @@ public class MaryMod2024 implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ModEntityAttributes.registerAttributes();
         ModScreenHandlers.registerScreenHandlersForServer();
         ModEffects.registerEffects();
         BlockEntityManager.registerEntities();

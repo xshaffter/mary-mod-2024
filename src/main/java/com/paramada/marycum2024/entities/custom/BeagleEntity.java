@@ -53,7 +53,7 @@ public class BeagleEntity extends AnimalEntity {
     }
 
     public void setBarking(boolean barking) {
-        this.dataTracker.set(BARKING, true);
+        this.dataTracker.set(BARKING, barking);
     }
 
     @Override
@@ -112,8 +112,9 @@ public class BeagleEntity extends AnimalEntity {
         this.goalSelector.add(6, new LookAroundGoal(this));
 
         this.targetSelector.add(1, new BeagleTrackPlayerTargetGoal(this));
-        this.targetSelector.add(2, new RevengeGoal(this));
-        this.targetSelector.add(7, new ActiveTargetGoal<>(this, HostileEntity.class, false));
+        //this.targetSelector.add(2, new AttackWithPlayerGoal(this));
+        this.targetSelector.add(3, new RevengeGoal(this));
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, HostileEntity.class, false));
     }
 
     public static DefaultAttributeContainer.Builder createBeagleAttributes() {

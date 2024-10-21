@@ -38,6 +38,9 @@ public abstract class ClientPlayerEntityMixin implements IExampleAnimatedPlayer 
     @Inject(method = "tick", at = @At("HEAD"))
     private void enforceShoulderSurfing(CallbackInfo ci) {
         var shoulderSurfing = ShoulderSurfing.getInstance();
+        if (shoulderSurfing == null) {
+            return;
+        }
         if (!shoulderSurfing.isShoulderSurfing() && !this.isCreative() && !this.isSpectator()) {
             shoulderSurfing.changePerspective(Perspective.SHOULDER_SURFING);
         }

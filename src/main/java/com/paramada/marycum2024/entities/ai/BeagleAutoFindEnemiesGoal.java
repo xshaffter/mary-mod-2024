@@ -96,6 +96,7 @@ public class BeagleAutoFindEnemiesGoal extends Goal {
 
     @Override
     public void stop() {
+        entity.setBarking(false);
         super.stop();
     }
 }
