@@ -19,7 +19,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
-import net.minecraft.item.PotionItem;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -73,7 +72,7 @@ public class ItemManager {
 
     ));
 
-    public static final Item TDAH_PILL = new TDAHPill();
+    public static final Item TDAH_PILL = new TDAHPillItem();
 
 
     private static Item registerItem(final String name, final Item item) {
