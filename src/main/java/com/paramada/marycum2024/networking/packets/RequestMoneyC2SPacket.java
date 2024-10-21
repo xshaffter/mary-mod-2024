@@ -2,6 +2,7 @@ package com.paramada.marycum2024.networking.packets;
 
 import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.UpgradeManager;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
@@ -17,6 +18,7 @@ public class RequestMoneyC2SPacket {
                                                         PacketByteBuf buf, PacketSender responseSender) {
         var newBuf = PacketByteBufs.create();
         newBuf.writeInt(PlayerEntityBridge.getMoney(player));
+
         ServerPlayNetworking.send(player, NetworkManager.SYNC_MONEY_ID, newBuf);
     }
 }

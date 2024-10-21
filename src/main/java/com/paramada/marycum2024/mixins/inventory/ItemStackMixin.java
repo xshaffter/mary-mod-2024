@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.mixins.inventory;
 
+import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.items.custom.IMaryItem;
 import com.paramada.marycum2024.networking.NetworkManager;
 import io.netty.util.internal.ObjectUtil;
@@ -19,6 +20,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
@@ -37,14 +39,25 @@ public abstract class ItemStackMixin implements FabricItemStack {
 
     @Shadow public abstract NbtCompound getOrCreateNbt();
 
+    @Shadow public abstract boolean isOf(Item item);
+
+    @Inject(at = @At("HEAD"), method = "getMaxDamage", cancellable = true)
+    public void getMaxDamage(CallbackInfoReturnable<Integer> cir) {
+        if (this.isOf(ItemManager.ESTUS)) {
+            var nbt = this.getOrCreateNbt();
+            var amount = nbt.getInt("enhance");
+            cir.setReturnValue(amount + 1);
+        }
+    }
+
     @Inject(method = "getNbt", at = @At("HEAD"))
     private void defaultNBT(CallbackInfoReturnable<NbtCompound> cir) {
         if (this.getItem() instanceof IMaryItem) {
             this.getOrCreateNbt();
             if (this.nbt != null) {
                 this.nbt.putBoolean("NoDrop", true);
-                if (!this.nbt.contains("durability")) {
-                    this.nbt.putInt("durability", 1);
+                if (this.isOf(ItemManager.ESTUS) && this.nbt.getInt("upgrade") == 0) {
+                    this.nbt.putInt("upgrade", 0);
                 }
             }
         }
@@ -70,4 +83,6 @@ public abstract class ItemStackMixin implements FabricItemStack {
 
         cir.setReturnValue(nbt);
     }
+
+
 }

@@ -10,50 +10,83 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import static com.paramada.marycum2024.items.ItemManager.MARY_COIN;
-
 public class ItemGroups {
-    public static ItemGroup MARY_MOD_GROUP;
-
+    public static ItemGroup MARY_MOD_BLOCKS_GROUP;
+    public static ItemGroup MARY_MOD_ARMORS_GROUP;
+    public static ItemGroup MARY_MOD_MISC_GROUP;
+    public static ItemGroup MARY_MOD_ACCESORIES_GROUP;
+    public static ItemGroup MARY_MOD_HEALING_GROUP;
+    public static ItemGroup MARY_MOD_CONTAINERS_GROUP;
 
     public static void registerItemGroups() {
-        MARY_MOD_GROUP = Registry.register(
+        MARY_MOD_BLOCKS_GROUP = Registry.register(
                 Registries.ITEM_GROUP,
-                new Identifier(MaryMod2024.MOD_ID, "mary_mod"),
-                FabricItemGroup.builder().icon(() -> new ItemStack(MARY_COIN))
-                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod"))
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_blocks"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(BlockManager.SHULKER_BLOCK))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_blocks"))
+                        .entries(((displayContext, entries) -> {
+                            entries.add(BlockManager.EFIGY);
+                            entries.add(BlockManager.SHULKER_BLOCK);
+                        })).build()
+        );
+        MARY_MOD_ARMORS_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_armors"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MARY_COIN))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_armors"))
+                        .entries(((displayContext, entries) -> {
+                        })).build()
+        );
+        MARY_MOD_CONTAINERS_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_containers"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MARY_COIN))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_containers"))
+                        .entries(((displayContext, entries) -> {
+                            entries.add(ItemManager.POTION_CASE);
+                            entries.add(ItemManager.POTION_CASE_2);
+                        })).build()
+        );
+        MARY_MOD_MISC_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_misc"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MARY_COIN))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_misc"))
                         .entries(((displayContext, entries) -> {
                             entries.add(ItemManager.MARY_COIN);
                             entries.add(ItemManager.BEAGLE_SPAWN_EGG);
 
-                            //blocks
-                            entries.add(BlockManager.EFIGY);
-                            entries.add(BlockManager.SHULKER_BLOCK);
+                            entries.add(ItemManager.PINK_RIBBON);
 
-                            //healing
+                        })).build()
+        );
+        MARY_MOD_ACCESORIES_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_accesories"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.GARLIC_NECKLACE))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_accesories"))
+                        .entries(((displayContext, entries) -> {
+                            entries.add(ItemManager.GARLIC_NECKLACE);
+                            entries.add(ItemManager.BLACK_RIBBON_TRINKET);
+                            entries.add(ItemManager.BLUE_RIBBON_TRINKET);
+                            entries.add(ItemManager.CYAN_RIBBON_TRINKET);
+                            entries.add(ItemManager.GREEN_RIBBON_TRINKET);
+                            entries.add(ItemManager.PINK_RIBBON_TRINKET);
+                            entries.add(ItemManager.RED_RIBBON_TRINKET);
+                        })).build()
+        );
+        MARY_MOD_HEALING_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_healing"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.BANDAGE))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_healing"))
+                        .entries(((displayContext, entries) -> {
+
                             entries.add(ItemManager.BANDAGE);
-                            entries.add(ItemManager.HEALING_FRUIT);
 
-                            //estus
                             entries.add(ItemManager.ESTUS_SHARD);
                             entries.add(ItemManager.MEDIKA_POTION);
-                            entries.add(ItemManager.ESTUS_1);
-                            entries.add(ItemManager.ESTUS_2);
-                            entries.add(ItemManager.ESTUS_3);
-                            entries.add(ItemManager.ESTUS_4);
-                            entries.add(ItemManager.ESTUS_5);
-                            entries.add(ItemManager.ESTUS_6);
-                            entries.add(ItemManager.ESTUS_7);
-                            entries.add(ItemManager.ESTUS_8);
-                            entries.add(ItemManager.ESTUS_9);
-
-                            //ribbons
-                            entries.add(ItemManager.BLACK_RIBBON);
-                            entries.add(ItemManager.BLUE_RIBBON);
-                            entries.add(ItemManager.CYAN_RIBBON);
-                            entries.add(ItemManager.GREEN_RIBBON);
-                            entries.add(ItemManager.PINK_RIBBON);
-                            entries.add(ItemManager.RED_RIBBON);
+                            entries.add(ItemManager.ESTUS);
                         })).build()
         );
     }

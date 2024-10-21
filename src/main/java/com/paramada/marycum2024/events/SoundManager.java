@@ -10,9 +10,8 @@ import net.minecraft.util.Identifier;
 
 public class SoundManager {
     public static final SoundEvent BANDAGE_HEAL = registerSound("bandage_heal");
-    public static final SoundEvent FANSA_MUSIC = registerSound("fansa_music");
-    public static final SoundEvent RASPUTIN = registerSound("rasputin");
-    public static final SoundEvent DARK_CAVE = registerSound("dark_cave");
+    public static final SoundEvent ZIPPER_OPEN = registerSound("zipper_open");
+    public static final SoundEvent ZIPPER_CLOSE = registerSound("zipper_close");
 
     private static SoundEvent registerSound(final String name) {
         Identifier id = new Identifier(MaryMod2024.MOD_ID, name);

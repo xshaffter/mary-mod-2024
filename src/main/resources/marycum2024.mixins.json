@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "LivingEntityMixin",
+    "PotionUtilMixin",
+    "ServerPlayerEntityMixin",
     "inventory.EnderInventoryMixin",
     "inventory.InventoryMixin",
+    "inventory.ItemMixin",
     "inventory.ItemStackMixin",
     "inventory.PlayerInventoryMixin",
     "inventory.SimpleInventoryMixin"

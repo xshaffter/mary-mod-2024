@@ -3,22 +3,15 @@ package com.paramada.marycum2024.networking.packets;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
 import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.items.custom.ReusablePotion;
-import com.paramada.marycum2024.items.custom.RibbonItem;
+import com.paramada.marycum2024.items.custom.potions.ReusablePotion;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkSectionPos;
-
-import java.util.Objects;
 
 public class RestAtEfigyC2SPacket {
     public static <T extends FabricPacket> void receive(MinecraftServer server, ServerPlayerEntity player,
@@ -43,10 +36,13 @@ public class RestAtEfigyC2SPacket {
         }
 
         ItemStack ribbonItem = ((EfigyBlockEntity) blockEntity).getItem();
-        if (ribbonItem.getItem() instanceof RibbonItem ribbon) {
+        if (!ribbonItem.isEmpty()) {
             player.clearStatusEffects();
             player.setHealth(player.getMaxHealth());
             player.setAbsorptionAmount(0);
+            player.getHungerManager().setSaturationLevel(5.0f);
+            player.getHungerManager().setExhaustion(0f);
+            player.getHungerManager().setFoodLevel(20);
 
             var reusablePotions = player.getInventory().main.stream().filter(
                     itemStack -> itemStack.isOf(ItemManager.MEDIKA_POTION)
@@ -55,10 +51,6 @@ public class RestAtEfigyC2SPacket {
 
             for (var potion : reusablePotions.toList()) {
                 potion.setDamage(0);
-            }
-
-            for (StatusEffectInstance effect : ribbon.getInteractEffects()) {
-                player.addStatusEffect(new StatusEffectInstance(effect));
             }
         }
     }

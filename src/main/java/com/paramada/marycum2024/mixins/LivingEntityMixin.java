@@ -66,6 +66,13 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
+    @Inject(at = @At("HEAD"), method = "isUndead", cancellable = true)
+    private void onFoodHeal(CallbackInfoReturnable<Boolean> cir) {
+        if (this.hasStatusEffect(ModEffects.ZOMBIEFICATION) || this.hasStatusEffect(ModEffects.VAMPIRISM)) {
+            cir.setReturnValue(true);
+        }
+    }
+
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         var source = damageSource.getSource();
@@ -98,7 +105,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     }
 
 
-
     @Override
     public NbtCompound maryCum2024$getPersistentData() {
         if (persistentData == null) {
@@ -106,6 +112,9 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
         if (!persistentData.contains("upgrade")) {
             persistentData.putInt("upgrade", 0);
+        }
+        if (!persistentData.contains("level")) {
+            persistentData.putInt("level", 1);
         }
         return persistentData;
     }

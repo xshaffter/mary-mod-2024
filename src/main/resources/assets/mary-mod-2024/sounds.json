@@ -4,5 +4,17 @@
     "sounds": [
       "mary-mod-2024:bandage_heal"
     ]
+  },
+  "zipper_open":{
+    "subtitle": "sounds.mary-mod-2024.zipper_open",
+    "sounds": [
+      "mary-mod-2024:zipper_open"
+    ]
+  },
+  "zipper_close":{
+    "subtitle": "sounds.mary-mod-2024.zipper_close",
+    "sounds": [
+      "mary-mod-2024:zipper_close"
+    ]
   }
 }
