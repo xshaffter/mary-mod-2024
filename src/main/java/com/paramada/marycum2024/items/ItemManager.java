@@ -5,6 +5,11 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.entities.ModEntities;
 import com.paramada.marycum2024.items.custom.*;
+import com.paramada.marycum2024.items.custom.containers.ParticularContainerItem;
+import com.paramada.marycum2024.items.custom.containers.PouchPredicates;
+import com.paramada.marycum2024.items.custom.potions.Bandage;
+import com.paramada.marycum2024.items.custom.potions.MedikaPotion;
+import com.paramada.marycum2024.items.custom.potions.ReusablePotion;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -13,6 +18,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.PotionItem;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -31,16 +37,18 @@ public class ItemManager {
     public static final Item ESTUS_SHARD = new Item(new FabricItemSettings().rarity(Rarity.RARE).maxCount(8).fireproof());
     public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new FabricItemSettings()));
     public static final Item MEDIKA_POTION = new MedikaPotion();
+    public static final Item POTION_CASE = new ParticularContainerItem(Rarity.COMMON, 3, 3, PouchPredicates.POTION_PREDICATE);
+    public static final Item POTION_CASE_2 = new ParticularContainerItem(Rarity.COMMON, 4, 4, PouchPredicates.POTION_PREDICATE);
 
     // Trinkets
     public static final Item GARLIC_NECKLACE = new GarlicNecklace();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
             new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 0, false, true)
     ), ImmutableMultimap.of(
-
+            EntityAttributes.GENERIC_MAX_HEALTH, new EntityAttributeModifier(UUID.randomUUID(), "ribbon_max_hp", 4, EntityAttributeModifier.Operation.ADDITION)
     ));
-    public static final Item BLUE_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
-
+    public static final Item GREEN_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+            new StatusEffectInstance(ModEffects.ZOMBIEFICATION, MaryMod2024.TICKS_PER_SECOND * 120)
     ), ImmutableMultimap.of(
 
     ));
@@ -48,6 +56,9 @@ public class ItemManager {
             new StatusEffectInstance(ModEffects.VAMPIRISM, MaryMod2024.TICKS_PER_SECOND * 120)
     ), ImmutableMultimap.of(
             EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(UUID.randomUUID(), "ribbon_atk_sp", 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL)
+    ));
+    public static final Item BLUE_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
+    ), ImmutableMultimap.of(
     ));
     public static final Item CYAN_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
 
@@ -59,14 +70,8 @@ public class ItemManager {
     ), ImmutableMultimap.of(
 
     ));
-    public static final Item GREEN_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
-
-    ), ImmutableMultimap.of(
-
-    ));
 
 
-    @SuppressWarnings("SameParameterValue")
     private static Item registerItem(final String name, final Item item) {
         return Registry.register(Registries.ITEM, new Identifier(MaryMod2024.MOD_ID, name), item);
     }
@@ -85,6 +90,8 @@ public class ItemManager {
         registerItem("green_ribbon_trinket", GREEN_RIBBON_TRINKET);
         registerItem("medika_potion", MEDIKA_POTION);
         registerItem("garlic_necklace", GARLIC_NECKLACE);
+        registerItem("potion_case", POTION_CASE);
+        registerItem("potion_case_2", POTION_CASE_2);
 
         ItemGroups.registerItemGroups();
     }

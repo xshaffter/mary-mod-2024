@@ -9,6 +9,7 @@ import com.paramada.marycum2024.entities.client.ModModelLayers;
 import com.paramada.marycum2024.events.KeyboardHandler;
 import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.screens.EfigyScreen;
+import com.paramada.marycum2024.screens.ParticularContainerScreen;
 import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -18,6 +19,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 
@@ -33,11 +35,12 @@ public class MaryMod2024Client implements ClientModInitializer {
         NetworkManager.registerS2CPackets();
         KeyboardHandler.register();
 
-
         EntityRendererRegistry.register(ModEntities.BEAGLE, BeagleRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ModModelLayers.BEAGLE, BeagleModel::getTexturedModelData);
 
         HandledScreens.register(ModScreenHandlers.EFIGY_BLOCK_SCREEN_HANDLER, EfigyScreen::new);
+
+        HandledScreens.register(ModScreenHandlers.PARTICULAR_SCREEN_HANDLER, ParticularContainerScreen::new);
 
         BlockEntityRendererFactories.register(BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntityRenderer::new);
 

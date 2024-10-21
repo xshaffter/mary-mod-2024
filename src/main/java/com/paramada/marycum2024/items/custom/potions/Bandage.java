@@ -1,6 +1,7 @@
-package com.paramada.marycum2024.items.custom;
+package com.paramada.marycum2024.items.custom.potions;
 
 import com.paramada.marycum2024.events.SoundManager;
+import com.paramada.marycum2024.items.custom.IMaryItem;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.PotionItem;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
@@ -35,7 +37,7 @@ public class Bandage extends PotionItem implements IMaryItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         PlayerEntityBridge.starBandagetHealing(user);
-        user.playSound(SoundManager.BANDAGE_HEAL, 1, 1);
+        user.playSound(SoundManager.BANDAGE_HEAL, SoundCategory.PLAYERS, 1, 1);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 
@@ -47,7 +49,7 @@ public class Bandage extends PotionItem implements IMaryItem {
         player.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 12 * 20 + 10, 1));
 
         stack.decrement(1);
-        player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, 1, 1);
+        player.playSound(SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.PLAYERS, 1, 1);
         return stack;
     }
 

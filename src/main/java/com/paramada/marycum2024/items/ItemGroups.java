@@ -16,6 +16,7 @@ public class ItemGroups {
     public static ItemGroup MARY_MOD_MISC_GROUP;
     public static ItemGroup MARY_MOD_ACCESORIES_GROUP;
     public static ItemGroup MARY_MOD_HEALING_GROUP;
+    public static ItemGroup MARY_MOD_CONTAINERS_GROUP;
 
     public static void registerItemGroups() {
         MARY_MOD_BLOCKS_GROUP = Registry.register(
@@ -34,6 +35,16 @@ public class ItemGroups {
                 FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MARY_COIN))
                         .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_armors"))
                         .entries(((displayContext, entries) -> {
+                        })).build()
+        );
+        MARY_MOD_CONTAINERS_GROUP = Registry.register(
+                Registries.ITEM_GROUP,
+                new Identifier(MaryMod2024.MOD_ID, "mary_mod_containers"),
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MARY_COIN))
+                        .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_containers"))
+                        .entries(((displayContext, entries) -> {
+                            entries.add(ItemManager.POTION_CASE);
+                            entries.add(ItemManager.POTION_CASE_2);
                         })).build()
         );
         MARY_MOD_MISC_GROUP = Registry.register(

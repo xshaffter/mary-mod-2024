@@ -66,6 +66,13 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
+    @Inject(at = @At("HEAD"), method = "isUndead", cancellable = true)
+    private void onFoodHeal(CallbackInfoReturnable<Boolean> cir) {
+        if (this.hasStatusEffect(ModEffects.ZOMBIEFICATION) || this.hasStatusEffect(ModEffects.VAMPIRISM)) {
+            cir.setReturnValue(true);
+        }
+    }
+
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         var source = damageSource.getSource();

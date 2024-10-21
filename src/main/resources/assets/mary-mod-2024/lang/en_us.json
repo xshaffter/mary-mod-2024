@@ -45,8 +45,11 @@
   "tooltip.mary-mod-2024.medika_potion": "Una poción especial",
   "itemGroup.mary-mod-2024.mary_mod_blocks": "Mary Mod Blocks",
   "itemGroup.mary-mod-2024.mary_mod_armors": "Mary Mod Armors",
+  "itemGroup.mary-mod-2024.mary_mod_containers": "Mary Mod Containers",
   "itemGroup.mary-mod-2024.mary_mod_misc":  "Mary Mod Misc",
   "itemGroup.mary-mod-2024.mary_mod_accesories": "Mary Mod Accesories",
   "itemGroup.mary-mod-2024.mary_mod_healing":  "Mary Mod Healing",
-  "item.mary-mod-2024.garlic_necklace": "Collar de ajo"
+  "item.mary-mod-2024.garlic_necklace": "Collar de ajo",
+  "item.mary-mod-2024.potion_case": "Potion pouch",
+  "item.mary-mod-2024.potion_case_2": "Potion pouch"
 }

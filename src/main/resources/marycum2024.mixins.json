@@ -6,6 +6,7 @@
   "mixins": [
     "LivingEntityMixin",
     "PotionUtilMixin",
+    "ServerPlayerEntityMixin",
     "inventory.EnderInventoryMixin",
     "inventory.InventoryMixin",
     "inventory.ItemMixin",

@@ -1,6 +1,7 @@
-package com.paramada.marycum2024.items.custom;
+package com.paramada.marycum2024.items.custom.potions;
 
 import com.paramada.marycum2024.effects.ModEffects;
+import com.paramada.marycum2024.items.custom.IMaryItem;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
 import com.paramada.marycum2024.util.UpgradeManager;
 import net.minecraft.entity.Entity;

@@ -39,9 +39,9 @@ public class MaryMod2024 implements ModInitializer {
     public void onInitialize() {
         ModScreenHandlers.registerScreenHandlersForServer();
         ModEffects.registerEffects();
-        ItemManager.registerModItems();
         BlockEntityManager.registerEntities();
         BlockManager.registerModBlocks();
+        ItemManager.registerModItems();
         AdvancementManager.registerCriterions();
         NetworkManager.registerC2SPackets();
         SoundManager.registerSounds();
