@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.client;
 
+import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.EfigyBlockEntityRenderer;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.HiddenBlockEntityRenderer;
