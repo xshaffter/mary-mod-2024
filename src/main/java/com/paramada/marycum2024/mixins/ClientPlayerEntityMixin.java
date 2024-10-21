@@ -31,7 +31,7 @@ public abstract class ClientPlayerEntityMixin implements IExampleAnimatedPlayer 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(ClientWorld world, GameProfile profile, CallbackInfo ci) {
         var player = (AbstractClientPlayerEntity) (Object)this;
-        var animation = PlayerAnimationAccess.getPlayerAnimLayer(player); //Register the layer with a priority
+        var animation = PlayerAnimationAccess.getPlayerAnimLayer(player);
         animation.addAnimLayer(1000, modAnimationContainer);
     }
 
