@@ -32,8 +32,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class EfigyBlockEntity extends SingleSpaceBlockEntity implements NamedScreenHandlerFactory {
-    public static final int INVENTORY_SIZE = 1;
-    private final Inventory inventory = new SingleSpaceInventory<>(this);
 
     public EfigyBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityManager.EFIGY_ENTITY, pos, state);
@@ -51,10 +49,6 @@ public class EfigyBlockEntity extends SingleSpaceBlockEntity implements NamedScr
         }
         world.updateListeners(pos, getCachedState(), getCachedState(), 3);
         super.markDirty();
-    }
-
-    public static void tick(World world, BlockPos blockPos, BlockState state, EfigyBlockEntity entity) {
-
     }
 
     @Override

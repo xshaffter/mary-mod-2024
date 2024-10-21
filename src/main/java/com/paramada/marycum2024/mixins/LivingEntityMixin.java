@@ -33,9 +33,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     public abstract boolean hasStatusEffect(StatusEffect effect);
 
     @Shadow
-    public abstract void heal(float amount);
-
-    @Shadow
     public abstract boolean damage(DamageSource source, float amount);
 
     @Shadow
@@ -58,7 +55,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     protected void onTick(CallbackInfo ci) {
         //noinspection ConstantValue
         if (!(((Entity) this) instanceof ServerPlayerEntity player)) {
-
             return;
         }
 
@@ -68,7 +64,7 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
             var comp = trinketComponent.get();
             if (comp.isEquipped(ItemManager.GLASSES)) {
                 if (player.getWorld().getTime() % 80 == 0) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, MaryMod2024.TICKS_PER_SECOND * 20, 0));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, MaryMod2024.TICKS_PER_SECOND * 20, 0, false, false));
                 }
             }
         }

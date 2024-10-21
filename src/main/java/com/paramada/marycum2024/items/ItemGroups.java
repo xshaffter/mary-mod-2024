@@ -55,6 +55,7 @@ public class ItemGroups {
                         .entries(((displayContext, entries) -> {
                             entries.add(ItemManager.MARY_COIN);
                             entries.add(ItemManager.BEAGLE_SPAWN_EGG);
+                            entries.add(ItemManager.TDAH_PILL);
 
                             entries.add(ItemManager.PINK_RIBBON);
 

@@ -73,6 +73,8 @@ public class ItemManager {
 
     ));
 
+    public static final Item TDAH_PILL = new TDAHPill();
+
 
     private static Item registerItem(final String name, final Item item) {
         return Registry.register(Registries.ITEM, new Identifier(MaryMod2024.MOD_ID, name), item);
@@ -95,6 +97,7 @@ public class ItemManager {
         registerItem("potion_case", POTION_CASE);
         registerItem("potion_case_2", POTION_CASE_2);
         registerItem("glasses", GLASSES);
+        registerItem("tdah_pill", TDAH_PILL);
 
         ItemGroups.registerItemGroups();
     }

@@ -156,12 +156,6 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
         super.appendProperties(builder);
     }
 
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null : validateTicker(type, BlockEntityManager.EFIGY_ENTITY, EfigyBlockEntity::tick);
-    }
-
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
         return CODEC;

@@ -11,9 +11,13 @@ import net.minecraft.util.Identifier;
 
 public class BlockEntityManager {
     public static BlockEntityType<EfigyBlockEntity> EFIGY_ENTITY;
+    public static BlockEntityType<HiddenBlockEntity> HIDDEN_ENTITY;
 
     public static void registerEntities() {
         EFIGY_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MaryMod2024.MOD_ID, "efigy_entity"),
                 BlockEntityType.Builder.create(EfigyBlockEntity::new, BlockManager.EFIGY).build(null));
+
+        HIDDEN_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(MaryMod2024.MOD_ID, "hidden_entity"),
+                BlockEntityType.Builder.create(HiddenBlockEntity::new, BlockManager.HIDDEN_BLOCK).build(null));
     }
 }
