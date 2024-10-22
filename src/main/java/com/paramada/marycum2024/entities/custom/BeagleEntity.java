@@ -1,14 +1,12 @@
 package com.paramada.marycum2024.entities.custom;
 
 import com.paramada.marycum2024.entities.ModEntities;
-import com.paramada.marycum2024.entities.ai.BeagleAttackGoal;
-import com.paramada.marycum2024.entities.ai.BeagleAutoFindEnemiesGoal;
-import com.paramada.marycum2024.entities.ai.BeagleFollowPlayerGoal;
-import com.paramada.marycum2024.entities.ai.BeagleTrackPlayerTargetGoal;
+import com.paramada.marycum2024.entities.ai.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -25,8 +23,10 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-public class BeagleEntity extends AnimalEntity {
+public class BeagleEntity extends WolfEntity {
     public static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(BeagleEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public static final TrackedData<Boolean> BARKING = DataTracker.registerData(BeagleEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public final AnimationState idleAnimationState = new AnimationState();
@@ -53,7 +53,7 @@ public class BeagleEntity extends AnimalEntity {
     }
 
     public void setBarking(boolean barking) {
-        this.dataTracker.set(BARKING, true);
+        this.dataTracker.set(BARKING, barking);
     }
 
     @Override
@@ -97,23 +97,33 @@ public class BeagleEntity extends AnimalEntity {
         super.tick();
         if (this.getWorld().isClient) {
             setupAnimationStates();
+        } else if (!this.isTamed()){
+            var player = getEntityWorld().getClosestPlayer(TargetPredicate.DEFAULT.setBaseMaxDistance(10), this);
+            if (player != null) {
+                this.setOwner(player);
+            }
         }
     }
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new BeagleAttackGoal(this, 1, true));
-        this.goalSelector.add(2, new BeagleAutoFindEnemiesGoal(this));
-        this.goalSelector.add(3, new BeagleFollowPlayerGoal(this, 1.15));
+        this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(1, new BeagleEscapeDangerGoal(this, 1.5));
+        this.goalSelector.add(3, new BeagleAutoFindEnemiesGoal(this));
+        this.goalSelector.add(4, new PounceAtTargetGoal(this, 0.4F));
 
-        this.goalSelector.add(4, new WanderAroundFarGoal(this, 1d));
-        this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 4f));
-        this.goalSelector.add(6, new LookAroundGoal(this));
+        this.goalSelector.add(5, new BeagleAttackGoal(this, 1, true));
+        this.goalSelector.add(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
+        this.goalSelector.add(7, new AnimalMateGoal(this, 1.0));
+        this.goalSelector.add(8, new WanderAroundFarGoal(this, 1d));
+        this.goalSelector.add(9, new WolfBegGoal(this, 8.0F));
+        this.goalSelector.add(10, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.add(10, new LookAroundGoal(this));
 
-        this.targetSelector.add(1, new BeagleTrackPlayerTargetGoal(this));
-        this.targetSelector.add(2, new RevengeGoal(this));
-        this.targetSelector.add(7, new ActiveTargetGoal<>(this, HostileEntity.class, false));
+        this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
+        this.targetSelector.add(2, new AttackWithOwnerGoal(this));
+        this.targetSelector.add(3, (new RevengeGoal(this)).setGroupRevenge());
+        this.targetSelector.add(4, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
     }
 
     public static DefaultAttributeContainer.Builder createBeagleAttributes() {
@@ -128,24 +138,4 @@ public class BeagleEntity extends AnimalEntity {
     public BeagleEntity createChild(ServerWorld world, PassiveEntity entity) {
         return ModEntities.BEAGLE.create(world);
     }
-
-    public LivingEntity getOwner() {
-        List<? extends PlayerEntity> list = this
-                .getWorld()
-                .getNonSpectatingEntities(PlayerEntity.class, this.getBoundingBox().expand(8.0, 4.0, 8.0));
-        return list.stream().filter((player -> player.getName().getString().equalsIgnoreCase("maryblog") || list.get(0) == player)).findFirst().orElse(null);
-    }
-
-    public boolean canAttackWithOwner(LivingEntity target, LivingEntity owner) {
-        if (target instanceof CreeperEntity || target instanceof GhastEntity) {
-            return false;
-        } else if (target instanceof WolfEntity wolfEntity) {
-            return !wolfEntity.isTamed() || wolfEntity.getOwner() != owner;
-        } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity) owner).shouldDamagePlayer((PlayerEntity) target)) {
-            return false;
-        } else {
-            return (!(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame()) && (!(target instanceof TameableEntity) || !((TameableEntity) target).isTamed());
-        }
-    }
-
 }

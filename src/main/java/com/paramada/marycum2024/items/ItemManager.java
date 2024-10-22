@@ -12,7 +12,9 @@ import com.paramada.marycum2024.items.custom.potions.MedikaPotion;
 import com.paramada.marycum2024.items.custom.potions.ReusablePotion;
 import com.paramada.marycum2024.items.trinkets.GarlicNecklace;
 import com.paramada.marycum2024.items.trinkets.Glasses;
+import com.paramada.marycum2024.items.trinkets.MicrophoneTrinket;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
+import dev.emi.trinkets.api.TrinketItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -72,6 +74,8 @@ public class ItemManager {
 
     ));
 
+    public static final Item MICROPHONE_TRINKET = new MicrophoneTrinket();
+
     public static final Item TDAH_PILL = new TDAHPillItem();
 
 
@@ -97,6 +101,7 @@ public class ItemManager {
         registerItem("potion_case_2", POTION_CASE_2);
         registerItem("glasses", GLASSES);
         registerItem("tdah_pill", TDAH_PILL);
+        registerItem("microphone_trinket", MICROPHONE_TRINKET);
 
         ItemGroups.registerItemGroups();
     }
