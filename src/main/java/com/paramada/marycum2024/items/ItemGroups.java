@@ -64,10 +64,9 @@ public class ItemGroups {
         MARY_MOD_ACCESORIES_GROUP = Registry.register(
                 Registries.ITEM_GROUP,
                 new Identifier(MaryMod2024.MOD_ID, "mary_mod_accesories"),
-                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.GARLIC_NECKLACE))
+                FabricItemGroup.builder().icon(() -> new ItemStack(ItemManager.MICROPHONE_TRINKET))
                         .displayName(Text.translatable("itemGroup.mary-mod-2024.mary_mod_accesories"))
                         .entries(((displayContext, entries) -> {
-                            entries.add(ItemManager.GARLIC_NECKLACE);
                             entries.add(ItemManager.GLASSES);
                             entries.add(ItemManager.BLACK_RIBBON_TRINKET);
                             entries.add(ItemManager.BLUE_RIBBON_TRINKET);
@@ -75,6 +74,7 @@ public class ItemGroups {
                             entries.add(ItemManager.GREEN_RIBBON_TRINKET);
                             entries.add(ItemManager.PINK_RIBBON_TRINKET);
                             entries.add(ItemManager.RED_RIBBON_TRINKET);
+                            entries.add(ItemManager.MICROPHONE_TRINKET);
                         })).build()
         );
         MARY_MOD_HEALING_GROUP = Registry.register(

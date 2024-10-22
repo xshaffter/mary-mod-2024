@@ -8,20 +8,13 @@ import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.Perspective;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class PlayerEntityBridge {
-    public static String getTeam(LivingEntity player) {
-        var living = (IPlayerFunctions) player;
-        return living.getTeamName();
-    }
 
     public static int getMoney(PlayerEntity player) {
         var enderchest = player.getEnderChestInventory();
@@ -104,8 +97,6 @@ public class PlayerEntityBridge {
         var builder = animation.mutableCopy();
         animation = builder.build();
 
-        MinecraftClient.getInstance().options.setPerspective(Perspective.THIRD_PERSON_BACK);
-
         var keyAnimation = new KeyframeAnimationPlayer(animation)
                 .setFirstPersonConfiguration(new FirstPersonConfiguration(false, false, false, false));
         animationContainer.setAnimation(keyAnimation);
@@ -115,7 +106,6 @@ public class PlayerEntityBridge {
         if (!player.getWorld().isClient) {
             return;
         }
-        MinecraftClient.getInstance().options.setPerspective(Perspective.FIRST_PERSON);
 
         var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
         animationContainer.setAnimation(null);

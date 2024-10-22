@@ -42,8 +42,8 @@ public class ItemManager {
     public static final Item POTION_CASE = new ParticularContainerItem(Rarity.COMMON, 3, 3, PouchPredicates.POTION_PREDICATE);
     public static final Item POTION_CASE_2 = new ParticularContainerItem(Rarity.COMMON, 4, 4, PouchPredicates.POTION_PREDICATE);
 
+
     // Trinkets
-    public static final Item GARLIC_NECKLACE = new GarlicNecklace();
     public static final Item GLASSES = new Glasses();
     public static final Item PINK_RIBBON_TRINKET = new RibbonTrinket(Rarity.RARE, List.of(
             new StatusEffectInstance(StatusEffects.RESISTANCE, MaryMod2024.TICKS_PER_SECOND * 15, 0, false, true)
@@ -96,7 +96,6 @@ public class ItemManager {
         registerItem("red_ribbon_trinket", RED_RIBBON_TRINKET);
         registerItem("green_ribbon_trinket", GREEN_RIBBON_TRINKET);
         registerItem("medika_potion", MEDIKA_POTION);
-        registerItem("garlic_necklace", GARLIC_NECKLACE);
         registerItem("potion_case", POTION_CASE);
         registerItem("potion_case_2", POTION_CASE_2);
         registerItem("glasses", GLASSES);
