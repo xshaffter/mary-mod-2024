@@ -9,7 +9,6 @@ import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -23,7 +22,9 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -59,6 +60,8 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
             return;
         }
 
+
+
         var trinketComponent = TrinketsApi.getTrinketComponent(player);
 
         if (trinketComponent.isPresent()) {
@@ -85,7 +88,7 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
-    @ModifyVariable(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "damage", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     private float overrideDamage(float amount, DamageSource damageSource) {
         var source = damageSource.getSource();
         if (!(source instanceof ArrowEntity)) {
@@ -109,22 +112,21 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     }
 
 
-
-
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         var attacker = damageSource.getAttacker();
-        if (attacker != null && !this.isUndead() && this.isAttackable() && attacker instanceof PlayerEntity player) {
-            if (player.hasStatusEffect(ModEffects.VAMPIRISM)) {
-                StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM);
-                if (effect != null) {
-                    int amplifier = effect.getAmplifier();
-                    player.heal(amount / (4f / (amplifier + 1)));
+        if (attacker instanceof PlayerEntity player) {
+            if (!this.isUndead() && this.isAttackable()) {
+                if (player.hasStatusEffect(ModEffects.VAMPIRISM)) {
+                    StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM);
+                    if (effect != null) {
+                        int amplifier = effect.getAmplifier();
+                        player.heal(amount / (4f / (amplifier + 1)));
+                    }
                 }
             }
         }
     }
-
 
     @Inject(at = @At("HEAD"), method = "onKilledBy")
     private void onGetKilled(LivingEntity source, CallbackInfo ci) {

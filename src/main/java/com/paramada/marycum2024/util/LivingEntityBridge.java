@@ -1,6 +1,9 @@
 package com.paramada.marycum2024.util;
 
+import dev.emi.trinkets.api.TrinketComponent;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.nbt.NbtCompound;
@@ -33,5 +36,11 @@ public class LivingEntityBridge {
             return player.isCreative();
         }
         return false;
+    }
+
+    public static TrinketComponent getTrinketComponent(LivingEntity player) {
+
+        var trinketComponent = TrinketsApi.getTrinketComponent(player);
+        return trinketComponent.orElse(null);
     }
 }
