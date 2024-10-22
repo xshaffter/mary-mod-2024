@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.mixins;
 
 import com.paramada.marycum2024.MaryMod2024;
+import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.util.IEntityDataSaver;
@@ -13,16 +14,17 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
-import org.apache.commons.lang3.ObjectUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -58,6 +60,8 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
             return;
         }
 
+
+
         var trinketComponent = TrinketsApi.getTrinketComponent(player);
 
         if (trinketComponent.isPresent()) {
@@ -84,20 +88,45 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         }
     }
 
+    @ModifyVariable(method = "damage", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
+    private float overrideDamage(float amount, DamageSource damageSource) {
+        var source = damageSource.getSource();
+        if (!(source instanceof ArrowEntity)) {
+            return amount;
+        }
+        var attacker = damageSource.getAttacker();
+        if (!(attacker instanceof PlayerEntity player)) {
+            return amount;
+        }
+
+        var trinketComponent = TrinketsApi.getTrinketComponent(player);
+
+        if (trinketComponent.isPresent()) {
+            var comp = trinketComponent.get();
+            if (comp.isEquipped(ItemManager.MICROPHONE_TRINKET)) {
+                var damageMultiplier = player.getAttributeValue(ModEntityAttributes.DISTANCE_DAMAGE_MULTIPLIER);
+                return (float) (amount * damageMultiplier);
+            }
+        }
+        return amount;
+    }
+
+
     @Inject(at = @At("HEAD"), method = "damage")
     private void onGetDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
-        var source = damageSource.getSource();
-        if (source != null && !this.isUndead() && this.isAttackable() && source instanceof PlayerEntity player) {
-            if (player.hasStatusEffect(ModEffects.VAMPIRISM)) {
-                StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM);
-                if (effect != null) {
-                    int amplifier = effect.getAmplifier();
-                    player.heal(amount / (4f / (amplifier + 1)));
+        var attacker = damageSource.getAttacker();
+        if (attacker instanceof PlayerEntity player) {
+            if (!this.isUndead() && this.isAttackable()) {
+                if (player.hasStatusEffect(ModEffects.VAMPIRISM)) {
+                    StatusEffectInstance effect = player.getStatusEffect(ModEffects.VAMPIRISM);
+                    if (effect != null) {
+                        int amplifier = effect.getAmplifier();
+                        player.heal(amount / (4f / (amplifier + 1)));
+                    }
                 }
             }
         }
     }
-
 
     @Inject(at = @At("HEAD"), method = "onKilledBy")
     private void onGetKilled(LivingEntity source, CallbackInfo ci) {

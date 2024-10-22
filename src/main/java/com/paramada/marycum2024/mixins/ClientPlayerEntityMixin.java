@@ -22,15 +22,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin implements IExampleAnimatedPlayer {
 
-    @Shadow public abstract boolean isCreative();
+    @Shadow
+    public abstract boolean isCreative();
 
-    @Shadow public abstract boolean isSpectator();
+    @Shadow
+    public abstract boolean isSpectator();
 
     @Unique
     private final ModifierLayer<IAnimation> modAnimationContainer = new ModifierLayer<>();
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(ClientWorld world, GameProfile profile, CallbackInfo ci) {
-        var player = (AbstractClientPlayerEntity) (Object)this;
+        var player = (AbstractClientPlayerEntity) (Object) this;
         var animation = PlayerAnimationAccess.getPlayerAnimLayer(player);
         animation.addAnimLayer(1000, modAnimationContainer);
     }
@@ -38,10 +41,14 @@ public abstract class ClientPlayerEntityMixin implements IExampleAnimatedPlayer 
     @Inject(method = "tick", at = @At("HEAD"))
     private void enforceShoulderSurfing(CallbackInfo ci) {
         var shoulderSurfing = ShoulderSurfing.getInstance();
+        if (shoulderSurfing == null) {
+            return;
+        }
         if (!shoulderSurfing.isShoulderSurfing() && !this.isCreative() && !this.isSpectator()) {
             shoulderSurfing.changePerspective(Perspective.SHOULDER_SURFING);
         }
     }
+
     @Override
     public ModifierLayer<IAnimation> maryCum2024$getModAnimation() {
         return modAnimationContainer;

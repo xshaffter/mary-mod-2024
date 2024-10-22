@@ -2,6 +2,7 @@ package com.paramada.marycum2024.entities;
 
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.entities.custom.BeagleEntity;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityType;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -14,8 +15,8 @@ public class ModEntities {
     public static final EntityType<BeagleEntity> BEAGLE = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier(MaryMod2024.MOD_ID, "beagle"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BeagleEntity::new)
-                    .dimensions(EntityDimensions.fixed(1, 1))
+            EntityType.Builder.create(BeagleEntity::new, SpawnGroup.CREATURE)
+                    .setDimensions(1, 1)
                     .build()
     );
 }
