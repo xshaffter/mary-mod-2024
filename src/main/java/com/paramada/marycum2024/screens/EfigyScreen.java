@@ -22,7 +22,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
     private static final Identifier MENU_TITLE_ID = new Identifier(MaryMod2024.MOD_ID, "textures/gui/title/marycraft_logo.png");
     private TextureComponent MENU_TITLE_COMPONENT;
     private int MENU_WIDTH;
-    private static int FIRST_CHILD_MARGIN = 50;
+    private static final int FIRST_CHILD_MARGIN = 50;
 
     private int PADDING_WIDTH = 32;
     private static final int PADDING_HEIGHT = 32;
@@ -51,20 +51,20 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
         var nextUpgradeCost = UpgradeManager.getNextUpgradeCost(client.player);
         var nextLevelCost = UpgradeManager.getNextLevelCost(client.player);
 
-        var durabilityText = "Aumentar pociones";
-        var upgradeText = "Mejorar poción";
-        var levelText = "Subir de nivel";
+        var durabilityText = Text.translatable("text.mary-mod-2024.increase_potion_durability");
+        var upgradeText = Text.translatable("text.mary-mod-2024.increase_potion_upgrade");
+        var levelText = Text.translatable("text.mary-mod-2024.increase_player_level");
 
         if (nextDurabilityCost > -1) {
-            durabilityText += " (%d)".formatted(nextDurabilityCost);
+            durabilityText.append(Text.literal(" (%d)".formatted(nextDurabilityCost)));
         }
 
         if (nextUpgradeCost > -1) {
-            upgradeText += " (%d)".formatted(nextUpgradeCost);
+            upgradeText.append(Text.literal(" (%d)".formatted(nextUpgradeCost)));
         }
 
         if (nextLevelCost > -1) {
-            levelText += " (%d)".formatted(nextLevelCost);
+            levelText.append(Text.literal(" (%d)".formatted(nextLevelCost)));
         }
 
         this.clearChildren();
@@ -75,7 +75,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> handler.levelUp(),
-                Text.literal(levelText),
+                levelText,
                 nextLevelCost == -1
         ));
 
@@ -85,7 +85,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> handler.increasePotion(),
-                Text.literal(durabilityText),
+                durabilityText,
                 nextDurabilityCost == -1
         ));
 
@@ -95,7 +95,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> handler.upgradePotion(),
-                Text.literal(upgradeText),
+                upgradeText,
                 nextUpgradeCost == -1
         ));
 
@@ -108,7 +108,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                     handler.rest();
                     this.close();
                 },
-                Text.literal("Descansar")
+                Text.translatable("text.mary-mod-2024.rest")
         ));
 
         this.addDrawableChild(new CustomButtonWidget(
@@ -117,7 +117,7 @@ public class EfigyScreen extends HandledScreen<EfigyBlockScreenHandler> {
                 MENU_WIDTH - PADDING_WIDTH * 2,
                 32,
                 button -> this.close(),
-                Text.literal("Salir")
+                Text.translatable("text.mary-mod-2024.exit")
         ));
 
         var titleW = MENU_WIDTH - 1 - PADDING_WIDTH * 2;

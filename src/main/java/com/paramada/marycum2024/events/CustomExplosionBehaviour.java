@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.events;
 
+import com.paramada.marycum2024.entities.custom.BeagleEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +16,11 @@ public class CustomExplosionBehaviour extends ExplosionBehavior {
         if (explosion instanceof CustomExplosion customExplosion && customExplosion.source == entity) {
             return false;
         }
+
+        if (entity instanceof BeagleEntity) {
+            return false;
+        }
+
         return super.shouldDamage(explosion, entity);
     }
 
