@@ -19,8 +19,16 @@ public class ClientMixin {
     @Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
     private void hasOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         var cameraComponent = PlayerEntityBridge.asCameraComponent(this.player);
-        if (cameraComponent != null && cameraComponent.maryCum2024$getLockedTarget() == entity) {
-            cir.setReturnValue(true);
+        if (cameraComponent != null) {
+            if (cameraComponent.maryCum2024$hasLockedTarget()) {
+                if (!this.player.canSee(entity)) {
+                    cameraComponent.maryCum2024$setLockedTarget(null);
+                    return;
+                }
+            }
+            if (cameraComponent.maryCum2024$getLockedTarget() == entity) {
+                cir.setReturnValue(true);
+            }
         }
     }
 }
