@@ -4,6 +4,9 @@ import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,12 +23,6 @@ public class ClientMixin {
     private void hasOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         var cameraComponent = PlayerEntityBridge.asCameraComponent(this.player);
         if (cameraComponent != null) {
-            if (cameraComponent.maryCum2024$hasLockedTarget()) {
-                if (!this.player.canSee(entity)) {
-                    cameraComponent.maryCum2024$setLockedTarget(null);
-                    return;
-                }
-            }
             if (cameraComponent.maryCum2024$getLockedTarget() == entity) {
                 cir.setReturnValue(true);
             }
