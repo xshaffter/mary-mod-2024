@@ -36,7 +36,6 @@ public class ItemManager {
     public static final Item PINK_RIBBON = new RibbonItem(Rarity.COMMON);
     public static final Item BANDAGE = new Bandage();
     public static final Item ESTUS = new ReusablePotion();
-    public static final Item ESTUS_SHARD = new Item(new FabricItemSettings().rarity(Rarity.RARE).maxCount(8).fireproof());
     public static final Item BEAGLE_SPAWN_EGG = registerItem("beagle_spawn_egg", new SpawnEggItem(ModEntities.BEAGLE, 0xFF9c7144, 0xFF2a1a0d, new FabricItemSettings()));
     public static final Item MEDIKA_POTION = new MedikaPotion();
     public static final Item POTION_CASE = new ParticularContainerItem(Rarity.COMMON, 3, 3, PouchPredicates.POTION_PREDICATE);
@@ -87,7 +86,6 @@ public class ItemManager {
         registerItem("mary_coin_item", MARY_COIN);
         registerItem("bandage", BANDAGE);
         registerItem("estus", ESTUS);
-        registerItem("estus_shard", ESTUS_SHARD);
         registerItem("pink_ribbon", PINK_RIBBON);
         registerItem("pink_ribbon_trinket", PINK_RIBBON_TRINKET);
         registerItem("blue_ribbon_trinket", BLUE_RIBBON_TRINKET);

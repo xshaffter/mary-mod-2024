@@ -8,6 +8,7 @@ import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -109,5 +110,9 @@ public class PlayerEntityBridge {
 
         var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
         animationContainer.setAnimation(null);
+    }
+
+    public static ISoulsPlayerCamera asCameraComponent(ClientPlayerEntity player) {
+        return (ISoulsPlayerCamera) player;
     }
 }

@@ -70,32 +70,17 @@ public class CustomExplosion extends Explosion {
         });
 
         onlyPushableEntities.forEach(entity -> {
-            var distance3D = Math.sqrt(target.squaredDistanceTo(entity.getEyePos()));
-            if (entity instanceof TntEntity) {
-                distance3D = entity.distanceTo(target);
-            }
-            double distanceRate = entity.distanceTo(target) / explosionRadius;
 
-            double velocityX = entity.getX() / distance3D;
-            double velocityY = entity.getY() / distance3D;
-            double velocityZ = entity.getZ() / distance3D;
+            var distance3D = entity.distanceTo(target);
+            var distanceRate = distance3D / explosionRadius;
 
             if (this.behavior.shouldDamage(this, entity)) {
                 entity.damage(this.damageSource, getPower());
             }
 
-            double exposureVelocityRate = (1.0 - distanceRate) * (double) Explosion.getExposure(target.getPos(), entity) * 0.7;
-            double exposureVelocity;
-            if (entity instanceof LivingEntity livingEntity) {
-                exposureVelocity = ProtectionEnchantment.transformExplosionKnockback(livingEntity, exposureVelocityRate);
-            } else {
-                exposureVelocity = exposureVelocityRate;
-            }
-
-            double speedX = velocityX * exposureVelocity;
-            double speedY = velocityY * exposureVelocity * 2.5;
-            double speedZ = velocityZ * exposureVelocity;
-            var speedVector = new Vec3d(speedX, speedY, speedZ);
+            var exposureTerminalSpeed = 0.2;
+            var exposureSpeed = exposureTerminalSpeed * (1 - distanceRate);
+            var speedVector = new Vec3d(exposureSpeed, exposureSpeed, exposureSpeed);
             entity.setVelocity(entity.getVelocity().add(speedVector));
 
             if (entity instanceof PlayerEntity playerEntity && playerEntity.isCreative() && playerEntity.getAbilities().flying && playerEntity.isSpectator()) {

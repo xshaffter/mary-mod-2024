@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -31,6 +32,10 @@ public class MaryMod2024Client implements ClientModInitializer {
     public static final String NPC_TEAM = "ALLY_NPC";
     public static final String PLAYER_TEAM = "PLAYER";
     public static final String MOB_TEAM = "MOB_NPC";
+
+    public static void lockFocusedTarget(MinecraftClient client) {
+
+    }
 
     @Override
     public void onInitializeClient() {
@@ -52,6 +57,7 @@ public class MaryMod2024Client implements ClientModInitializer {
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_LEVEL_ID, PacketByteBufs.create());
+            MinecraftClient.getInstance().options.getDamageTiltStrength().setValue(0d);
         });
     }
 
