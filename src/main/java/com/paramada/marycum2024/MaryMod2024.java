@@ -13,8 +13,6 @@ import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.registry.RegistryWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +20,6 @@ public class MaryMod2024 implements ModInitializer {
 
     public static final String MOD_ID = "mary-mod-2024";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    public static final boolean DEBUG = FabricLoader.getInstance().isDevelopmentEnvironment();
     public static final int TICKS_PER_SECOND = 20;
 
     @Override
