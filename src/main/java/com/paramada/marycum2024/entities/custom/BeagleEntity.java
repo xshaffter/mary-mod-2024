@@ -1,11 +1,11 @@
 package com.paramada.marycum2024.entities.custom;
 
 import com.paramada.marycum2024.entities.ModEntities;
-import com.paramada.marycum2024.entities.ai.*;
-import net.minecraft.client.MinecraftClient;
+import com.paramada.marycum2024.entities.ai.BeagleAttackGoal;
+import com.paramada.marycum2024.entities.ai.BeagleAutoFindEnemiesGoal;
+import com.paramada.marycum2024.entities.ai.BeagleEscapeDangerGoal;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -13,18 +13,12 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class BeagleEntity extends WolfEntity {
     public static final TrackedData<Boolean> ATTACKING = DataTracker.registerData(BeagleEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
