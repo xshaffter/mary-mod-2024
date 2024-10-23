@@ -15,6 +15,7 @@
     "inventory.SimpleInventoryMixin"
   ],
   "client": [
+    "ClientMixin",
     "ClientPlayerEntityMixin",
     "InGameHudMixin",
     "ScreenMixin"

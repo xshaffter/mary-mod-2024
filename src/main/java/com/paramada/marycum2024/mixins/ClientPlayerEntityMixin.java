@@ -122,20 +122,11 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
     @Override
     public void maryCum2024$setLockedTarget(Entity target) {
         if (target == null) {
-            var networkHandler = MinecraftClient.getInstance().getNetworkHandler();
-            if (networkHandler != null) {
-                var buf = PacketByteBufs.create();
-                buf.writeInt(lockedTarget.getId());
-                ClientPlayNetworking.send(NetworkManager.REMOVE_LOCK_TARGET_ID, buf);
-            }
             lockedTarget = null;
         } else if (target instanceof LivingEntity living) {
             var networkHandler = MinecraftClient.getInstance().getNetworkHandler();
             if (networkHandler != null) {
                 lockedTarget = living;
-                var buf = PacketByteBufs.create();
-                buf.writeInt(lockedTarget.getId());
-                ClientPlayNetworking.send(NetworkManager.LOCK_TARGET_ID, buf);
             }
         }
     }
