@@ -1,5 +1,8 @@
 package com.paramada.marycum2024.client;
 
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
+import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
+import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.EfigyBlockEntityRenderer;
@@ -13,6 +16,8 @@ import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.screens.EfigyScreen;
 import com.paramada.marycum2024.screens.ParticularContainerScreen;
 import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
+import com.paramada.marycum2024.util.MinecraftClientBridge;
+import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,16 +26,35 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
 
 @Environment(EnvType.CLIENT)
 public class MaryMod2024Client implements ClientModInitializer {
 
-    public static final String NPC_TEAM = "ALLY_NPC";
-    public static final String PLAYER_TEAM = "PLAYER";
-    public static final String MOB_TEAM = "MOB_NPC";
+
+    public static void lockFocusedTarget() {
+        var client = MinecraftClient.getInstance();
+
+        var targets = MinecraftClientBridge.getPossibleTargets(client);
+
+        LivingEntity target = MinecraftClientBridge.getClossestTarget(targets);
+
+        var cameraComponent = PlayerEntityBridge.asCameraComponent(client.player);
+        if (cameraComponent != null) {
+            if (cameraComponent.maryCum2024$hasLockedTarget()) {
+                cameraComponent.maryCum2024$setLockedTarget(null);
+            } else if (target != null){
+                cameraComponent.maryCum2024$setLockedTarget(target);
+            }
+        }
+    }
 
     @Override
     public void onInitializeClient() {
@@ -52,6 +76,7 @@ public class MaryMod2024Client implements ClientModInitializer {
             ClientPlayNetworking.send(NetworkManager.REQUEST_UPGRADE_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_LEVEL_ID, PacketByteBufs.create());
+            MinecraftClient.getInstance().options.getDamageTiltStrength().setValue(0d);
         });
     }
 

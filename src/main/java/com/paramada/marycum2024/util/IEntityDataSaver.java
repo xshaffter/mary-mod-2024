@@ -4,6 +4,4 @@ import net.minecraft.nbt.NbtCompound;
 
 public interface IEntityDataSaver {
     NbtCompound maryCum2024$getPersistentData();
-
-    NbtCompound getPersistentData();
 }

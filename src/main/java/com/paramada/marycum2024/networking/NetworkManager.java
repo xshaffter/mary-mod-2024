@@ -4,6 +4,7 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.networking.packets.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.util.Identifier;
 
 public class NetworkManager {

@@ -86,7 +86,6 @@ public class ItemGroups {
 
                             entries.add(ItemManager.BANDAGE);
 
-                            entries.add(ItemManager.ESTUS_SHARD);
                             entries.add(ItemManager.MEDIKA_POTION);
                             entries.add(ItemManager.ESTUS);
                         })).build()

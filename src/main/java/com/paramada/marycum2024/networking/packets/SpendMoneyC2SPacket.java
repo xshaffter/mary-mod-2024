@@ -4,7 +4,6 @@ import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.util.PlayerEntityBridge;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;

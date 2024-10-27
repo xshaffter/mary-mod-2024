@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.mixins;
 
+import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.hud.HudElement;
 import com.paramada.marycum2024.util.LivingEntityBridge;
@@ -7,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -81,12 +83,12 @@ public abstract class InGameHudMixin {
         renderEconomy(context);
     }
 
-    @Inject(method = "renderHotbar", at = @At("HEAD"))
-    private void renderCustomHotbar(float tickDelta, DrawContext context, CallbackInfo ci) {
-//        renderPotionHUD(context);
-//        renderMainHand(context);
-//        renderOffHand(context);
-
+    @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
+    private void renderCustomHotbar(DrawContext context, CallbackInfo ci) {
+        var shoulderSurfing = ShoulderSurfing.getInstance();
+        if (!shoulderSurfing.isAiming()) {
+            ci.cancel();
+        }
     }
 
     @Unique
