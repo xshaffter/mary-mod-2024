@@ -39,23 +39,6 @@ import net.minecraft.util.hit.HitResult;
 public class MaryMod2024Client implements ClientModInitializer {
 
 
-    public static void lockFocusedTarget() {
-        var client = MinecraftClient.getInstance();
-
-        var targets = MinecraftClientBridge.getPossibleTargets(client);
-
-        LivingEntity target = MinecraftClientBridge.getClossestTarget(targets);
-
-        var cameraComponent = PlayerEntityBridge.asCameraComponent(client.player);
-        if (cameraComponent != null) {
-            if (cameraComponent.maryCum2024$hasLockedTarget()) {
-                cameraComponent.maryCum2024$setLockedTarget(null);
-            } else if (target != null){
-                cameraComponent.maryCum2024$setLockedTarget(target);
-            }
-        }
-    }
-
     @Override
     public void onInitializeClient() {
         NetworkManager.registerS2CPackets();

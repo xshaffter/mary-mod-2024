@@ -8,14 +8,18 @@ import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class PlayerEntityBridge {
+
+    private static final MinecraftClient client = MinecraftClient.getInstance();
 
     public static int getMoney(PlayerEntity player) {
         var enderchest = player.getEnderChestInventory();
@@ -114,5 +118,32 @@ public class PlayerEntityBridge {
 
     public static ISoulsPlayerCamera asCameraComponent(ClientPlayerEntity player) {
         return (ISoulsPlayerCamera) player;
+    }
+
+    public static void selectPreviousItem() {
+
+    }
+
+    public static void selectNextItem() {
+
+    }
+
+    public static void useSelectedItem() {
+
+    }
+
+    public static void lockFocusedTarget() {
+        var targets = MinecraftClientBridge.getPossibleTargets(client);
+
+        LivingEntity target = MinecraftClientBridge.getClossestTarget(targets);
+
+        var cameraComponent = PlayerEntityBridge.asCameraComponent(client.player);
+        if (cameraComponent != null) {
+            if (cameraComponent.maryCum2024$hasLockedTarget()) {
+                cameraComponent.maryCum2024$setLockedTarget(null);
+            } else if (target != null) {
+                cameraComponent.maryCum2024$setLockedTarget(target);
+            }
+        }
     }
 }
