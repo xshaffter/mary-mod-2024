@@ -3,27 +3,24 @@ package com.paramada.marycum2024.mixins;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.mojang.authlib.GameProfile;
-import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.math.Functions;
 import com.paramada.marycum2024.util.IExampleAnimatedPlayer;
 import com.paramada.marycum2024.util.ISoulsPlayerCamera;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.joml.Vector3d;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -75,17 +72,21 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
 
             var targetPos = lockedTarget.getBoundingBox().getCenter();
             var directionVec = targetPos.subtract(this.getPos()).normalize();
-            float newDelta = getNewDelta(directionVec);
-            this.setYaw(newDelta);
+            float newYaw = getNewDeltaYaw(directionVec);
+            float newPitch = getNewDeltaPitch(targetPos);
+            this.setYaw(newYaw);
+            this.setPitch(newPitch);
+            var camera = shoulderSurfing.getCamera();
+            camera.setYRot(newYaw);
 
         }
     }
 
     @Unique
-    private float getNewDelta(Vec3d directionVec) {
+    private float getNewDeltaYaw(Vec3d directionVec) {
         double angle = Math.atan2(-directionVec.x, directionVec.z) * 180 / Math.PI;
 
-        float adjustedPrevYaw = this.prevYaw;
+        float adjustedPrevYaw = this.getYaw();
         if (Math.abs(angle - adjustedPrevYaw) > 180) {
             if (adjustedPrevYaw > angle) {
                 angle += 360;
@@ -102,6 +103,13 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
             newDelta += 360;
         }
         return (float) newDelta;
+    }
+    @Unique
+    private float getNewDeltaPitch(Vec3d directionVec) {
+        double dX = this.getX() - directionVec.getX();
+        double dY = this.getEyeY() - directionVec.getY();
+        double dZ = this.getZ() - directionVec.getZ();
+        return (float) Math.atan2(Math.sqrt(dZ * dZ + dX * dX), dY);
     }
 
     @Override

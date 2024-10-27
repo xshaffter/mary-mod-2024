@@ -26,16 +26,7 @@ public class KeyboardHandler {
     private static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (zTargetingKey.wasPressed()) {
-                var target = client.crosshairTarget;
-                var cameraComponent = PlayerEntityBridge.asCameraComponent(client.player);
-                if (cameraComponent != null) {
-                    if (cameraComponent.maryCum2024$hasLockedTarget()) {
-                        cameraComponent.maryCum2024$setLockedTarget(null);
-                    } else if (target != null && target.getType() == HitResult.Type.ENTITY){
-                        var entityTarget = (EntityHitResult)target;
-                        cameraComponent.maryCum2024$setLockedTarget(entityTarget.getEntity());
-                    }
-                }
+                MaryMod2024Client.lockFocusedTarget();
             }
         });
     }

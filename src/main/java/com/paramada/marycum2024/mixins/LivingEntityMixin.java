@@ -10,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageSources;
+import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -90,8 +92,7 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
 
     @ModifyVariable(method = "damage", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     private float overrideDamage(float amount, DamageSource damageSource) {
-        var source = damageSource.getSource();
-        if (!(source instanceof ArrowEntity)) {
+        if (!damageSource.isOf(DamageTypes.ARROW) && !damageSource.isOf(DamageTypes.TRIDENT)) {
             return amount;
         }
         var attacker = damageSource.getAttacker();

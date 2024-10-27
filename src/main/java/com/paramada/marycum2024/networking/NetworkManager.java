@@ -4,6 +4,7 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.networking.packets.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.util.Identifier;
 
 public class NetworkManager {
@@ -21,9 +22,6 @@ public class NetworkManager {
     public static final Identifier LEVEL_UP_ID = new Identifier(MaryMod2024.MOD_ID, "level_up");
     public static final Identifier SYNC_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "sync_level");
     public static final Identifier REQUEST_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "request_level");
-    public static final Identifier LOCK_TARGET_ID = new Identifier(MaryMod2024.MOD_ID, "lock_target");
-    public static final Identifier REMOVE_LOCK_TARGET_ID = new Identifier(MaryMod2024.MOD_ID, "remove_lock_target");
-    public static final Identifier AIM_TO_TARGET_ID = new Identifier(MaryMod2024.MOD_ID, "aim_to_target");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
@@ -36,9 +34,6 @@ public class NetworkManager {
         ServerPlayNetworking.registerGlobalReceiver(INCREASE_UPGRADE_ID, IncreaseUpgradeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(INCREASE_POTION_AMOUNT_ID, IncreasePotionAmountC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(LEVEL_UP_ID, LevelUpC2SPacket::receive);
-        ServerPlayNetworking.registerGlobalReceiver(LOCK_TARGET_ID, LockTargetC2SPacket::receive);
-        ServerPlayNetworking.registerGlobalReceiver(REMOVE_LOCK_TARGET_ID, RemoveLockTargetC2SPacket::receive);
-        ServerPlayNetworking.registerGlobalReceiver(AIM_TO_TARGET_ID, AimToTargetC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {
