@@ -7,9 +7,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 
-public class SyncMoneyS2CPacket {
+public class NotifyStartUsageS2CPacket {
     public static <T extends FabricPacket> void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                                         PacketByteBuf buf, PacketSender responseSender) {
-        LivingEntityBridge.getPersistentData(client.player).putInt("coins", buf.readInt());
+        client.options.useKey.setPressed(true);
     }
 }

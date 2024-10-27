@@ -1,8 +1,12 @@
 package com.paramada.marycum2024.mixins.inventory;
 
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,5 +23,13 @@ public class ItemMixin {
     public void getItemBarColor(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         float f = Math.max(0.0F, ((float)stack.getMaxDamage() - (float)stack.getDamage()) / (float)stack.getMaxDamage());
         cir.setReturnValue(MathHelper.hsvToRgb(f / 3.0F, 1.0F, 1.0F));
+    }
+
+    @Inject(at = @At("HEAD"), method = "finishUsing")
+    public void onFinishUsing(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
+        var data = LivingEntityBridge.getPersistentData(user);
+        if (data.getBoolean("using_item")) {
+            data.putBoolean("using_item", false);
+        }
     }
 }

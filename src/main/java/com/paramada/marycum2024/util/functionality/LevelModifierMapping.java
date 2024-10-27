@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;

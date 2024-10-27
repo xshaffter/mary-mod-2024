@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.animator;
 
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;

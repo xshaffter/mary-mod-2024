@@ -2,17 +2,15 @@ package com.paramada.marycum2024.blocks.custom;
 
 import com.mojang.serialization.MapCodec;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
-import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
 import com.paramada.marycum2024.blocks.custom.entities.HiddenBlockEntity;
 import com.paramada.marycum2024.effects.ModEffects;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.StateManager;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;

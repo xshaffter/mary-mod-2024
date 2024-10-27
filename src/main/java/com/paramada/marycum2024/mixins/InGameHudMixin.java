@@ -3,12 +3,13 @@ package com.paramada.marycum2024.mixins;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.hud.HudElement;
-import com.paramada.marycum2024.util.LivingEntityBridge;
+import com.paramada.marycum2024.screens.components.SpriteData;
+import com.paramada.marycum2024.screens.components.TextureComponent;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -32,15 +33,21 @@ public abstract class InGameHudMixin {
     @Shadow
     @Final
     private MinecraftClient client;
+
     @Shadow
     public abstract TextRenderer getTextRenderer();
 
-    @Shadow protected abstract void renderHotbarItem(DrawContext context, int x, int y, float f, PlayerEntity player, ItemStack stack, int seed);
+    @Shadow
+    protected abstract void renderHotbarItem(DrawContext context, int x, int y, float f, PlayerEntity player, ItemStack stack, int seed);
 
     @Unique
     private static final Identifier MARYCOIN_TEXTURE = new Identifier(MaryMod2024.MOD_ID, "textures/hud/coin.png");
     @Unique
+    private static final Identifier HOTBAR_SELECTOR_TEXTURE = new Identifier(MaryMod2024.MOD_ID, "textures/hud/hotbar_selector.png");
+    @Unique
     private HudElement ECONOMY;
+    @Unique
+    private TextureComponent FAKE_HOTBAR;
 
     @Unique
     private void init() {
@@ -56,6 +63,16 @@ public abstract class InGameHudMixin {
                 56,
                 56,
                 56
+        );
+
+        FAKE_HOTBAR = new TextureComponent(
+                HOTBAR_SELECTOR_TEXTURE,
+                new SpriteData(
+                        0, windowHeight - 48, 64, 48
+                ),
+                new SpriteData(
+                        64, 48
+                )
         );
 
     }
@@ -91,33 +108,104 @@ public abstract class InGameHudMixin {
         }
     }
 
-    @Unique
-    private void renderMainHand(DrawContext context) {
-        assert client.player != null;
-        var currentItem = LivingEntityBridge.getPersistentData(client.player).getInt("current_main_item");
-        var x = 0;
-        var y = 0;
-        var f = 0;
-        renderHotbarItem(context, x, y, f, client.player, client.player.getInventory().getStack(currentItem), 0);
+    @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
+    private void renderCustomHotbar(float tickDelta, DrawContext context, CallbackInfo ci) {
+        var player = MinecraftClient.getInstance().player;
+        if (player != null && (player.isCreative() || player.isSpectator())) {
+            return;
+        }
+        renderFakeHotbar(context);
+        renderSelectableItems(context);
+        renderMainHand(context);
+        renderOffHand(context);
+        ci.cancel();
     }
 
     @Unique
-    private void renderPotionHUD(DrawContext context) {
+    private void renderFakeHotbar(DrawContext context) {
+        FAKE_HOTBAR.render(context);
+    }
+
+    @Unique
+    private void renderMainHand(DrawContext context) {
+        var data = LivingEntityBridge.getPersistentData(client.player);
+        if (data.getBoolean("using_item")) {
+            var currentItem = data.getInt("current_item");
+            if (currentItem < 23) {
+                currentItem = 23;
+                data.putInt("current_item", currentItem);
+            }
+            renderItem(
+                    context,
+                    currentItem,
+                    FAKE_HOTBAR.getX() + 39,
+                    FAKE_HOTBAR.getY() + 2,
+                    0
+            );
+        } else {
+            var x = FAKE_HOTBAR.getX() + 39;
+            var y = FAKE_HOTBAR.getY() + 2;
+            renderHotbarItem(context, x, y, 0, client.player, client.player.getInventory().getMainHandStack(), 0);
+        }
+    }
+
+    @Unique
+    private void renderSelectableItems(DrawContext context) {
         assert client.player != null;
-        var currentItem = LivingEntityBridge.getPersistentData(client.player).getInt("current_item");
-        var x = 0;
-        var y = 0;
-        var f = 0;
-        renderHotbarItem(context, x, y, f, client.player, client.player.getInventory().getStack(currentItem), 0);
+        var data = LivingEntityBridge.getPersistentData(client.player);
+        var currentItem = data.getInt("current_item");
+        if (currentItem < 23) {
+            currentItem = 23;
+            data.putInt("current_item", currentItem);
+        }
+        var previousItem = currentItem - 1;
+        var nextItem = currentItem + 1;
+
+        if (data.getBoolean("using_item")) {
+            renderItem(
+                    context,
+                    client.player.getInventory().selectedSlot,
+                    FAKE_HOTBAR.getX() + 24,
+                    FAKE_HOTBAR.getY() + 29,
+                    0
+            );
+        } else {
+            renderItem(
+                    context,
+                    currentItem,
+                    FAKE_HOTBAR.getX() + 24,
+                    FAKE_HOTBAR.getY() + 29,
+                    0
+            );
+        }
+
+        renderItem(
+                context,
+                previousItem,
+                FAKE_HOTBAR.getX() + 2,
+                FAKE_HOTBAR.getY() + 29,
+                0
+        );
+        renderItem(
+                context,
+                nextItem,
+                FAKE_HOTBAR.getX() + 46,
+                FAKE_HOTBAR.getY() + 29,
+                0
+        );
+    }
+
+    @Unique
+    private void renderItem(DrawContext context, int slot, int x, int y, int z) {
+        renderHotbarItem(context, x, y, z, client.player, client.player.getInventory().getStack(slot), 0);
     }
 
     @Unique
     private void renderOffHand(DrawContext context) {
         assert client.player != null;
-        var x = 0;
-        var y = 0;
-        var f = 0;
-        renderHotbarItem(context, x, y, f, client.player, client.player.getOffHandStack(), 0);
+        var x = FAKE_HOTBAR.getX() + 9;
+        var y = FAKE_HOTBAR.getY() + 2;
+        renderHotbarItem(context, x, y, 0, client.player, client.player.getOffHandStack(), 0);
     }
 
 }

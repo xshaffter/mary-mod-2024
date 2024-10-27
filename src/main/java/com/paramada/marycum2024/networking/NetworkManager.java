@@ -4,7 +4,6 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.networking.packets.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.util.Identifier;
 
 public class NetworkManager {
@@ -22,6 +21,9 @@ public class NetworkManager {
     public static final Identifier LEVEL_UP_ID = new Identifier(MaryMod2024.MOD_ID, "level_up");
     public static final Identifier SYNC_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "sync_level");
     public static final Identifier REQUEST_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "request_level");
+    public static final Identifier SWAP_MAIN_HAND_ID = new Identifier(MaryMod2024.MOD_ID, "swap_main_hand_id");
+    public static final Identifier START_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "start_use_item_id");
+    public static final Identifier END_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "start_use_item_id");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
@@ -34,6 +36,7 @@ public class NetworkManager {
         ServerPlayNetworking.registerGlobalReceiver(INCREASE_UPGRADE_ID, IncreaseUpgradeC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(INCREASE_POTION_AMOUNT_ID, IncreasePotionAmountC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(LEVEL_UP_ID, LevelUpC2SPacket::receive);
+        ServerPlayNetworking.registerGlobalReceiver(SWAP_MAIN_HAND_ID, SwapMainHandC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {
@@ -41,5 +44,6 @@ public class NetworkManager {
         ClientPlayNetworking.registerGlobalReceiver(SYNC_UPGRADE_ID, SyncUpgradeS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SYNC_DURABILITY_ID, SyncDurabilityUpgradeS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SYNC_LEVEL_ID, SyncLevelS2CPacket::receive);
+        ClientPlayNetworking.registerGlobalReceiver(START_USE_ITEM_ID, NotifyStartUsageS2CPacket::receive);
     }
 }

@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.animator;
 
 public interface AnimatedPlayer {
     void maryCum2024$setupAnimationStates();

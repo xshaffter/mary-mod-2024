@@ -1,15 +1,13 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality.bridges;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import com.paramada.marycum2024.items.ItemManager;
+import com.paramada.marycum2024.util.functionality.LevelModifierMapping;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class UpgradeManager {
     private static final Map<Integer, Integer> UPGRADE_COST_MAPPING = Map.ofEntries(

@@ -3,15 +3,14 @@ package com.paramada.marycum2024.mixins;
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.mojang.authlib.GameProfile;
-import com.paramada.marycum2024.math.Functions;
-import com.paramada.marycum2024.util.IExampleAnimatedPlayer;
-import com.paramada.marycum2024.util.ISoulsPlayerCamera;
+import com.paramada.marycum2024.util.animator.IExampleAnimatedPlayer;
+import com.paramada.marycum2024.util.souls.ISoulsPlayerCamera;
+import com.paramada.marycum2024.util.souls.ISoulsPlayerSelector;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -20,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractClientPlayerEntity.class)
-public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IExampleAnimatedPlayer, ISoulsPlayerCamera {
+public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IExampleAnimatedPlayer, ISoulsPlayerCamera, ISoulsPlayerSelector {
 
     @Unique
     private LivingEntity lockedTarget = null;

@@ -1,9 +1,5 @@
 package com.paramada.marycum2024.client;
 
-import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
-import com.github.exopandora.shouldersurfing.client.CrosshairRenderer;
-import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
-import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.EfigyBlockEntityRenderer;
 import com.paramada.marycum2024.blocks.custom.entities.renderers.HiddenBlockEntityRenderer;
@@ -16,8 +12,8 @@ import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.screens.EfigyScreen;
 import com.paramada.marycum2024.screens.ParticularContainerScreen;
 import com.paramada.marycum2024.screens.handlers.ModScreenHandlers;
-import com.paramada.marycum2024.util.MinecraftClientBridge;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -27,13 +23,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.Generic3x3ContainerScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.option.AttackIndicator;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 
 @Environment(EnvType.CLIENT)
 public class MaryMod2024Client implements ClientModInitializer {
@@ -60,6 +51,8 @@ public class MaryMod2024Client implements ClientModInitializer {
             ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_LEVEL_ID, PacketByteBufs.create());
             MinecraftClient.getInstance().options.getDamageTiltStrength().setValue(0d);
+            var data = LivingEntityBridge.getPersistentData(client.player);
+            data.putBoolean("using_item", false);
         });
     }
 

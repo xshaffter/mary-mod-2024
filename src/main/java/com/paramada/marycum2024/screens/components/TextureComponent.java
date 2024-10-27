@@ -8,12 +8,12 @@ public class TextureComponent {
     private Identifier texture;
     private int x;
     private int y;
-    private int renderWidth;
+    private final int renderWidth;
     private final int regionX;
     private final int regionY;
     private final int regionWidth;
     private final int regionHeight;
-    private int renderHeight;
+    private final int renderHeight;
     private final int spriteWidth;
     private final int spriteHeight;
 
@@ -41,5 +41,21 @@ public class TextureComponent {
 
     public void render(DrawContext context) {
         context.drawTexture(texture, x, y, renderWidth, renderHeight, regionX, regionY, regionWidth, regionHeight, spriteWidth, spriteHeight);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getRenderHeight() {
+        return renderHeight;
+    }
+
+    public int getRenderWidth() {
+        return renderWidth;
     }
 }

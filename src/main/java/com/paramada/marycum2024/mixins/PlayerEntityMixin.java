@@ -3,9 +3,8 @@ package com.paramada.marycum2024.mixins;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.events.CustomExplosion;
 import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.util.CooldownManager;
-import com.paramada.marycum2024.util.LivingEntityBridge;
-import net.fabricmc.api.EnvType;
+import com.paramada.marycum2024.util.functionality.PerformanceCooldownManager;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Unique
-    private final CooldownManager<CustomExplosion> explosionContainer = new CooldownManager<>();
+    private final PerformanceCooldownManager<CustomExplosion> explosionContainer = new PerformanceCooldownManager<>();
 
     @Shadow
     public abstract boolean damage(DamageSource source, float amount);
@@ -41,6 +40,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             if (this.getAttackCooldownProgress(0.5f) > 0.9f) {
                 explosionContainer.revive();
             }
+        }
+        if (!this.isUsingItem()) {
+            LivingEntityBridge.getPersistentData(this).putBoolean("using_item", false);
         }
     }
 

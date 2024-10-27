@@ -1,8 +1,8 @@
 package com.paramada.marycum2024.networking.packets;
 
 import com.paramada.marycum2024.networking.NetworkManager;
-import com.paramada.marycum2024.util.LivingEntityBridge;
-import com.paramada.marycum2024.util.UpgradeManager;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.UpgradeManager;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;

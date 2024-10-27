@@ -1,8 +1,6 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.inventory;
 
 import com.paramada.marycum2024.blocks.bases.SingleSpaceBlockEntity;
-import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;

@@ -1,12 +1,10 @@
 package com.paramada.marycum2024.mixins;
 
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.IItemUsagePublisher;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,9 +13,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
-public class ClientMixin {
+public abstract class ClientMixin implements IItemUsagePublisher {
 
     @Shadow @Nullable public ClientPlayerEntity player;
+
+    @Shadow protected abstract void doItemUse();
+
+    @Shadow private int itemUseCooldown;
 
     @Inject(method = "hasOutline", at = @At("HEAD"), cancellable = true)
     private void hasOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
@@ -27,5 +29,15 @@ public class ClientMixin {
                 cir.setReturnValue(true);
             }
         }
+    }
+
+    @Override
+    public void maryCum2024$doItemUse() {
+        this.doItemUse();
+    }
+
+    @Override
+    public int maryCum2024$getItemCooldown() {
+        return this.itemUseCooldown;
     }
 }

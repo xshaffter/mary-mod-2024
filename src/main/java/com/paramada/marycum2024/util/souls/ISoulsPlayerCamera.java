@@ -1,7 +1,6 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.souls;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 
 public interface ISoulsPlayerCamera {
 
