@@ -23,7 +23,7 @@ public class NetworkManager {
     public static final Identifier REQUEST_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "request_level");
     public static final Identifier SWAP_MAIN_HAND_ID = new Identifier(MaryMod2024.MOD_ID, "swap_main_hand_id");
     public static final Identifier START_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "start_use_item_id");
-    public static final Identifier END_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "start_use_item_id");
+    public static final Identifier END_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "end_use_item_id");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);

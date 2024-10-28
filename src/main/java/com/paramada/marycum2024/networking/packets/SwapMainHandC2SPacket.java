@@ -1,6 +1,7 @@
 package com.paramada.marycum2024.networking.packets;
 
 import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -15,7 +16,7 @@ public class SwapMainHandC2SPacket {
                                ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         var slot = buf.readVarInt();
-        var use = buf.readBoolean();
+        var use = buf.readVarInt() == 1;
         var mainHandStack = player.getMainHandStack();
         var selectedItemStack = handler.player.getInventory().getStack(slot);
         if (use && player.getItemCooldownManager().isCoolingDown(selectedItemStack.getItem())) {

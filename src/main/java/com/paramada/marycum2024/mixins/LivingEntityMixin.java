@@ -5,6 +5,8 @@ import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.util.functionality.IEntityDataSaver;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
+import com.paramada.marycum2024.util.inventory.SpecialSlotManager;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,6 +32,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements IEntityDataSaver {
+
 
     @Shadow
     public abstract boolean hasStatusEffect(StatusEffect effect);
@@ -161,6 +164,10 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     @Inject(method = "writeCustomDataToNbt", at = @At("RETURN"))
     protected void writeNbt(NbtCompound nbt, CallbackInfo info) {
         if (persistentData != null) {
+            var selector = PlayerEntityBridge.getItemSelector();
+            if (selector != null) {
+                persistentData.putInt("current_item", selector.getSelectedSlot());
+            }
             nbt.put("%s.data".formatted(MaryMod2024.MOD_ID), persistentData);
         }
     }
@@ -169,6 +176,10 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
     protected void injectedReadNBT(NbtCompound nbt, CallbackInfo info) {
         if (nbt.contains("%s.data".formatted(MaryMod2024.MOD_ID), NbtElement.COMPOUND_TYPE)) {
             persistentData = nbt.getCompound("%s.data".formatted(MaryMod2024.MOD_ID));
+            var selector = PlayerEntityBridge.getItemSelector();
+            if (selector != null) {
+                selector.select(persistentData.getInt("current_item"));
+            }
         }
     }
 

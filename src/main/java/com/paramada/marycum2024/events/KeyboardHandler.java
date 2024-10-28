@@ -1,7 +1,5 @@
 package com.paramada.marycum2024.events;
 
-import com.paramada.marycum2024.util.functionality.IItemUsagePublisher;
-import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;

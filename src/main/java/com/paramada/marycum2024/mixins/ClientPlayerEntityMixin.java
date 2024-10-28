@@ -4,6 +4,7 @@ import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.mojang.authlib.GameProfile;
 import com.paramada.marycum2024.util.animator.IExampleAnimatedPlayer;
+import com.paramada.marycum2024.util.inventory.SpecialSlotManager;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerCamera;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerSelector;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
@@ -28,6 +29,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IExampleAnimatedPlayer, ISoulsPlayerCamera, ISoulsPlayerSelector {
+
+    @Unique
+    public SpecialSlotManager itemSelectorManager = new SpecialSlotManager(23, 27);
+    @Unique
+    public SpecialSlotManager offHandSelectorManager = new SpecialSlotManager(10, 14);
 
     @Unique
     private LivingEntity lockedTarget = null;
@@ -135,5 +141,15 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
                 lockedTarget = living;
             }
         }
+    }
+
+    @Override
+    public SpecialSlotManager maryCum2024$getItemSelector() {
+        return itemSelectorManager;
+    }
+
+    @Override
+    public SpecialSlotManager maryCum2024$getoffHandSelector() {
+        return offHandSelectorManager;
     }
 }

@@ -6,12 +6,14 @@ import com.paramada.marycum2024.hud.HudElement;
 import com.paramada.marycum2024.screens.components.SpriteData;
 import com.paramada.marycum2024.screens.components.TextureComponent;
 import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -114,9 +116,16 @@ public abstract class InGameHudMixin {
         if (player != null && (player.isCreative() || player.isSpectator())) {
             return;
         }
+
+        if(player == null) {
+            return;
+        }
+
+        var data = LivingEntityBridge.getPersistentData(client.player);
+
         renderFakeHotbar(context);
-        renderSelectableItems(context);
-        renderMainHand(context);
+        renderSelectableItems(context, data);
+        renderMainHand(context, data);
         renderOffHand(context);
         ci.cancel();
     }
@@ -126,21 +135,17 @@ public abstract class InGameHudMixin {
         FAKE_HOTBAR.render(context);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Unique
-    private void renderMainHand(DrawContext context) {
-        var data = LivingEntityBridge.getPersistentData(client.player);
-        if (data.getBoolean("using_item")) {
-            var currentItem = data.getInt("current_item");
-            if (currentItem < 23) {
-                currentItem = 23;
-                data.putInt("current_item", currentItem);
-            }
+    private void renderMainHand(DrawContext context, NbtCompound data) {
+        if (data.getBoolean("using_item") && data.getBoolean("item_swapped")) {
+            var selector = PlayerEntityBridge.getItemSelector();
+            var currentItem = selector.getSelectedSlot();
             renderItem(
                     context,
                     currentItem,
                     FAKE_HOTBAR.getX() + 39,
-                    FAKE_HOTBAR.getY() + 2,
-                    0
+                    FAKE_HOTBAR.getY() + 2
             );
         } else {
             var x = FAKE_HOTBAR.getX() + 39;
@@ -149,33 +154,24 @@ public abstract class InGameHudMixin {
         }
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Unique
-    private void renderSelectableItems(DrawContext context) {
-        assert client.player != null;
-        var data = LivingEntityBridge.getPersistentData(client.player);
-        var currentItem = data.getInt("current_item");
-        if (currentItem < 23) {
-            currentItem = 23;
-            data.putInt("current_item", currentItem);
-        }
-        var previousItem = currentItem - 1;
-        var nextItem = currentItem + 1;
+    private void renderSelectableItems(DrawContext context, NbtCompound data) {
+        var selector = PlayerEntityBridge.getItemSelector();
+        var currentItem = selector.getSelectedSlot();
+        var previousItem = selector.getPreviousSlot();
+        var nextItem = selector.getNextSlot();
 
-        if (data.getBoolean("using_item")) {
-            renderItem(
-                    context,
-                    client.player.getInventory().selectedSlot,
-                    FAKE_HOTBAR.getX() + 24,
-                    FAKE_HOTBAR.getY() + 29,
-                    0
-            );
+        if (data.getBoolean("using_item") && data.getBoolean("item_swapped")) {
+            var x = FAKE_HOTBAR.getX() + 24;
+            var y = FAKE_HOTBAR.getY() + 29;
+            renderHotbarItem(context, x, y, 0, client.player, client.player.getInventory().getMainHandStack(), 0);
         } else {
             renderItem(
                     context,
                     currentItem,
                     FAKE_HOTBAR.getX() + 24,
-                    FAKE_HOTBAR.getY() + 29,
-                    0
+                    FAKE_HOTBAR.getY() + 29
             );
         }
 
@@ -183,21 +179,19 @@ public abstract class InGameHudMixin {
                 context,
                 previousItem,
                 FAKE_HOTBAR.getX() + 2,
-                FAKE_HOTBAR.getY() + 29,
-                0
+                FAKE_HOTBAR.getY() + 29
         );
         renderItem(
                 context,
                 nextItem,
                 FAKE_HOTBAR.getX() + 46,
-                FAKE_HOTBAR.getY() + 29,
-                0
+                FAKE_HOTBAR.getY() + 29
         );
     }
 
     @Unique
-    private void renderItem(DrawContext context, int slot, int x, int y, int z) {
-        renderHotbarItem(context, x, y, z, client.player, client.player.getInventory().getStack(slot), 0);
+    private void renderItem(DrawContext context, int slot, int x, int y) {
+        renderHotbarItem(context, x, y, 0, client.player, client.player.getInventory().getStack(slot), 0);
     }
 
     @Unique

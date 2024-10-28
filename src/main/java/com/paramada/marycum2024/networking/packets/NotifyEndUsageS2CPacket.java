@@ -11,6 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 public class NotifyEndUsageS2CPacket {
     public static <T extends FabricPacket> void receive(MinecraftClient client, ClientPlayNetworkHandler handler,
                                                         PacketByteBuf buf, PacketSender responseSender) {
-        client.options.useKey.setPressed(false);
+        var data = LivingEntityBridge.getPersistentData(client.player);
+        data.putBoolean("item_swapped", false);
     }
 }

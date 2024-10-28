@@ -6,7 +6,9 @@ import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.networking.NetworkManager;
 import com.paramada.marycum2024.util.functionality.MoneyManager;
 import com.paramada.marycum2024.util.animator.IExampleAnimatedPlayer;
+import com.paramada.marycum2024.util.inventory.SpecialSlotManager;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerCamera;
+import com.paramada.marycum2024.util.souls.ISoulsPlayerSelector;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
@@ -25,6 +27,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class PlayerEntityBridge {
+
 
     private static final MinecraftClient client = MinecraftClient.getInstance();
 
@@ -132,28 +135,33 @@ public class PlayerEntityBridge {
         if (data.getBoolean("using_item")) {
             return;
         }
-        var currentItem = data.getInt("current_item");
-        var nextItem = currentItem + 1;
-        if (nextItem > 27) {
-            nextItem -= 4;
-        }
-        data.putInt("current_item", nextItem);
+        var selector = PlayerEntityBridge.getItemSelector();
+
+        data.putInt("current_item", selector.selectNextSlot());
     }
 
     public static void swapSelectedItem() {
         if (client.player != null) {
+            var selector = PlayerEntityBridge.getItemSelector();
             var data = LivingEntityBridge.getPersistentData(client.player);
-            if (data.getBoolean("using_item")) {
+            if (data.getBoolean("using_item") || data.getBoolean("enabled_return")) {
                 return;
             }
+
+            data.putBoolean("item_swapped", true);
             data.putBoolean("enabled_return", true);
             data.putBoolean("using_item", true);
-            var currentItem = data.getInt("current_item");
+            var currentItem = selector.getSelectedSlot();
 
             var buf = PacketByteBufs.create();
             buf.writeVarInt(currentItem);
-            buf.writeBoolean(true);
+            buf.writeVarInt(1);
             ClientPlayNetworking.send(NetworkManager.SWAP_MAIN_HAND_ID, buf);
+
+            var mainHandStack = client.player.getMainHandStack();
+            var selectedItemStack = client.player.getInventory().getStack(currentItem);
+            client.player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
+            client.player.getInventory().setStack(currentItem, mainHandStack);
         }
     }
 
@@ -225,22 +233,49 @@ public class PlayerEntityBridge {
         client.getNetworkHandler().sendPacket(new UpdateSelectedSlotC2SPacket(i));
     }
 
+    public static SpecialSlotManager getItemSelector() {
+        if (client.player == null) {
+            return null;
+        }
+        return ((ISoulsPlayerSelector)client.player).maryCum2024$getItemSelector();
+    }
+
+    public static SpecialSlotManager getOffHandSelector() {
+        if (client.player == null) {
+            return null;
+        }
+        return ((ISoulsPlayerSelector)client.player).maryCum2024$getoffHandSelector();
+    }
+
     public static void returnSelectedItem() {
         if (client.player == null) {
             return;
         }
+        var selector = PlayerEntityBridge.getItemSelector();
         var data = LivingEntityBridge.getPersistentData(client.player);
-        if (data.getBoolean("using_item") || (data.contains("enabled_return") && !data.getBoolean("enabled_return"))) {
+        if (data.getBoolean("using_item")) {
             return;
         }
+
         client.options.useKey.setPressed(false);
+
+        if (!data.getBoolean("enabled_return")) {
+            return;
+        }
+
         data.putBoolean("enabled_return", false);
 
-        var currentItem = data.getInt("current_item");
+        var currentItem = selector.getSelectedSlot();
         var buf = PacketByteBufs.create();
         buf.writeVarInt(currentItem);
-        buf.writeBoolean(false);
+        buf.writeVarInt(0);
         ClientPlayNetworking.send(NetworkManager.SWAP_MAIN_HAND_ID, buf);
+
+        data.putBoolean("item_swapped", false);
+        var mainHandStack = client.player.getMainHandStack();
+        var selectedItemStack = client.player.getInventory().getStack(currentItem);
+        client.player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
+        client.player.getInventory().setStack(currentItem, mainHandStack);
     }
 
     public static void enableSwitchPrimary() {

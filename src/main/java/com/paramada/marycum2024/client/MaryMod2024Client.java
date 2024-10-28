@@ -51,8 +51,6 @@ public class MaryMod2024Client implements ClientModInitializer {
             ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
             ClientPlayNetworking.send(NetworkManager.REQUEST_LEVEL_ID, PacketByteBufs.create());
             MinecraftClient.getInstance().options.getDamageTiltStrength().setValue(0d);
-            var data = LivingEntityBridge.getPersistentData(client.player);
-            data.putBoolean("using_item", false);
         });
     }
 
