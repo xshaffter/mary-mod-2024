@@ -16,15 +16,15 @@ public class SwapMainHandC2SPacket {
                                ServerPlayNetworkHandler handler,
                                PacketByteBuf buf, PacketSender responseSender) {
         var slot = buf.readVarInt();
-        var use = buf.readVarInt() == 1;
+        var withUse = buf.readVarInt() == 1;
         var mainHandStack = player.getMainHandStack();
         var selectedItemStack = handler.player.getInventory().getStack(slot);
-        if (use && player.getItemCooldownManager().isCoolingDown(selectedItemStack.getItem())) {
+        if (withUse && player.getItemCooldownManager().isCoolingDown(selectedItemStack.getItem())) {
             return;
         }
         handler.player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
         handler.player.getInventory().setStack(slot, mainHandStack);
-        if (use) {
+        if (withUse) {
             ServerPlayNetworking.send(player, NetworkManager.START_USE_ITEM_ID, PacketByteBufs.create());
         }
     }

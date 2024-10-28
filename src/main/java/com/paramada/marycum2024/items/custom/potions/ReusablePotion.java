@@ -48,7 +48,7 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
             return TypedActionResult.fail(stack);
         }
 
-        PlayerEntityBridge.startEstusHealing(user, hand);
+        PlayerEntityBridge.startEstusHealing(user);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 

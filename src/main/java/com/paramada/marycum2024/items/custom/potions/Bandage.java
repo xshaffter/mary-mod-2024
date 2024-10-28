@@ -35,7 +35,7 @@ public class Bandage extends PotionItem implements IMaryItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        PlayerEntityBridge.starBandagetHealing(user);
+        PlayerEntityBridge.starBandageHealing(user);
         user.playSound(SoundManager.BANDAGE_HEAL, SoundCategory.PLAYERS, 1, 1);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }

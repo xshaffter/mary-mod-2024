@@ -5,6 +5,7 @@ import com.paramada.marycum2024.events.CustomExplosion;
 import com.paramada.marycum2024.items.ItemManager;
 import com.paramada.marycum2024.util.functionality.PerformanceCooldownManager;
 import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +43,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             }
         }
         if (!this.isUsingItem()) {
-            LivingEntityBridge.getPersistentData(this).putBoolean("using_item", false);
+
+            var animator = PlayerEntityBridge.getAnimator();
+            if (animator != null && !animator.isActive()) {
+                var data = LivingEntityBridge.getPersistentData(this);
+                data.putBoolean("using_item", false);
+                animator.setAnimation(null);
+            }
         }
     }
 

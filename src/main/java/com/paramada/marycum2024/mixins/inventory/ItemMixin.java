@@ -24,12 +24,4 @@ public class ItemMixin {
         float f = Math.max(0.0F, ((float)stack.getMaxDamage() - (float)stack.getDamage()) / (float)stack.getMaxDamage());
         cir.setReturnValue(MathHelper.hsvToRgb(f / 3.0F, 1.0F, 1.0F));
     }
-
-    @Inject(at = @At("HEAD"), method = "finishUsing")
-    public void onFinishUsing(ItemStack stack, World world, LivingEntity user, CallbackInfoReturnable<ItemStack> cir) {
-        var data = LivingEntityBridge.getPersistentData(user);
-        if (data.getBoolean("using_item")) {
-            data.putBoolean("using_item", false);
-        }
-    }
 }

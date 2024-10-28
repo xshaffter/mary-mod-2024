@@ -4,10 +4,13 @@ import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.api.model.Perspective;
 import com.mojang.authlib.GameProfile;
 import com.paramada.marycum2024.util.animator.IExampleAnimatedPlayer;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import com.paramada.marycum2024.util.inventory.SpecialSlotManager;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerCamera;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerSelector;
 import dev.kosmx.playerAnim.api.layered.IAnimation;
+import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationAccess;
 import net.minecraft.client.MinecraftClient;
@@ -84,6 +87,8 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
             camera.setYRot(newYaw);
 
         }
+
+        var data = LivingEntityBridge.getPersistentData(this);
     }
 
     @Unique
@@ -108,6 +113,7 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity implements IE
         }
         return (float) newDelta;
     }
+
     @Unique
     private float getNewDeltaPitch(Vec3d directionVec) {
         double dX = this.getX() - directionVec.getX();

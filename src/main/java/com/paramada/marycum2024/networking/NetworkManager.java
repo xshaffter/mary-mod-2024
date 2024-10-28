@@ -3,7 +3,10 @@ package com.paramada.marycum2024.networking;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.networking.packets.*;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 
 public class NetworkManager {
@@ -45,5 +48,18 @@ public class NetworkManager {
         ClientPlayNetworking.registerGlobalReceiver(SYNC_DURABILITY_ID, SyncDurabilityUpgradeS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(SYNC_LEVEL_ID, SyncLevelS2CPacket::receive);
         ClientPlayNetworking.registerGlobalReceiver(START_USE_ITEM_ID, NotifyStartUsageS2CPacket::receive);
+    }
+
+    public static void swapHandWithSelectedItem(int currentItem, boolean withUse) {
+        var player = MinecraftClient.getInstance().player;
+        if (player == null) return;
+        var buf = PacketByteBufs.create();
+        buf.writeVarInt(currentItem);
+        buf.writeBoolean(withUse);
+        ClientPlayNetworking.send(NetworkManager.SWAP_MAIN_HAND_ID, buf);
+        var mainHandStack = player.getMainHandStack();
+        var selectedItemStack = player.getInventory().getStack(currentItem);
+        player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
+        player.getInventory().setStack(currentItem, mainHandStack);
     }
 }

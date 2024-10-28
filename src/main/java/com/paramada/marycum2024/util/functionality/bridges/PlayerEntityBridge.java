@@ -11,11 +11,11 @@ import com.paramada.marycum2024.util.souls.ISoulsPlayerCamera;
 import com.paramada.marycum2024.util.souls.ISoulsPlayerSelector;
 import dev.emi.trinkets.api.TrinketsApi;
 import dev.kosmx.playerAnim.api.firstPerson.FirstPersonConfiguration;
+import dev.kosmx.playerAnim.api.layered.IAnimation;
 import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
+import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -51,7 +51,7 @@ public class PlayerEntityBridge {
         return true;
     }
 
-    public static void starBandagetHealing(PlayerEntity player) {
+    public static void starBandageHealing(PlayerEntity player) {
         if (!player.getWorld().isClient) {
             return;
         }
@@ -84,11 +84,13 @@ public class PlayerEntityBridge {
         }
     }
 
-    public static void startEstusHealing(PlayerEntity player, Hand hand) {
+    public static void startEstusHealing(PlayerEntity player) {
         if (!player.getWorld().isClient) {
             return;
         }
-        var animationContainer = ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
+        var animationContainer = PlayerEntityBridge.getAnimator();
+
+        if(animationContainer == null) return;
 
         KeyframeAnimation animation = PlayerAnimationRegistry.getAnimation(new Identifier(MaryMod2024.MOD_ID, "estus_heal"));
 
@@ -112,8 +114,7 @@ public class PlayerEntityBridge {
         var builder = animation.mutableCopy();
         animation = builder.build();
 
-        var keyAnimation = new KeyframeAnimationPlayer(animation)
-                .setFirstPersonConfiguration(new FirstPersonConfiguration(false, false, false, false));
+        var keyAnimation = new KeyframeAnimationPlayer(animation);
         animationContainer.setAnimation(keyAnimation);
     }
 
@@ -153,15 +154,7 @@ public class PlayerEntityBridge {
             data.putBoolean("using_item", true);
             var currentItem = selector.getSelectedSlot();
 
-            var buf = PacketByteBufs.create();
-            buf.writeVarInt(currentItem);
-            buf.writeVarInt(1);
-            ClientPlayNetworking.send(NetworkManager.SWAP_MAIN_HAND_ID, buf);
-
-            var mainHandStack = client.player.getMainHandStack();
-            var selectedItemStack = client.player.getInventory().getStack(currentItem);
-            client.player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
-            client.player.getInventory().setStack(currentItem, mainHandStack);
+            NetworkManager.swapHandWithSelectedItem(currentItem, true);
         }
     }
 
@@ -237,14 +230,14 @@ public class PlayerEntityBridge {
         if (client.player == null) {
             return null;
         }
-        return ((ISoulsPlayerSelector)client.player).maryCum2024$getItemSelector();
+        return ((ISoulsPlayerSelector) client.player).maryCum2024$getItemSelector();
     }
 
     public static SpecialSlotManager getOffHandSelector() {
         if (client.player == null) {
             return null;
         }
-        return ((ISoulsPlayerSelector)client.player).maryCum2024$getoffHandSelector();
+        return ((ISoulsPlayerSelector) client.player).maryCum2024$getoffHandSelector();
     }
 
     public static void returnSelectedItem() {
@@ -264,18 +257,9 @@ public class PlayerEntityBridge {
         }
 
         data.putBoolean("enabled_return", false);
-
-        var currentItem = selector.getSelectedSlot();
-        var buf = PacketByteBufs.create();
-        buf.writeVarInt(currentItem);
-        buf.writeVarInt(0);
-        ClientPlayNetworking.send(NetworkManager.SWAP_MAIN_HAND_ID, buf);
-
         data.putBoolean("item_swapped", false);
-        var mainHandStack = client.player.getMainHandStack();
-        var selectedItemStack = client.player.getInventory().getStack(currentItem);
-        client.player.setStackInHand(Hand.MAIN_HAND, selectedItemStack);
-        client.player.getInventory().setStack(currentItem, mainHandStack);
+        var currentItem = selector.getSelectedSlot();
+        NetworkManager.swapHandWithSelectedItem(currentItem, false);
     }
 
     public static void enableSwitchPrimary() {
@@ -296,5 +280,11 @@ public class PlayerEntityBridge {
         if (!data.getBoolean("enabled_secondary")) {
             data.putBoolean("enabled_secondary", true);
         }
+    }
+
+    public static ModifierLayer<IAnimation> getAnimator() {
+        var player = MinecraftClient.getInstance().player;
+        if (player == null) return null;
+        return ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
     }
 }

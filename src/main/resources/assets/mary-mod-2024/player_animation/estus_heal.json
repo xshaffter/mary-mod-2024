@@ -7,7 +7,7 @@
         "returnTick": 2,
         "beginTick":0,
         "endTick":55,
-        "stopTick":61,
+        "stopTick":55,
         "degrees":false,
         "moves":[
             
