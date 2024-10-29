@@ -1,5 +1,6 @@
 package com.paramada.marycum2024.mixins;
 
+import com.mojang.authlib.GameProfile;
 import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.attributes.ModEntityAttributes;
 import com.paramada.marycum2024.effects.ModEffects;
@@ -8,6 +9,7 @@ import com.paramada.marycum2024.util.functionality.IEntityDataSaver;
 import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import com.paramada.marycum2024.util.inventory.SpecialSlotManager;
 import dev.emi.trinkets.api.TrinketsApi;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -62,8 +64,6 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
         if (!(((Entity) this) instanceof ServerPlayerEntity player)) {
             return;
         }
-
-
 
         var trinketComponent = TrinketsApi.getTrinketComponent(player);
 
@@ -182,5 +182,4 @@ public abstract class LivingEntityMixin extends Entity implements IEntityDataSav
             }
         }
     }
-
 }

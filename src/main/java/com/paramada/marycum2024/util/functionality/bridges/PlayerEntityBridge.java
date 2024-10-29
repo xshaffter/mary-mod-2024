@@ -16,6 +16,7 @@ import dev.kosmx.playerAnim.api.layered.KeyframeAnimationPlayer;
 import dev.kosmx.playerAnim.api.layered.ModifierLayer;
 import dev.kosmx.playerAnim.core.data.KeyframeAnimation;
 import dev.kosmx.playerAnim.minecraftApi.PlayerAnimationRegistry;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -25,6 +26,8 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 public class PlayerEntityBridge {
 
@@ -90,7 +93,7 @@ public class PlayerEntityBridge {
         }
         var animationContainer = PlayerEntityBridge.getAnimator();
 
-        if(animationContainer == null) return;
+        if (animationContainer == null) return;
 
         KeyframeAnimation animation = PlayerAnimationRegistry.getAnimation(new Identifier(MaryMod2024.MOD_ID, "estus_heal"));
 
@@ -250,11 +253,11 @@ public class PlayerEntityBridge {
             return;
         }
 
-        client.options.useKey.setPressed(false);
-
         if (!data.getBoolean("enabled_return")) {
             return;
         }
+
+        client.options.useKey.setPressed(false);
 
         data.putBoolean("enabled_return", false);
         data.putBoolean("item_swapped", false);
@@ -286,5 +289,10 @@ public class PlayerEntityBridge {
         var player = MinecraftClient.getInstance().player;
         if (player == null) return null;
         return ((IExampleAnimatedPlayer) player).maryCum2024$getModAnimation();
+    }
+
+    public static Vec3d getMovement(PlayerEntity player) {
+        var velo = player.getVelocity();
+        return player.getPos().add(velo);
     }
 }

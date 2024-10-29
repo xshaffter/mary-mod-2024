@@ -60,8 +60,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "attack")
-    private void overrideCooldownBehavior(Entity target, CallbackInfo ci) {
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", shift = At.Shift.AFTER), method = "attack")
+    private void whenDamageEntity(Entity target, CallbackInfo ci) {
         var player = (PlayerEntity) (LivingEntity) this;
         var trinketComponent = LivingEntityBridge.getTrinketComponent(player);
         if (trinketComponent.isEquipped(ItemManager.MICROPHONE_TRINKET)) {

@@ -79,10 +79,10 @@ public class PotionUtilMixin {
                 }
 
                 if (attributeModifierValue > 0.0) {
-                    list.add(Text.translatable("attribute.modifier.plus." + entityAttributeModifier.getOperation().getId(), ItemStack.MODIFIER_FORMAT.format(attributeModifierValueMultiplier), Text.translatable(((EntityAttribute) pair.getFirst()).getTranslationKey())).formatted(Formatting.BLUE));
+                    list.add(Text.translatable("attribute.modifier.plus." + entityAttributeModifier.getOperation().getId(), ItemStack.MODIFIER_FORMAT.format(attributeModifierValueMultiplier), Text.translatable(pair.getFirst().getTranslationKey())).formatted(Formatting.BLUE));
                 } else if (attributeModifierValue < 0.0) {
                     attributeModifierValueMultiplier *= -1.0;
-                    list.add(Text.translatable("attribute.modifier.take." + entityAttributeModifier.getOperation().getId(), ItemStack.MODIFIER_FORMAT.format(attributeModifierValueMultiplier), Text.translatable(((EntityAttribute) pair.getFirst()).getTranslationKey())).formatted(Formatting.RED));
+                    list.add(Text.translatable("attribute.modifier.take." + entityAttributeModifier.getOperation().getId(), ItemStack.MODIFIER_FORMAT.format(attributeModifierValueMultiplier), Text.translatable(pair.getFirst().getTranslationKey())).formatted(Formatting.RED));
                 }
             }
         }

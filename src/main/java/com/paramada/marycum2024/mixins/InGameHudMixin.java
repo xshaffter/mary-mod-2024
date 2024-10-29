@@ -55,8 +55,6 @@ public abstract class InGameHudMixin {
     private void init() {
         int windowWidth = this.scaledWidth;
         int windowHeight = this.scaledHeight;
-        int leftX = windowWidth / 2 - 91 - 27;
-        int rightX = windowWidth / 2 + 91 + 8 + 16;
         ECONOMY = new HudElement(
                 windowWidth - 80,
                 windowHeight - 24 - 2,
@@ -104,8 +102,9 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "renderCrosshair", at = @At("HEAD"), cancellable = true)
     private void renderCustomHotbar(DrawContext context, CallbackInfo ci) {
+        var player = MinecraftClient.getInstance().player;
         var shoulderSurfing = ShoulderSurfing.getInstance();
-        if (!shoulderSurfing.isAiming()) {
+        if (player != null && shoulderSurfing.isShoulderSurfing() && !player.isCreative() && !player.isSpectator() && !shoulderSurfing.isAiming()) {
             ci.cancel();
         }
     }
@@ -117,7 +116,7 @@ public abstract class InGameHudMixin {
             return;
         }
 
-        if(player == null) {
+        if (player == null) {
             return;
         }
 
