@@ -2,10 +2,9 @@ package com.paramada.marycum2024.items.custom.potions;
 
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.items.custom.IMaryItem;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
-import com.paramada.marycum2024.util.UpgradeManager;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.UpgradeManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,7 +48,7 @@ public class ReusablePotion extends PotionItem implements IMaryItem {
             return TypedActionResult.fail(stack);
         }
 
-        PlayerEntityBridge.startEstusHealing(user, hand);
+        PlayerEntityBridge.startEstusHealing(user);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 

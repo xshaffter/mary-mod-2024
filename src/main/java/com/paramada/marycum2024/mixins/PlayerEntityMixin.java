@@ -3,9 +3,9 @@ package com.paramada.marycum2024.mixins;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.events.CustomExplosion;
 import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.util.CooldownManager;
-import com.paramada.marycum2024.util.LivingEntityBridge;
-import net.fabricmc.api.EnvType;
+import com.paramada.marycum2024.util.functionality.PerformanceCooldownManager;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Unique
-    private final CooldownManager<CustomExplosion> explosionContainer = new CooldownManager<>();
+    private final PerformanceCooldownManager<CustomExplosion> explosionContainer = new PerformanceCooldownManager<>();
 
     @Shadow
     public abstract boolean damage(DamageSource source, float amount);
@@ -42,6 +42,15 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 explosionContainer.revive();
             }
         }
+        if (!this.isUsingItem()) {
+
+            var animator = PlayerEntityBridge.getAnimator();
+            if (animator != null && !animator.isActive()) {
+                var data = LivingEntityBridge.getPersistentData(this);
+                data.putBoolean("using_item", false);
+                animator.setAnimation(null);
+            }
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "canFoodHeal", cancellable = true)
@@ -51,8 +60,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "attack")
-    private void overrideCooldownBehavior(Entity target, CallbackInfo ci) {
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", shift = At.Shift.AFTER), method = "attack")
+    private void whenDamageEntity(Entity target, CallbackInfo ci) {
         var player = (PlayerEntity) (LivingEntity) this;
         var trinketComponent = LivingEntityBridge.getTrinketComponent(player);
         if (trinketComponent.isEquipped(ItemManager.MICROPHONE_TRINKET)) {

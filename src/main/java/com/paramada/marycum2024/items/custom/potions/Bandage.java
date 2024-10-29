@@ -2,7 +2,7 @@ package com.paramada.marycum2024.items.custom.potions;
 
 import com.paramada.marycum2024.events.SoundManager;
 import com.paramada.marycum2024.items.custom.IMaryItem;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -19,7 +19,6 @@ import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class Bandage extends PotionItem implements IMaryItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        PlayerEntityBridge.starBandagetHealing(user);
+        PlayerEntityBridge.starBandageHealing(user);
         user.playSound(SoundManager.BANDAGE_HEAL, SoundCategory.PLAYERS, 1, 1);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }

@@ -1,5 +1,6 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality.bridges;
 
+import com.paramada.marycum2024.util.functionality.IEntityDataSaver;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;

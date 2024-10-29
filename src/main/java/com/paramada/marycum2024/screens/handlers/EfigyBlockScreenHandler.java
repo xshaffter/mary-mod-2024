@@ -1,10 +1,10 @@
 package com.paramada.marycum2024.screens.handlers;
 
 import com.paramada.marycum2024.networking.NetworkManager;
-import com.paramada.marycum2024.util.BlockPosUtil;
-import com.paramada.marycum2024.util.LivingEntityBridge;
-import com.paramada.marycum2024.util.MoneyManager;
-import com.paramada.marycum2024.util.UpgradeManager;
+import com.paramada.marycum2024.util.functionality.BlockPosUtil;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.MoneyManager;
+import com.paramada.marycum2024.util.functionality.bridges.UpgradeManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;

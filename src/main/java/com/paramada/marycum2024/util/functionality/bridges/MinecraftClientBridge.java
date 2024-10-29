@@ -1,15 +1,17 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality.bridges;
 
 import com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing;
 import com.github.exopandora.shouldersurfing.client.ShoulderSurfingImpl;
 import com.paramada.marycum2024.math.Rect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.TargetPredicate;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public final class MinecraftClientBridge {
+    private static final Predicate<LivingEntity> ENTITY_PREDICATE = entity -> entity.isAlive() && entity.isAttackable();
     public static List<LivingEntity> getPossibleTargets(MinecraftClient client) {
         var shoulderSurfing = (ShoulderSurfingImpl) ShoulderSurfing.getInstance();
         var camera = shoulderSurfing.getCamera();
@@ -19,11 +21,12 @@ public final class MinecraftClientBridge {
         if (camera != null && player != null && world != null) {
             var maxDistance = 10d;
 
-            var result = world.getOtherEntities(player, player.getBoundingBox().expand(maxDistance), entity ->
-                    entity.distanceTo(player) < maxDistance && entity.isAlive() && entity.isAttackable()
-            ).stream().map(entity -> (LivingEntity) entity).toList();
+            final TargetPredicate ENEMY_CONDITION = TargetPredicate.createAttackable().setBaseMaxDistance(maxDistance).setPredicate(ENTITY_PREDICATE);
+            List<LivingEntity> entities = player.getWorld()
+                    .getTargets(LivingEntity.class, ENEMY_CONDITION, player, player.getBoundingBox().expand(maxDistance)).stream().filter(player::canSee).toList();
 
-            return result;
+
+            return entities;
 
         }
         return List.of();

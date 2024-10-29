@@ -1,6 +1,6 @@
 package com.paramada.marycum2024.blocks.bases;
 
-import com.paramada.marycum2024.util.VoxelShapeUtil;
+import com.paramada.marycum2024.util.functionality.VoxelShapeUtil;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;

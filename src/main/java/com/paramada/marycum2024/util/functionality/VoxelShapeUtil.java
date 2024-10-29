@@ -1,4 +1,4 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality;
 
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;

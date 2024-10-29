@@ -1,6 +1,8 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality;
 
 import com.paramada.marycum2024.networking.NetworkManager;
+import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

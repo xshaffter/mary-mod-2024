@@ -2,7 +2,7 @@ package com.paramada.marycum2024.items.custom.potions;
 
 import com.paramada.marycum2024.items.custom.IMaryItem;
 import com.paramada.marycum2024.items.trinkets.bases.RibbonTrinket;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -57,7 +57,7 @@ public class MedikaPotion extends PotionItem implements IMaryItem {
             return TypedActionResult.fail(stack);
         }
 
-        PlayerEntityBridge.startEstusHealing(user, hand);
+        PlayerEntityBridge.startEstusHealing(user);
         return ItemUsage.consumeHeldItem(world, user, hand);
     }
 

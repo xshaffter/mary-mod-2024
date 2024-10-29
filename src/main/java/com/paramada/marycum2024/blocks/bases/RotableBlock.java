@@ -1,7 +1,7 @@
 package com.paramada.marycum2024.blocks.bases;
 
 import com.google.common.collect.ImmutableMap;
-import com.paramada.marycum2024.util.VoxelShapeUtil;
+import com.paramada.marycum2024.util.functionality.VoxelShapeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;

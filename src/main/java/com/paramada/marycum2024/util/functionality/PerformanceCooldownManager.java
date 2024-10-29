@@ -1,11 +1,11 @@
-package com.paramada.marycum2024.util;
+package com.paramada.marycum2024.util.functionality;
 
 import com.paramada.marycum2024.events.CustomExplosion;
 import net.fabricmc.api.EnvType;
 
 import java.util.NoSuchElementException;
 
-public class CooldownManager<T extends CustomExplosion> {
+public class PerformanceCooldownManager<T extends CustomExplosion> {
 
     private T value = null;
     private boolean alive = true;

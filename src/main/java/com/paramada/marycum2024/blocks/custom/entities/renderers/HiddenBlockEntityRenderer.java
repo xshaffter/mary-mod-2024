@@ -1,9 +1,7 @@
 package com.paramada.marycum2024.blocks.custom.entities.renderers;
 
-import com.paramada.marycum2024.blocks.custom.entities.EfigyBlockEntity;
 import com.paramada.marycum2024.blocks.custom.entities.HiddenBlockEntity;
-import com.paramada.marycum2024.effects.ModEffects;
-import com.paramada.marycum2024.util.PlayerEntityBridge;
+import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
