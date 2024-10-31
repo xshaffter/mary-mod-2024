@@ -1,9 +1,5 @@
 package com.paramada.marycum2024.mixins.inventory;
 
-import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.networking.NetworkManager;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -44,16 +40,6 @@ public abstract class PlayerInventoryMixin implements Inventory {
         var nbt = stack.getNbt();
         if (nbt != null && nbt.getBoolean("NoDrop")) {
             cir.setReturnValue(ItemStack.EMPTY);
-        }
-    }
-
-    @Inject(at = @At("HEAD"), method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", cancellable = true)
-    private void onPickup(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.isOf(ItemManager.MARY_COIN)) {
-            ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
-            this.player.getEnderChestInventory().addStack(stack);
-            stack.setCount(0);
-            cir.setReturnValue(true);
         }
     }
 

@@ -12,6 +12,8 @@ import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
@@ -48,7 +50,6 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
     @SuppressWarnings("deprecation")
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        var stackInHand = player.getStackInHand(hand);
         var blockEntity = getEfigyBlockEntity(world, pos);
         if (blockEntity == null) {
             return ActionResult.FAIL;
@@ -70,6 +71,8 @@ public class EfigyBlock extends RotableBlockWithEntity implements BlockEntityPro
 
             return ActionResult.PASS;
         }
+
+        player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, StatusEffectInstance.INFINITE));
 
         LivingEntityBridge.getPersistentData(player).put("effigy", BlockPosUtil.toNbt(blockEntity.getPos()));
 

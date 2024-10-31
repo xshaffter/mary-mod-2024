@@ -5,9 +5,11 @@ import com.paramada.marycum2024.blocks.custom.entities.BlockEntityManager;
 import com.paramada.marycum2024.blocks.custom.entities.HiddenBlockEntity;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -15,9 +17,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,9 +25,8 @@ import java.util.Optional;
 public class HiddenBlock extends BlockWithEntity implements BlockEntityProvider {
     public static final MapCodec<HiddenBlock> CODEC = createCodec(HiddenBlock::new);
 
-    public HiddenBlock() {
-        super(Settings
-                .create()
+    public HiddenBlock(Settings settings) {
+        super(settings
                 .nonOpaque()
                 .dynamicBounds()
                 .strength(-1.0F, 3600000.0F)
@@ -36,8 +34,8 @@ public class HiddenBlock extends BlockWithEntity implements BlockEntityProvider 
         );
     }
 
-    public HiddenBlock(Settings settings) {
-        this();
+    public HiddenBlock() {
+        this(Settings.create());
     }
 
     @Override
@@ -72,33 +70,6 @@ public class HiddenBlock extends BlockWithEntity implements BlockEntityProvider 
 
     public static Optional<HiddenBlockEntity> getHiddenBlockEntity(World world, BlockPos pos) {
         return world.getBlockEntity(pos, BlockEntityManager.HIDDEN_ENTITY);
-    }
-
-    @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView blockView, BlockPos pos, ShapeContext context) {
-        var client = MinecraftClient.getInstance();
-        var player = client.player;
-
-        if (player == null || client.world == null) {
-            return VoxelShapes.fullCube();
-        }
-
-        if (player.isCreative() || player.isSpectator()){
-            return VoxelShapes.fullCube();
-        }
-
-        if (PlayerEntityBridge.hasTDAH(player)) {
-            return VoxelShapes.fullCube();
-        }
-
-        var blockEntity = getHiddenBlockEntity(client.world, pos);
-
-        if (blockEntity.isPresent()) {
-            if (blockEntity.get().hasItem()) {
-                return VoxelShapes.fullCube();
-            }
-        }
-        return VoxelShapes.fullCube();
     }
 
     @Override

@@ -3,9 +3,11 @@ package com.paramada.marycum2024.mixins;
 import com.paramada.marycum2024.effects.ModEffects;
 import com.paramada.marycum2024.events.CustomExplosion;
 import com.paramada.marycum2024.items.ItemManager;
+import com.paramada.marycum2024.souls.SoulsPlayer;
 import com.paramada.marycum2024.util.functionality.PerformanceCooldownManager;
 import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
+import com.paramada.marycum2024.util.souls.ISoulsPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity {
+public abstract class PlayerEntityMixin extends LivingEntity implements ISoulsPlayer {
+
+    @Unique
+    private SoulsPlayer soulsPlayer;
 
     @Unique
     private final PerformanceCooldownManager<CustomExplosion> explosionContainer = new PerformanceCooldownManager<>();
@@ -29,10 +34,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Shadow
     public abstract boolean damage(DamageSource source, float amount);
 
-    @Shadow public abstract float getAttackCooldownProgress(float baseTime);
+    @Shadow
+    public abstract float getAttackCooldownProgress(float baseTime);
 
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
+        soulsPlayer = new SoulsPlayer(this);
     }
 
     @Inject(at = @At("HEAD"), method = "tick")
@@ -42,13 +49,18 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 explosionContainer.revive();
             }
         }
-        if (!this.isUsingItem()) {
+    }
 
-            var animator = PlayerEntityBridge.getAnimator();
-            if (animator != null && !animator.isActive()) {
-                var data = LivingEntityBridge.getPersistentData(this);
-                data.putBoolean("using_item", false);
-                animator.setAnimation(null);
+    @Inject(at = @At("TAIL"), method = "tick")
+    protected void onEndTick(CallbackInfo ci) {
+        if (soulsPlayer != null) {
+            soulsPlayer.tick();
+            if (!this.isUsingItem()) {
+                var animator = PlayerEntityBridge.getAnimator();
+                if (animator != null && !animator.isActive()) {
+                    soulsPlayer.stopUsingItem();
+                    animator.setAnimation(null);
+                }
             }
         }
     }
@@ -75,5 +87,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         if (explosionContainer.hasValue()) {
             explosionContainer.perform();
         }
+    }
+
+    @Override
+    public SoulsPlayer marymod2024$getSoulsPlayer() {
+        if (soulsPlayer == null) {
+            soulsPlayer = new SoulsPlayer(this);
+        }
+        return soulsPlayer;
     }
 }

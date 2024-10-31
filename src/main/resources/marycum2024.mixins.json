@@ -15,13 +15,15 @@
     "inventory.SimpleInventoryMixin"
   ],
   "client": [
-    "SSCameraMixin",
     "ClientMixin",
     "ClientPlayerEntityMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "MouseMixin",
     "ScreenMixin",
-    "ShoulderSurfingMixin"
+    "ShoulderSurfingMixin",
+    "inventory.ClientItemStackMixin",
+    "inventory.ClientPlayerInventoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -27,7 +27,9 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}",
     "bendy-lib": "${bendylib_version}",
-    "player-animator": "${player_anim}",
-    "anvilapi": "${anvil_api_version}"
+    "player-animator": "${player_anim}"
+  },
+  "recommends": {
+    "better-combat": ">=1.8.7"
   }
 }

@@ -1,26 +1,17 @@
 package com.paramada.marycum2024.mixins.inventory;
 
-import com.paramada.marycum2024.items.ItemManager;
-import com.paramada.marycum2024.items.custom.IMaryItem;
-import com.paramada.marycum2024.networking.NetworkManager;
-import io.netty.util.internal.ObjectUtil;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.item.v1.FabricItemStack;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import org.apache.commons.lang3.ObjectUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
@@ -31,46 +22,17 @@ public abstract class ItemStackMixin implements FabricItemStack {
     public abstract Item getItem();
 
     @Shadow
-    private @Nullable NbtCompound nbt;
+    public abstract NbtCompound getOrCreateNbt();
 
     @Shadow
-    private int count;
+    public abstract boolean isOf(Item item);
 
+    @Shadow
+    private @Nullable Entity holder;
 
-    @Shadow public abstract NbtCompound getOrCreateNbt();
+    @Shadow private int count;
 
-    @Shadow public abstract boolean isOf(Item item);
-
-    @Inject(at = @At("HEAD"), method = "getMaxDamage", cancellable = true)
-    public void getMaxDamage(CallbackInfoReturnable<Integer> cir) {
-        if (this.isOf(ItemManager.ESTUS)) {
-            var nbt = this.getOrCreateNbt();
-            var amount = nbt.getInt("enhance");
-            cir.setReturnValue(amount + 1);
-        }
-    }
-
-    @Inject(method = "getNbt", at = @At("HEAD"))
-    private void defaultNBT(CallbackInfoReturnable<NbtCompound> cir) {
-        if (this.getItem() instanceof IMaryItem) {
-            this.getOrCreateNbt();
-            if (this.nbt != null) {
-                this.nbt.putBoolean("NoDrop", true);
-                if (this.isOf(ItemManager.ESTUS) && this.nbt.getInt("upgrade") == 0) {
-                    this.nbt.putInt("upgrade", 0);
-                }
-            }
-        }
-    }
-
-
-    @Inject(method = "copy", at = @At("HEAD"))
-    private void onCopy(CallbackInfoReturnable<ItemStack> cir) {
-        var network = MinecraftClient.getInstance().getNetworkHandler();
-        if (network != null && network.getPlayerList().size() > 0) {
-            ClientPlayNetworking.send(NetworkManager.REQUEST_MONEY_ID, PacketByteBufs.create());
-        }
-    }
+    @Shadow private @Nullable NbtCompound nbt;
 
     @Inject(method = "writeNbt", at = @At("HEAD"), cancellable = true)
     public void writeNbt(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {

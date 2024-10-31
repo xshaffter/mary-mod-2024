@@ -4,9 +4,9 @@ import net.minecraft.entity.Entity;
 
 public interface ISoulsPlayerCamera {
 
-    Entity maryCum2024$getLockedTarget();
+    Entity getLockedTarget();
 
-    boolean maryCum2024$hasLockedTarget();
+    boolean hasLockedTarget();
 
-    void maryCum2024$setLockedTarget(Entity target);
+    void setLockedTarget(Entity target);
 }

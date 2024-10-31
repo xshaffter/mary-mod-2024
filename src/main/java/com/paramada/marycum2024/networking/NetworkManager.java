@@ -26,7 +26,6 @@ public class NetworkManager {
     public static final Identifier REQUEST_LEVEL_ID = new Identifier(MaryMod2024.MOD_ID, "request_level");
     public static final Identifier SWAP_MAIN_HAND_ID = new Identifier(MaryMod2024.MOD_ID, "swap_main_hand_id");
     public static final Identifier START_USE_ITEM_ID = new Identifier(MaryMod2024.MOD_ID, "start_use_item_id");
-    public static final Identifier CHANGE_YAW_AND_PITCH_ID = new Identifier(MaryMod2024.MOD_ID, "change_yaw_and_pitch");
 
     public static void registerC2SPackets() {
         ServerPlayNetworking.registerGlobalReceiver(EARN_MONEY_ID, EarnMoneyC2SPacket::receive);
@@ -40,7 +39,6 @@ public class NetworkManager {
         ServerPlayNetworking.registerGlobalReceiver(INCREASE_POTION_AMOUNT_ID, IncreasePotionAmountC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(LEVEL_UP_ID, LevelUpC2SPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(SWAP_MAIN_HAND_ID, SwapMainHandC2SPacket::receive);
-        ServerPlayNetworking.registerGlobalReceiver(CHANGE_YAW_AND_PITCH_ID, ChangeYawPitchC2SPacket::receive);
     }
 
     public static void registerS2CPackets() {
@@ -54,6 +52,7 @@ public class NetworkManager {
     public static void swapHandWithSelectedItem(int currentItem, boolean withUse) {
         var player = MinecraftClient.getInstance().player;
         if (player == null) return;
+
         var buf = PacketByteBufs.create();
         buf.writeVarInt(currentItem);
         buf.writeBoolean(withUse);

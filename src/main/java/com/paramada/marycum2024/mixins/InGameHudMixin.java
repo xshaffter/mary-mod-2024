@@ -5,15 +5,17 @@ import com.paramada.marycum2024.MaryMod2024;
 import com.paramada.marycum2024.hud.HudElement;
 import com.paramada.marycum2024.screens.components.SpriteData;
 import com.paramada.marycum2024.screens.components.TextureComponent;
+import com.paramada.marycum2024.souls.SoulsPlayer;
 import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import com.paramada.marycum2024.util.functionality.bridges.PlayerEntityBridge;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -26,6 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.text.DecimalFormat;
 
+@Environment(EnvType.CLIENT)
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     @Shadow
@@ -120,11 +123,9 @@ public abstract class InGameHudMixin {
             return;
         }
 
-        var data = LivingEntityBridge.getPersistentData(client.player);
-
         renderFakeHotbar(context);
-        renderSelectableItems(context, data);
-        renderMainHand(context, data);
+        renderSelectableItems(context);
+        renderMainHand(context);
         renderOffHand(context);
         ci.cancel();
     }
@@ -136,10 +137,10 @@ public abstract class InGameHudMixin {
 
     @SuppressWarnings("DataFlowIssue")
     @Unique
-    private void renderMainHand(DrawContext context, NbtCompound data) {
-        if (data.getBoolean("using_item") && data.getBoolean("item_swapped")) {
-            var selector = PlayerEntityBridge.getItemSelector();
-            var currentItem = selector.getSelectedSlot();
+    private void renderMainHand(DrawContext context) {
+        var player = PlayerEntityBridge.getCurrentSoulsPlayer();
+        if (player.getCurrentAction() == SoulsPlayer.SoulsAction.USING_ITEM && player.isSwappedItem()) {
+            var currentItem = player.itemSelectorManager.getSelectedSlot();
             renderItem(
                     context,
                     currentItem,
@@ -155,13 +156,14 @@ public abstract class InGameHudMixin {
 
     @SuppressWarnings("DataFlowIssue")
     @Unique
-    private void renderSelectableItems(DrawContext context, NbtCompound data) {
-        var selector = PlayerEntityBridge.getItemSelector();
+    private void renderSelectableItems(DrawContext context) {
+        var player = PlayerEntityBridge.getCurrentSoulsPlayer();
+        var selector = player.itemSelectorManager;
         var currentItem = selector.getSelectedSlot();
         var previousItem = selector.getPreviousSlot();
         var nextItem = selector.getNextSlot();
 
-        if (data.getBoolean("using_item") && data.getBoolean("item_swapped")) {
+        if (player.getCurrentAction() == SoulsPlayer.SoulsAction.USING_ITEM && player.isSwappedItem()) {
             var x = FAKE_HOTBAR.getX() + 24;
             var y = FAKE_HOTBAR.getY() + 29;
             renderHotbarItem(context, x, y, 0, client.player, client.player.getInventory().getMainHandStack(), 0);

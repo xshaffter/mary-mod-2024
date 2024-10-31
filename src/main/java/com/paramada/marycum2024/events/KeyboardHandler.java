@@ -14,40 +14,60 @@ public class KeyboardHandler {
     public static final String KEY_SWITCH_MAIN_HAND = "key.mary-mod-2024.switch_main_hand";
     public static final String KEY_SWITCH_OFF_HAND = "key.mary-mod-2024.switch_off_hand";
     public static final String KEY_Z_TARGETING = "key.mary-mod-2024.z_targeting";
+    public static final String KEY_HEAVY_ATTACK = "key.mary-mod-2024.attack_heavy";
+    public static final String KEY_LIGHT_ATTACK = "key.mary-mod-2024.attack_light";
 
     public static KeyBinding useItemKey;
     public static KeyBinding switchItemNextKey;
     public static KeyBinding zTargetingKey;
     public static KeyBinding switchPrimaryHandKey;
     public static KeyBinding switchSecondaryHandKey;
+    public static KeyBinding heavyAttackKey;
+    public static KeyBinding lightAttackKey;
 
     private static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (zTargetingKey.wasPressed()) {
-                PlayerEntityBridge.lockFocusedTarget();
-            }
-            if (switchItemNextKey.wasPressed()) {
-                PlayerEntityBridge.selectNextItem();
-            }
-            if (client.player != null) {
-                if(client.options.useKey.isPressed()) {
-                    PlayerEntityBridge.returnSelectedItem();
+            var soulsPlayer = PlayerEntityBridge.getCurrentSoulsPlayer();
+            if (soulsPlayer != null) {
+                if (zTargetingKey.wasPressed()) {
+                    soulsPlayer.lockFocusedTarget();
                 }
 
-                if (useItemKey.isPressed() && !client.player.isUsingItem()) {
-                    PlayerEntityBridge.swapSelectedItem();
+                if (switchItemNextKey.wasPressed()) {
+                    soulsPlayer.selectNextItem();
                 }
-            }
 
-            if (switchPrimaryHandKey.isPressed()) {
-                PlayerEntityBridge.switchPrimaryHand();
-            } else {
-                PlayerEntityBridge.enableSwitchPrimary();
-            }
-            if (switchSecondaryHandKey.isPressed()) {
-                PlayerEntityBridge.switchSecondaryHand();
-            } else {
-                PlayerEntityBridge.enableSwitchSecondary();
+                if (client.options.useKey.isPressed()) {
+                    soulsPlayer.returnSelectedItem();
+                }
+
+                if (useItemKey.isPressed()) {
+                    soulsPlayer.startUsingItem();
+                }
+
+                if (switchPrimaryHandKey.isPressed()) {
+                    soulsPlayer.switchPrimaryHand();
+                } else {
+                    soulsPlayer.enableSwitchPrimary();
+                }
+
+                if (switchSecondaryHandKey.isPressed()) {
+                    soulsPlayer.switchSecondaryHand();
+                } else {
+                    soulsPlayer.enableSwitchSecondary();
+                }
+
+                if (heavyAttackKey.isPressed()) {
+                    soulsPlayer.performHeavyAttack();
+                } else {
+                    soulsPlayer.enableHeavyAttack();
+                }
+
+                if (lightAttackKey.isPressed()) {
+                    soulsPlayer.performHeavyAttack();
+                } else {
+                    soulsPlayer.enableHeavyAttack();
+                }
             }
         });
     }
@@ -81,6 +101,18 @@ public class KeyboardHandler {
                 KEY_SWITCH_OFF_HAND,
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_LEFT_ALT,
+                KEY_CATEGORY_MARY_MOD
+        ));
+        heavyAttackKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                KEY_HEAVY_ATTACK,
+                InputUtil.Type.MOUSE,
+                GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+                KEY_CATEGORY_MARY_MOD
+        ));
+        lightAttackKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                KEY_LIGHT_ATTACK,
+                InputUtil.Type.MOUSE,
+                GLFW.GLFW_MOUSE_BUTTON_LEFT,
                 KEY_CATEGORY_MARY_MOD
         ));
 

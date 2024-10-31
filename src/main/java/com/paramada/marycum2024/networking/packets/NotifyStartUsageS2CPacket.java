@@ -1,6 +1,5 @@
 package com.paramada.marycum2024.networking.packets;
 
-import com.paramada.marycum2024.util.functionality.bridges.LivingEntityBridge;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;

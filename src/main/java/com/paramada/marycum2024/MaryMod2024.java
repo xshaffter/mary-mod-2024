@@ -37,3 +37,43 @@ public class MaryMod2024 implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntities.BEAGLE, BeagleEntity.createBeagleAttributes());
     }
 }
+/*
+    lanza
+    espadon
+    espada
+
+ */
+
+
+/*
+TODO: CREDITS
+modelos:
+themodderG
+jojoshua
+ferrum_26
+para_mada
+
+arte:
+alavialam
+themodderG
+para_mada
+chema_ftw
+
+programacion:
+para_mada
+
+historia:
+bolt
+
+construccion:
+monalisa2015
+kodcake
+el compa de monalisa
+para_mada
+
+npcs:
+conterstine maid
+ansichan
+vickypalami
+
+ */
